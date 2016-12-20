@@ -1,0 +1,19 @@
+separate services:
+ 1) downloading rss + assesing signals
+ 2) articles processing, prices processing
+
+price calculation in SQL
+
+count actions only for articles referencing single instrument
+
+country detection
+
+futures detection
+
+articles assesing
+
+automatic price updates
+
+number of tickers and samples from shingle action to shingles
+
+article title and text to one column

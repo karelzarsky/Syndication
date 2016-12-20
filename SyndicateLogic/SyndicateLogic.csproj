@@ -1,0 +1,571 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C9939FC-0B11-4B0B-B244-1EC07AA4940D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SyndicateLogic</RootNamespace>
+    <AssemblyName>SyndicateLogic</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataLayer.cs" />
+    <Compile Include="Db.cs" />
+    <Compile Include="Entities.cs" />
+    <Compile Include="Enums.cs" />
+    <Compile Include="Migrations\201608111016563_firstTables.cs" />
+    <Compile Include="Migrations\201608111016563_firstTables.Designer.cs">
+      <DependentUpon>201608111016563_firstTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608111825272_logs.cs" />
+    <Compile Include="Migrations\201608111825272_logs.Designer.cs">
+      <DependentUpon>201608111825272_logs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608111904267_logs2.cs" />
+    <Compile Include="Migrations\201608111904267_logs2.Designer.cs">
+      <DependentUpon>201608111904267_logs2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608121617593_descriptionToFeeds.cs" />
+    <Compile Include="Migrations\201608121617593_descriptionToFeeds.Designer.cs">
+      <DependentUpon>201608121617593_descriptionToFeeds.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608121640025_renameDescriptionToTitle.cs" />
+    <Compile Include="Migrations\201608121640025_renameDescriptionToTitle.Designer.cs">
+      <DependentUpon>201608121640025_renameDescriptionToTitle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608130750171_atom.cs" />
+    <Compile Include="Migrations\201608130750171_atom.Designer.cs">
+      <DependentUpon>201608130750171_atom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608130800478_feedLanguage.cs" />
+    <Compile Include="Migrations\201608130800478_feedLanguage.Designer.cs">
+      <DependentUpon>201608130800478_feedLanguage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608130822107_feedCategories.cs" />
+    <Compile Include="Migrations\201608130822107_feedCategories.Designer.cs">
+      <DependentUpon>201608130822107_feedCategories.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608151654413_logId.cs" />
+    <Compile Include="Migrations\201608151654413_logId.Designer.cs">
+      <DependentUpon>201608151654413_logId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608170713058_logIndex.cs" />
+    <Compile Include="Migrations\201608170713058_logIndex.Designer.cs">
+      <DependentUpon>201608170713058_logIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608181247500_removeAtom.cs" />
+    <Compile Include="Migrations\201608181247500_removeAtom.Designer.cs">
+      <DependentUpon>201608181247500_removeAtom.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608190648183_addSHA.cs" />
+    <Compile Include="Migrations\201608190648183_addSHA.Designer.cs">
+      <DependentUpon>201608190648183_addSHA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608190719433_KeySHA.cs" />
+    <Compile Include="Migrations\201608190719433_KeySHA.Designer.cs">
+      <DependentUpon>201608190719433_KeySHA.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608221138509_extraction.cs" />
+    <Compile Include="Migrations\201608221138509_extraction.Designer.cs">
+      <DependentUpon>201608221138509_extraction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608221220559_content.cs" />
+    <Compile Include="Migrations\201608221220559_content.Designer.cs">
+      <DependentUpon>201608221220559_content.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608222004389_company.cs" />
+    <Compile Include="Migrations\201608222004389_company.Designer.cs">
+      <DependentUpon>201608222004389_company.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608230609389_companyDetails.cs" />
+    <Compile Include="Migrations\201608230609389_companyDetails.Designer.cs">
+      <DependentUpon>201608230609389_companyDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608230622060_securityKey.cs" />
+    <Compile Include="Migrations\201608230622060_securityKey.Designer.cs">
+      <DependentUpon>201608230622060_securityKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608230653354_securityDate.cs" />
+    <Compile Include="Migrations\201608230653354_securityDate.Designer.cs">
+      <DependentUpon>201608230653354_securityDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608230654374_sicNull.cs" />
+    <Compile Include="Migrations\201608230654374_sicNull.Designer.cs">
+      <DependentUpon>201608230654374_sicNull.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608230655457_emplyeesNull.cs" />
+    <Compile Include="Migrations\201608230655457_emplyeesNull.Designer.cs">
+      <DependentUpon>201608230655457_emplyeesNull.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608241330382_indicesList.cs" />
+    <Compile Include="Migrations\201608241330382_indicesList.Designer.cs">
+      <DependentUpon>201608241330382_indicesList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608241419484_Prices.cs" />
+    <Compile Include="Migrations\201608241419484_Prices.Designer.cs">
+      <DependentUpon>201608241419484_Prices.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608251131163_json.cs" />
+    <Compile Include="Migrations\201608251131163_json.Designer.cs">
+      <DependentUpon>201608251131163_json.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608251342072_StockIndex.cs" />
+    <Compile Include="Migrations\201608251342072_StockIndex.Designer.cs">
+      <DependentUpon>201608251342072_StockIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608251348040_indexPrice.cs" />
+    <Compile Include="Migrations\201608251348040_indexPrice.Designer.cs">
+      <DependentUpon>201608251348040_indexPrice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608251409117_dropPriceFK.cs" />
+    <Compile Include="Migrations\201608251409117_dropPriceFK.Designer.cs">
+      <DependentUpon>201608251409117_dropPriceFK.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608261851331_shingles.cs" />
+    <Compile Include="Migrations\201608261851331_shingles.Designer.cs">
+      <DependentUpon>201608261851331_shingles.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608261853515_shinglesKey.cs" />
+    <Compile Include="Migrations\201608261853515_shinglesKey.Designer.cs">
+      <DependentUpon>201608261853515_shinglesKey.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608261924544_shingleUseCount.cs" />
+    <Compile Include="Migrations\201608261924544_shingleUseCount.Designer.cs">
+      <DependentUpon>201608261924544_shingleUseCount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608261947518_shingleLang.cs" />
+    <Compile Include="Migrations\201608261947518_shingleLang.Designer.cs">
+      <DependentUpon>201608261947518_shingleLang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608271815134_sh.cs" />
+    <Compile Include="Migrations\201608271815134_sh.Designer.cs">
+      <DependentUpon>201608271815134_sh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608281045525_shingles2state.cs" />
+    <Compile Include="Migrations\201608281045525_shingles2state.Designer.cs">
+      <DependentUpon>201608281045525_shingles2state.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608281533589_EAIndex.cs" />
+    <Compile Include="Migrations\201608281533589_EAIndex.Designer.cs">
+      <DependentUpon>201608281533589_EAIndex.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608282019142_EAHash.cs" />
+    <Compile Include="Migrations\201608282019142_EAHash.Designer.cs">
+      <DependentUpon>201608282019142_EAHash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608282114364_hash64.cs" />
+    <Compile Include="Migrations\201608282114364_hash64.Designer.cs">
+      <DependentUpon>201608282114364_hash64.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608290732567_removeArticlesTable.cs" />
+    <Compile Include="Migrations\201608290732567_removeArticlesTable.Designer.cs">
+      <DependentUpon>201608290732567_removeArticlesTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608290835304_shingleID.cs" />
+    <Compile Include="Migrations\201608290835304_shingleID.Designer.cs">
+      <DependentUpon>201608290835304_shingleID.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608290837138_eaDropHash64.cs" />
+    <Compile Include="Migrations\201608290837138_eaDropHash64.Designer.cs">
+      <DependentUpon>201608290837138_eaDropHash64.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608291104368_shIndexes.cs" />
+    <Compile Include="Migrations\201608291104368_shIndexes.Designer.cs">
+      <DependentUpon>201608291104368_shIndexes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608300755295_tableRename.cs" />
+    <Compile Include="Migrations\201608300755295_tableRename.Designer.cs">
+      <DependentUpon>201608300755295_tableRename.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608301844013_indexComponent.cs" />
+    <Compile Include="Migrations\201608301844013_indexComponent.Designer.cs">
+      <DependentUpon>201608301844013_indexComponent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609011259409_rssServer.cs" />
+    <Compile Include="Migrations\201609011259409_rssServer.Designer.cs">
+      <DependentUpon>201609011259409_rssServer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609020621477_nextRun.cs" />
+    <Compile Include="Migrations\201609020621477_nextRun.Designer.cs">
+      <DependentUpon>201609020621477_nextRun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021008105_NrOfErrors.cs" />
+    <Compile Include="Migrations\201609021008105_NrOfErrors.Designer.cs">
+      <DependentUpon>201609021008105_NrOfErrors.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021221443_Success.cs" />
+    <Compile Include="Migrations\201609021221443_Success.Designer.cs">
+      <DependentUpon>201609021221443_Success.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609021537307_HomeRun.cs" />
+    <Compile Include="Migrations\201609021537307_HomeRun.Designer.cs">
+      <DependentUpon>201609021537307_HomeRun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609051305076_feedAffected.cs" />
+    <Compile Include="Migrations\201609051305076_feedAffected.Designer.cs">
+      <DependentUpon>201609051305076_feedAffected.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609051552136_priceSmallmoney.cs" />
+    <Compile Include="Migrations\201609051552136_priceSmallmoney.Designer.cs">
+      <DependentUpon>201609051552136_priceSmallmoney.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609051623424_varchar.cs" />
+    <Compile Include="Migrations\201609051623424_varchar.Designer.cs">
+      <DependentUpon>201609051623424_varchar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609060807260_tPriceAction.cs" />
+    <Compile Include="Migrations\201609060807260_tPriceAction.Designer.cs">
+      <DependentUpon>201609060807260_tPriceAction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609120815003_price.cs" />
+    <Compile Include="Migrations\201609120815003_price.Designer.cs">
+      <DependentUpon>201609120815003_price.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609121649332_compressedJson.cs" />
+    <Compile Include="Migrations\201609121649332_compressedJson.Designer.cs">
+      <DependentUpon>201609121649332_compressedJson.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609121718267_deleteUncompressed.cs" />
+    <Compile Include="Migrations\201609121718267_deleteUncompressed.Designer.cs">
+      <DependentUpon>201609121718267_deleteUncompressed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609220742119_shingleaction.cs" />
+    <Compile Include="Migrations\201609220742119_shingleaction.Designer.cs">
+      <DependentUpon>201609220742119_shingleaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609241928491_lastPriceUpdate.cs" />
+    <Compile Include="Migrations\201609241928491_lastPriceUpdate.Designer.cs">
+      <DependentUpon>201609241928491_lastPriceUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609271322039_lastRecomputeDate.cs" />
+    <Compile Include="Migrations\201609271322039_lastRecomputeDate.Designer.cs">
+      <DependentUpon>201609271322039_lastRecomputeDate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609281140337_CompanyIndexing.cs" />
+    <Compile Include="Migrations\201609281140337_CompanyIndexing.Designer.cs">
+      <DependentUpon>201609281140337_CompanyIndexing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609301953033_indexShingleText.cs" />
+    <Compile Include="Migrations\201609301953033_indexShingleText.Designer.cs">
+      <DependentUpon>201609301953033_indexShingleText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610041110297_removeArticleHash.cs" />
+    <Compile Include="Migrations\201610041110297_removeArticleHash.Designer.cs">
+      <DependentUpon>201610041110297_removeArticleHash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610041811565_removeShingleHash.cs" />
+    <Compile Include="Migrations\201610041811565_removeShingleHash.Designer.cs">
+      <DependentUpon>201610041811565_removeShingleHash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610051704528_indexCompanyName.cs" />
+    <Compile Include="Migrations\201610051704528_indexCompanyName.Designer.cs">
+      <DependentUpon>201610051704528_indexCompanyName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610051752281_tableCompanyNames.cs" />
+    <Compile Include="Migrations\201610051752281_tableCompanyNames.Designer.cs">
+      <DependentUpon>201610051752281_tableCompanyNames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610060952331_tableCurrencies.cs" />
+    <Compile Include="Migrations\201610060952331_tableCurrencies.Designer.cs">
+      <DependentUpon>201610060952331_tableCurrencies.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610061343148_tableCurrencies2.cs" />
+    <Compile Include="Migrations\201610061343148_tableCurrencies2.Designer.cs">
+      <DependentUpon>201610061343148_tableCurrencies2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610061816261_stockTickersTable.cs" />
+    <Compile Include="Migrations\201610061816261_stockTickersTable.Designer.cs">
+      <DependentUpon>201610061816261_stockTickersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610100846466_commonWords.cs" />
+    <Compile Include="Migrations\201610100846466_commonWords.Designer.cs">
+      <DependentUpon>201610100846466_commonWords.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611212021012_articleScore.cs" />
+    <Compile Include="Migrations\201611212021012_articleScore.Designer.cs">
+      <DependentUpon>201611212021012_articleScore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201612201900480_remove_homerun.cs" />
+    <Compile Include="Migrations\201612201900480_remove_homerun.Designer.cs">
+      <DependentUpon>201612201900480_remove_homerun.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RssLogic.cs" />
+    <Compile Include="ShingleLogic.cs" />
+    <Compile Include="SyndicationFeedXmlReader.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201608111016563_firstTables.resx">
+      <DependentUpon>201608111016563_firstTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608111825272_logs.resx">
+      <DependentUpon>201608111825272_logs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608111904267_logs2.resx">
+      <DependentUpon>201608111904267_logs2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608121617593_descriptionToFeeds.resx">
+      <DependentUpon>201608121617593_descriptionToFeeds.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608121640025_renameDescriptionToTitle.resx">
+      <DependentUpon>201608121640025_renameDescriptionToTitle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608130750171_atom.resx">
+      <DependentUpon>201608130750171_atom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608130800478_feedLanguage.resx">
+      <DependentUpon>201608130800478_feedLanguage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608130822107_feedCategories.resx">
+      <DependentUpon>201608130822107_feedCategories.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608151654413_logId.resx">
+      <DependentUpon>201608151654413_logId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608170713058_logIndex.resx">
+      <DependentUpon>201608170713058_logIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608181247500_removeAtom.resx">
+      <DependentUpon>201608181247500_removeAtom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608190648183_addSHA.resx">
+      <DependentUpon>201608190648183_addSHA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608190719433_KeySHA.resx">
+      <DependentUpon>201608190719433_KeySHA.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608221138509_extraction.resx">
+      <DependentUpon>201608221138509_extraction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608221220559_content.resx">
+      <DependentUpon>201608221220559_content.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608222004389_company.resx">
+      <DependentUpon>201608222004389_company.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608230609389_companyDetails.resx">
+      <DependentUpon>201608230609389_companyDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608230622060_securityKey.resx">
+      <DependentUpon>201608230622060_securityKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608230653354_securityDate.resx">
+      <DependentUpon>201608230653354_securityDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608230654374_sicNull.resx">
+      <DependentUpon>201608230654374_sicNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608230655457_emplyeesNull.resx">
+      <DependentUpon>201608230655457_emplyeesNull.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608241330382_indicesList.resx">
+      <DependentUpon>201608241330382_indicesList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608241419484_Prices.resx">
+      <DependentUpon>201608241419484_Prices.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608251131163_json.resx">
+      <DependentUpon>201608251131163_json.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608251342072_StockIndex.resx">
+      <DependentUpon>201608251342072_StockIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608251348040_indexPrice.resx">
+      <DependentUpon>201608251348040_indexPrice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608251409117_dropPriceFK.resx">
+      <DependentUpon>201608251409117_dropPriceFK.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608261851331_shingles.resx">
+      <DependentUpon>201608261851331_shingles.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608261853515_shinglesKey.resx">
+      <DependentUpon>201608261853515_shinglesKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608261924544_shingleUseCount.resx">
+      <DependentUpon>201608261924544_shingleUseCount.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608261947518_shingleLang.resx">
+      <DependentUpon>201608261947518_shingleLang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608271815134_sh.resx">
+      <DependentUpon>201608271815134_sh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608281045525_shingles2state.resx">
+      <DependentUpon>201608281045525_shingles2state.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608281533589_EAIndex.resx">
+      <DependentUpon>201608281533589_EAIndex.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608282019142_EAHash.resx">
+      <DependentUpon>201608282019142_EAHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608282114364_hash64.resx">
+      <DependentUpon>201608282114364_hash64.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608290732567_removeArticlesTable.resx">
+      <DependentUpon>201608290732567_removeArticlesTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608290835304_shingleID.resx">
+      <DependentUpon>201608290835304_shingleID.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608290837138_eaDropHash64.resx">
+      <DependentUpon>201608290837138_eaDropHash64.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608291104368_shIndexes.resx">
+      <DependentUpon>201608291104368_shIndexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608300755295_tableRename.resx">
+      <DependentUpon>201608300755295_tableRename.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608301844013_indexComponent.resx">
+      <DependentUpon>201608301844013_indexComponent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609011259409_rssServer.resx">
+      <DependentUpon>201609011259409_rssServer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609020621477_nextRun.resx">
+      <DependentUpon>201609020621477_nextRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021008105_NrOfErrors.resx">
+      <DependentUpon>201609021008105_NrOfErrors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021221443_Success.resx">
+      <DependentUpon>201609021221443_Success.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609021537307_HomeRun.resx">
+      <DependentUpon>201609021537307_HomeRun.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609051305076_feedAffected.resx">
+      <DependentUpon>201609051305076_feedAffected.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609051552136_priceSmallmoney.resx">
+      <DependentUpon>201609051552136_priceSmallmoney.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609051623424_varchar.resx">
+      <DependentUpon>201609051623424_varchar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609060807260_tPriceAction.resx">
+      <DependentUpon>201609060807260_tPriceAction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609120815003_price.resx">
+      <DependentUpon>201609120815003_price.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609121649332_compressedJson.resx">
+      <DependentUpon>201609121649332_compressedJson.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609121718267_deleteUncompressed.resx">
+      <DependentUpon>201609121718267_deleteUncompressed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609220742119_shingleaction.resx">
+      <DependentUpon>201609220742119_shingleaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609241928491_lastPriceUpdate.resx">
+      <DependentUpon>201609241928491_lastPriceUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609271322039_lastRecomputeDate.resx">
+      <DependentUpon>201609271322039_lastRecomputeDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609281140337_CompanyIndexing.resx">
+      <DependentUpon>201609281140337_CompanyIndexing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609301953033_indexShingleText.resx">
+      <DependentUpon>201609301953033_indexShingleText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610041110297_removeArticleHash.resx">
+      <DependentUpon>201610041110297_removeArticleHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610041811565_removeShingleHash.resx">
+      <DependentUpon>201610041811565_removeShingleHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610051704528_indexCompanyName.resx">
+      <DependentUpon>201610051704528_indexCompanyName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610051752281_tableCompanyNames.resx">
+      <DependentUpon>201610051752281_tableCompanyNames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610060952331_tableCurrencies.resx">
+      <DependentUpon>201610060952331_tableCurrencies.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610061343148_tableCurrencies2.resx">
+      <DependentUpon>201610061343148_tableCurrencies2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610061816261_stockTickersTable.resx">
+      <DependentUpon>201610061816261_stockTickersTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610100846466_commonWords.resx">
+      <DependentUpon>201610100846466_commonWords.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611212021012_articleScore.resx">
+      <DependentUpon>201611212021012_articleScore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201612201900480_remove_homerun.resx">
+      <DependentUpon>201612201900480_remove_homerun.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="feeds.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="notes.Designer.sql" />
+    <Content Include="notes.sql">
+      <SubType>Component</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
