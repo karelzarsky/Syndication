@@ -1,23 +1,27 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Linq;
 using System.ServiceProcess;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
+using IntrinioConsole;
 
-// instalace:
-// c:\windows\microsoft.net\framework\v4.0.30319\installutil.exe c:\GIT\trade\SyndicateService\SyndicateService\bin\Debug\SyndicateService.exe 
-//
-
-namespace SyndicateService
+namespace IntrinioService
 {
-    public partial class Service : ServiceBase
+    public partial class IntrinioService : ServiceBase
     {
-        public Service()
+        public IntrinioService()
         {
             using (Process p = Process.GetCurrentProcess())
                 p.PriorityClass = ProcessPriorityClass.Idle;
             InitializeComponent();
-            DataLayer.LogMessage(LogLevel.Service, $"Service start.");
+            DataLayer.LogMessage(LogLevel.Service, $"Intrinio service start.");
         }
 
         private Thread _thread;
@@ -29,13 +33,8 @@ namespace SyndicateService
         {
             // Configure the timer.
             _scheduleTimer.AutoReset = false;
-            _scheduleTimer.Interval = 5000; // in milliseconds
+            _scheduleTimer.Interval = 900000; // in milliseconds
             _scheduleTimer.Elapsed += delegate { _scheduleEvent.Set(); };
-            RssLogic.UpdateServerConnection();
-            using (var ctx = new Db())
-            {
-                RssLogic.AddNewFeedsFromResource(ctx);
-            }
             // Create the thread using anonymous method.
             _thread = new Thread(delegate ()
             {
@@ -87,18 +86,11 @@ namespace SyndicateService
             //DataLayer.LogMessage(LogLevel.Info, "New run scheduled.");
             using (var context = new Db())
             {
-                Feed f = RssLogic.GetNextFeed(context);
-                if (f != null)
-                {
-                    DataLayer.LogMessage(LogLevel.Info, $"N Next feed {f.ID} {f.Url}");
-                    RssLogic.ProcessFeed(f, context);
-                    //DataLayer.LogMessage(LogLevel.Info, $"Completed feed {f.ID} {f.Url}");
-                    context.SaveChanges();
-                }
-                else
-                {
-                    //DataLayer.LogMessage(LogLevel.Info, "No feed waiting for download.");
-                }
+                var ctx = new Db();
+                var instrument = ctx.Instruments.OrderBy(x => x.LastPriceUpdate).FirstOrDefault();
+                instrument.LastPriceUpdate = DateTime.Now;
+                ctx.SaveChanges();
+                Intrinio.UpdatePricesForTicker(instrument.Ticker);
             }
             _scheduleTimer.Start();
         }

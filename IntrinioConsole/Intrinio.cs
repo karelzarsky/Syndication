@@ -11,7 +11,7 @@ using SyndicateLogic.Entities;
 
 namespace IntrinioConsole
 {
-    class Intrinio
+    public class Intrinio
     {
         static void Main(string[] args)
         {
@@ -54,10 +54,10 @@ namespace IntrinioConsole
             var ctx = new Db();
             foreach (var instrument in ctx.Instruments.OrderBy(x => x.LastPriceUpdate).ToArray())
             {
-                instrument.LastPriceUpdate = DateTime.Now;;
+                instrument.LastPriceUpdate = DateTime.Now;
                 ctx.SaveChanges();
                 UpdatePricesForTicker(instrument.Ticker);
-                Thread.Sleep(192000);
+                Thread.Sleep(864000);
             }
         }
 
@@ -159,7 +159,7 @@ namespace IntrinioConsole
             foreach (var company in ctx.Companies.Where(c => !ctx.CompanyDetails.Select(d => d.ticker).Contains(c.ticker)))
             {
                 GetCompanyDetail(company.ticker);
-                Thread.Sleep(120000);
+                Thread.Sleep(1200);
             }
         }
 
@@ -196,6 +196,14 @@ namespace IntrinioConsole
                 return;
             }
             ctx.CompanyDetails.AddOrUpdate(detail);
+            try
+            {
+                ctx.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                DataLayer.LogException(e);
+            }
             if (detail.securities != null)
                 foreach (var security in detail.securities)
                 {
@@ -221,9 +229,21 @@ namespace IntrinioConsole
             {
                 ctx.Companies.AddOrUpdate(company);
                 Console.WriteLine($"{company.name}");
-                ctx.SaveChanges();
             }
+            ctx.SaveChanges();
+            int pages = resp.total_pages;
             DataLayer.LogMessage(LogLevel.Intrinio, string.Format($"Intinio call credits: {resp.api_call_credits}, pages: {resp.total_pages}"));
+            for (int i = 2; i <= pages; i++)
+            {
+                resp = download_serialized_json_data<CompaniesResponse>($"https://api.intrinio.com/companies?page_number={i}");
+                foreach (Company company in resp.data)
+                {
+                    ctx.Companies.AddOrUpdate(company);
+                    Console.WriteLine($"{company.name}");
+                }
+                ctx.SaveChanges();
+                DataLayer.LogMessage(LogLevel.Intrinio, string.Format($"Intinio call credits: {resp.api_call_credits}, page: {i}"));
+            }
         }
 
         public static void UpdatePricesForTicker(string ticker)

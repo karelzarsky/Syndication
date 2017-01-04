@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E7A7A6AE-7301-47FB-B5CA-52DA06324AE9}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{8F97047A-4632-43D2-BE6C-D79A8E7B94A1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ShingelAnalyze</RootNamespace>
-    <AssemblyName>ShingelAnalyze</AssemblyName>
+    <RootNamespace>IntrinioService</RootNamespace>
+    <AssemblyName>IntrinioService</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>..\bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -43,16 +43,31 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ShingleAnalyze.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntrinioService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="IntrinioService.Designer.cs">
+      <DependentUpon>IntrinioService.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -60,8 +75,17 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\IntrinioConsole\IntrinioConsole.csproj">
+      <Project>{c8985916-f639-4063-8776-5e62b5e243df}</Project>
+      <Name>IntrinioConsole</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SyndicateLogic\SyndicateLogic.csproj">
-      <Project>{6C9939FC-0B11-4B0B-B244-1EC07AA4940D}</Project>
+      <Project>{6c9939fc-0b11-4b0b-b244-1ec07aa4940d}</Project>
       <Name>SyndicateLogic</Name>
     </ProjectReference>
   </ItemGroup>
