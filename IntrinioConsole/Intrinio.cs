@@ -130,7 +130,7 @@ namespace IntrinioConsole
             {
                 DataLayer.LogMessage(LogLevel.Intrinio, e.Message);
                 DataLayer.LogException(e);
-                Environment.Exit(0);
+                //Environment.Exit(0);
             }
             catch (Exception e)
             {
@@ -251,7 +251,7 @@ namespace IntrinioConsole
             var ctx = new Db();
             if (!ctx.Companies.Any(x => x.ticker == ticker))
             {
-                DataLayer.LogMessage(LogLevel.Error, $"Ticker {ticker} unknown to Intrinio.");
+                DataLayer.LogMessage(LogLevel.Error, $"I Ticker {ticker} unknown to Intrinio.");
                 return;
             }
             //if (ctx.Prices.Any(x => x.ticker == ticker))
@@ -259,6 +259,7 @@ namespace IntrinioConsole
             //    Console.WriteLine($"Prices for {ticker} already in DB.");
             //    return;
             //}
+            DataLayer.LogMessage(LogLevel.Intrinio, $"I Downloading prices for {ticker}.");
             DateTime last = DateTime.MinValue;
             var firstDate = ctx.Prices.Where(x => x.ticker == ticker).OrderByDescending(x => x.date).FirstOrDefault();
             if (firstDate != null)
@@ -275,7 +276,7 @@ namespace IntrinioConsole
                     ctx.SaveChanges();
                 }
                 ctx.SaveChanges();
-                DataLayer.LogMessage(LogLevel.Intrinio, $"Prices {ticker} latest: {last:dd. MM. yyyy}");
+                DataLayer.LogMessage(LogLevel.Intrinio, $"I Prices {ticker} latest: {last:dd. MM. yyyy}");
                 //DataLayer.LogMessage(LogLevel.Intrinio, $"Intrinio call credits: {resp.api_call_credits}, pages: {resp.total_pages}");
             }
             catch (Exception e)

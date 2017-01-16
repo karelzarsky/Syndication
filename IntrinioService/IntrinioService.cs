@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using SyndicateLogic;
-using SyndicateLogic.Entities;
 using IntrinioConsole;
 
 namespace IntrinioService
@@ -21,7 +16,7 @@ namespace IntrinioService
             using (Process p = Process.GetCurrentProcess())
                 p.PriorityClass = ProcessPriorityClass.Idle;
             InitializeComponent();
-            DataLayer.LogMessage(LogLevel.Service, $"Intrinio service start.");
+            DataLayer.LogMessage(LogLevel.Service, $"I Intrinio service start.");
         }
 
         private Thread _thread;
@@ -31,10 +26,12 @@ namespace IntrinioService
 
         protected override void OnStart(string[] args)
         {
+            // DataLayer.LogMessage(LogLevel.Service, $"On start.");
             // Configure the timer.
             _scheduleTimer.AutoReset = false;
-            _scheduleTimer.Interval = 900000; // in milliseconds
+            _scheduleTimer.Interval = 24000 * 3600 / 450; // in milliseconds
             _scheduleTimer.Elapsed += delegate { _scheduleEvent.Set(); };
+            PerformScheduledWork(null);
             // Create the thread using anonymous method.
             _thread = new Thread(delegate ()
             {
@@ -66,7 +63,7 @@ namespace IntrinioService
 
         protected override void OnStop()
         {
-            DataLayer.LogMessage(LogLevel.Service, "Service stop.");
+            DataLayer.LogMessage(LogLevel.Service, "I Service stop.");
             // Signal the thread to shutdown.
             _shutdownEvent.Set();
             // Give the thread 10 seconds to terminate.
@@ -84,13 +81,20 @@ namespace IntrinioService
             // Reschedule the work to be performed.
 
             //DataLayer.LogMessage(LogLevel.Info, "New run scheduled.");
-            using (var context = new Db())
+            try
             {
-                var ctx = new Db();
-                var instrument = ctx.Instruments.OrderBy(x => x.LastPriceUpdate).FirstOrDefault();
-                instrument.LastPriceUpdate = DateTime.Now;
-                ctx.SaveChanges();
-                Intrinio.UpdatePricesForTicker(instrument.Ticker);
+                using (var context = new Db())
+                {
+                    var ctx = new Db();
+                    var instrument = ctx.Instruments.OrderBy(x => x.LastPriceUpdate).FirstOrDefault();
+                    instrument.LastPriceUpdate = DateTime.Now;
+                    ctx.SaveChanges();
+                    Intrinio.UpdatePricesForTicker(instrument.Ticker);
+                }
+            }
+            catch (Exception e)
+            {
+                DataLayer.LogException(e);
             }
             _scheduleTimer.Start();
         }

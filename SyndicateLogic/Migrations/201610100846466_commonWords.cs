@@ -1,8 +1,7 @@
 namespace SyndicateLogic.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class commonWords : DbMigration
     {
         public override void Up()
