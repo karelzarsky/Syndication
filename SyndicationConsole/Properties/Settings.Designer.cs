@@ -23,15 +23,75 @@ namespace SyndicationConsole.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("\n        <ConnectionString>Initial Catalog=Syndication;User ID=sa;Data Source=loc" +
-            "alhost\\MSSQL2014;Password=Oskar123;Persist Security Info=True;</ConnectionString" +
-            ">\n        </SerializableConnectionString>\n      ")]
-        public string SyndicateDb {
+        [global::System.Configuration.DefaultSettingValueAttribute("karel.zarsky@gmail.com")]
+        public string fromAddress {
             get {
-                return ((string)(this["SyndicateDb"]));
+                return ((string)(this["fromAddress"]));
+            }
+            set {
+                this["fromAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("karel.zarsky@gmail.com")]
+        public string toAddress {
+            get {
+                return ((string)(this["toAddress"]));
+            }
+            set {
+                this["toAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("smtp.gmail.com")]
+        public string smtpHost {
+            get {
+                return ((string)(this["smtpHost"]));
+            }
+            set {
+                this["smtpHost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("false")]
+        public string UseDefaultSMTPCredentials {
+            get {
+                return ((string)(this["UseDefaultSMTPCredentials"]));
+            }
+            set {
+                this["UseDefaultSMTPCredentials"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("karel.zarsky@gmail.com")]
+        public string smtpLogin {
+            get {
+                return ((string)(this["smtpLogin"]));
+            }
+            set {
+                this["smtpLogin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("ELGSilic")]
+        public string smtpPassword {
+            get {
+                return ((string)(this["smtpPassword"]));
+            }
+            set {
+                this["smtpPassword"] = value;
             }
         }
     }

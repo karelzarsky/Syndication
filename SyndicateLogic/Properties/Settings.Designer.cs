@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SyndicateService.Properties {
+namespace SyndicateLogic.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -20,16 +20,6 @@ namespace SyndicateService.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Initial Catalog=Team;User ID=sa;Data Source=wnrsbuild01.wn-cz.local;Password=Oska" +
-            "r123;Persist Security Info=True;")]
-        public string connectionString {
-            get {
-                return ((string)(this["connectionString"]));
             }
         }
         
@@ -54,6 +44,30 @@ namespace SyndicateService.Properties {
             }
             set {
                 this["toAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("smtp.gmail.com")]
+        public string smtpHost {
+            get {
+                return ((string)(this["smtpHost"]));
+            }
+            set {
+                this["smtpHost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("true")]
+        public string UseDefaultSMTPCredentials {
+            get {
+                return ((string)(this["UseDefaultSMTPCredentials"]));
+            }
+            set {
+                this["UseDefaultSMTPCredentials"] = value;
             }
         }
         

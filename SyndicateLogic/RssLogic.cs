@@ -5,15 +5,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.ServiceModel.Syndication;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using SyndicateLogic.Entities;
-using System.Net.Mail;
-using static System.Configuration.ConfigurationManager;
+using static SyndicateLogic.Properties.Settings;
 
 namespace SyndicateLogic
 {
@@ -26,8 +25,8 @@ namespace SyndicateLogic
         private static int minTickers = 10;
         private static decimal lowScore = -0.4m;
         private static decimal highScore = 0.1m;
-        private static decimal minPositiveScore = 1m;
-        private static decimal minNegativeScore = -0.35m;
+        private static decimal minPositiveScore = 0.6m;
+        private static decimal minNegativeScore = 0.0m;
 
         public static void FindInstruments(int ArticleID)
         {
@@ -270,62 +269,42 @@ namespace SyndicateLogic
             {
                 if (score[i] > highScore || score[i] < lowScore)
                 {
-                    DataLayer.LogMessage(LogLevel.Analysis, $"O {ea.ID} {i} {score[i]}");
                     context.ArticleScores.AddOrUpdate(new ArticleScore() { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
                 }
             }
             context.SaveChanges();
+            DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}-{score.Max()}");
         }
 
         private static void Alert(Article ea, decimal[] score)
         {
             var ctx = new Db();
-            var n = ctx.ArticleRelations.Where(x => x.ArticleID == ea.ID).ToArray();
-            if (n.Length != 1) return;
+            var instruments = ctx.ArticleRelations.Where(x => x.ArticleID == ea.ID).Select(x => x.Instrument).ToArray();
+            if (instruments.Length != 1) return;
+            string subject = $"Stock alert {instruments[0].Ticker} {score.Min()}-{score.Max()}";
+            string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Title + "\r\n" + ea.Summary;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            SendMail(subject, body);
 
         }
 
-        private static void SendMail(StringBuilder body)
+        private static void SendMail(string subject, string body)
         {
-            var msg = new MailMessage
+            var smtp = new SmtpClient
             {
-                From = new MailAddress(AppSettings["fromAddress"]),
-                Subject = AppSettings["subject"],
-                Body = body.ToString(),
-                IsBodyHtml = true
-            };
-            if (AppSettings["toAddress"] != null)
-                msg.To.Add(AppSettings["toAddress"]);
-            if (AppSettings["toAddress2"] != null)
-                msg.To.Add(AppSettings["toAddress2"]);
-            var client = new SmtpClient
-            {
-                Host = AppSettings["smtpHost"],
-                Port = 25,
-                EnableSsl = false,
-                UseDefaultCredentials = AppSettings["UseDefaultSMTPCredentials"] == "true",
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                Credentials = new NetworkCredential(AppSettings["smtpLogin"],
-                AppSettings["smtpPassword"])
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(Default.smtpLogin, Default.smtpPassword)
             };
-            client.Send(msg);
+            using (var message = new MailMessage(Default.fromAddress, Default.toAddress)
+            {
+                Subject = subject,
+                Body = body
+            })
+            smtp.Send(message);
         }
 
         public static string FindDifference(string s1, string s2)
