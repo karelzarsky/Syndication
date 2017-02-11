@@ -25,6 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyndicateProcessing", "Synd
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntrinioService", "IntrinioService\IntrinioService.csproj", "{8F97047A-4632-43D2-BE6C-D79A8E7B94A1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "xAPITest", "xAPITest\xAPITest.csproj", "{3F0B8C9E-EBFD-4A27-8080-D60418449217}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyncAPIConnect", "XTBSyncAPIConnector\SyncAPIConnect.csproj", "{E6BC484B-A042-4CA6-9079-E91136D92207}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +79,14 @@ Global
 		{8F97047A-4632-43D2-BE6C-D79A8E7B94A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F97047A-4632-43D2-BE6C-D79A8E7B94A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F97047A-4632-43D2-BE6C-D79A8E7B94A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F0B8C9E-EBFD-4A27-8080-D60418449217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F0B8C9E-EBFD-4A27-8080-D60418449217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F0B8C9E-EBFD-4A27-8080-D60418449217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F0B8C9E-EBFD-4A27-8080-D60418449217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E6BC484B-A042-4CA6-9079-E91136D92207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E6BC484B-A042-4CA6-9079-E91136D92207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E6BC484B-A042-4CA6-9079-E91136D92207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E6BC484B-A042-4CA6-9079-E91136D92207}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
