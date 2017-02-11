@@ -266,7 +266,7 @@ namespace IntrinioConsole
             {
                 last = firstDate.date;
             }
-            var resp = download_serialized_json_data<PricesResponse>("https://api.intrinio.com/prices?ticker=" + ticker + "&start_date=2014-01-01");
+            var resp = download_serialized_json_data<PricesResponse>("https://api.intrinio.com/prices?ticker=" + ticker + "&start_date=2015-01-01");
             try
             {
                 foreach (Price p in resp.data)

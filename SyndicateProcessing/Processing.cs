@@ -76,23 +76,33 @@ namespace SyndicateProcessing
             //
             // Reschedule the work to be performed.
 
-            using (var ctx = new Db())
+            try
             {
-                ctx.Database.CommandTimeout = 120;
-                if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
+                using (var ctx = new Db())
                 {
-                    ShinglesToProcess = ShingleLogic.GetNextShingleList(ctx);
-                }
-                if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
-                    Thread.Sleep(20000);
-                else
-                {
-                    int next = ShinglesToProcess.First();
-                    ShingleLogic.AnalyzeShingle(next);
-                    ShinglesToProcess.Remove(next);
+                    ctx.Database.CommandTimeout = 120;
+                    if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
+                    {
+                        ShinglesToProcess = ShingleLogic.GetNextShingleList(ctx);
+                    }
+                    if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
+                        Thread.Sleep(20000);
+                    else
+                    {
+                        int next = ShinglesToProcess.First();
+                        ShingleLogic.AnalyzeShingle(next);
+                        ShinglesToProcess.Remove(next);
+                    }
                 }
             }
-            _scheduleTimer.Start();
+            catch (System.Exception e)
+            {
+                DataLayer.LogException(e);
+            }
+            finally
+            {
+                _scheduleTimer.Start();
+            }
         }
     }
 }

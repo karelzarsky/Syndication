@@ -357,9 +357,11 @@ namespace SyndicateLogic.Entities
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ID { get; set; }
         [Index, ForeignKey("Article")]
+        [Index("IX_ArticleAndInstrument", 1, IsUnique = true)]
         public int ArticleID { get; set; }
         public virtual Article Article { get; set; }
         [Index, ForeignKey("Instrument")]
+        [Index("IX_ArticleAndInstrument", 2, IsUnique = true)]
         public int InstrumentID { get; set; }
         public virtual Instrument Instrument { get; set; }
     }

@@ -15,9 +15,9 @@ namespace SyndicateService
         public Service()
         {
             using (Process p = Process.GetCurrentProcess())
-                p.PriorityClass = ProcessPriorityClass.Idle;
+                p.PriorityClass = ProcessPriorityClass.BelowNormal;
             InitializeComponent();
-            DataLayer.LogMessage(LogLevel.Service, $"Service start.");
+            DataLayer.LogMessage(LogLevel.Service, $"Syndication service start.");
         }
 
         private Thread _thread;

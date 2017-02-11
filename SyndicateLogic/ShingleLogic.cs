@@ -529,16 +529,17 @@ WHERE s.kind in (6,7) GROUP BY s.ID, s.LastRecomputeDate HAVING COUNT(1)>10 ORDE
                     continue;
 
                 const string countPrices =
-                    @"DECLARE @openPrice SMALLMONEY = (SELECT adj_open FROM int.prices WITH (NOLOCK) WHERE ticker = @ticker AND date = @date)
-SELECT i interval,
+@"DECLARE @openPrice SMALLMONEY = (SELECT adj_open FROM int.prices WITH (NOLOCK) WHERE ticker = @ticker AND date = @date)
+IF @openPrice>0
+(SELECT i interval,
 (SELECT(MIN(adj_low )/@openPrice) FROM int.Prices WITH (NOLOCK) WHERE ticker = @ticker AND date >= @date AND date < DATEADD(d, numbers1toN.i, @date)) down,
 (SELECT(MAX(adj_high)/@openPrice) FROM int.Prices WITH (NOLOCK) WHERE ticker = @ticker AND date >= @date AND date < DATEADD(d, numbers1toN.i, @date)) up
-FROM(SELECT DISTINCT i = number FROM master..[spt_values] WHERE number BETWEEN 1 AND @maxInterval) numbers1toN";
+FROM(SELECT DISTINCT i = number FROM master..[spt_values] WHERE number BETWEEN 1 AND @maxInterval) numbers1toN)";
 
                 var seznam = ctx.Database.SqlQuery<tickerAction>(countPrices,
                     new SqlParameter("@ticker", articleRelation.Instrument.Ticker),
                     new SqlParameter("@maxInterval", maxInterval),
-                    new SqlParameter("@date", a.PublishedUTC.Date)).ToArray();
+                    new SqlParameter("@date", a.PublishedUTC.Date)).ToList();
                 foreach (var act in seznam)
                 {
                     act.ticker = articleRelation.Instrument.Ticker;

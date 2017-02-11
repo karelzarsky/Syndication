@@ -7,10 +7,13 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.ServiceModel.Syndication;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Xml;
 using SyndicateLogic.Entities;
+using System.Net.Mail;
+using static System.Configuration.ConfigurationManager;
 
 namespace SyndicateLogic
 {
@@ -23,6 +26,8 @@ namespace SyndicateLogic
         private static int minTickers = 10;
         private static decimal lowScore = -0.4m;
         private static decimal highScore = 0.1m;
+        private static decimal minPositiveScore = 1m;
+        private static decimal minNegativeScore = -0.35m;
 
         public static void FindInstruments(int ArticleID)
         {
@@ -45,14 +50,16 @@ namespace SyndicateLogic
                 a.Summary.Contains(", " + x.Ticker + ",") ||
                 a.Summary.Contains(", " + x.Ticker + ")")
                 ).ToArray();
+            ctx.SaveChanges();
             foreach (var instrument in t)
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.WriteLine(instrument.Ticker);
                 Console.ForegroundColor = ConsoleColor.Gray;
+                if (ctx.ArticleRelations.Any(x => x.ArticleID == a.ID && x.InstrumentID == instrument.ID)) continue;
                 ctx.ArticleRelations.AddOrUpdate(new ArticleRelation { ArticleID = a.ID, InstrumentID = instrument.ID });
+                ctx.SaveChanges();
             }
-            ctx.SaveChanges();
         }
 
         public static Feed GetNextFeed(Db ctx)
@@ -189,7 +196,6 @@ namespace SyndicateLogic
             }
             catch (Exception e)
             {
-
                 f.Active = false;
                 f.RSSServer.Errors++;
                 f.Title = e.Message;
@@ -256,6 +262,10 @@ namespace SyndicateLogic
                     score[a.interval] += (decimal)a.down + (decimal)a.up - 2;
                 }
             }
+
+            if (score.Any(x => x > minPositiveScore || x < minNegativeScore))
+                Alert(ea, score);
+
             for (byte i = 0; i < ShingleLogic.maxInterval; i++)
             {
                 if (score[i] > highScore || score[i] < lowScore)
@@ -265,6 +275,57 @@ namespace SyndicateLogic
                 }
             }
             context.SaveChanges();
+        }
+
+        private static void Alert(Article ea, decimal[] score)
+        {
+            var ctx = new Db();
+            var n = ctx.ArticleRelations.Where(x => x.ArticleID == ea.ID).ToArray();
+            if (n.Length != 1) return;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }
+
+        private static void SendMail(StringBuilder body)
+        {
+            var msg = new MailMessage
+            {
+                From = new MailAddress(AppSettings["fromAddress"]),
+                Subject = AppSettings["subject"],
+                Body = body.ToString(),
+                IsBodyHtml = true
+            };
+            if (AppSettings["toAddress"] != null)
+                msg.To.Add(AppSettings["toAddress"]);
+            if (AppSettings["toAddress2"] != null)
+                msg.To.Add(AppSettings["toAddress2"]);
+            var client = new SmtpClient
+            {
+                Host = AppSettings["smtpHost"],
+                Port = 25,
+                EnableSsl = false,
+                UseDefaultCredentials = AppSettings["UseDefaultSMTPCredentials"] == "true",
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Credentials = new NetworkCredential(AppSettings["smtpLogin"],
+                AppSettings["smtpPassword"])
+            };
+            client.Send(msg);
         }
 
         public static string FindDifference(string s1, string s2)

@@ -112,7 +112,7 @@ select kind, count(1)
 from rss.shingles
 group by kind
 order by kind
-
+ 
 select count (1) from fact.shingleAction where interval = 2
 select * from rss.Shingles where kind = 7 and LastRecomputeDate is null
 
