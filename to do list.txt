@@ -1,8 +1,12 @@
-separate services:
- 1) downloading rss + assesing signals
- 2) articles processing, prices processing
+html emails
 
-price calculation in SQL
+strategy tester
+
+automated trading
+
+optimize strategy (SL, TP, time)
+
+analysis graphs
 
 count actions only for articles referencing single instrument
 
@@ -10,10 +14,10 @@ country detection
 
 futures detection
 
-articles assesing
-
-automatic price updates
-
 number of tickers and samples from shingle action to shingles
 
-article title and text to one column
+shingle action forex
+
+shingle action futures
+
+update only used prices

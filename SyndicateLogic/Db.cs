@@ -39,6 +39,7 @@ namespace SyndicateLogic
         public DbSet<StockTicker> StockTickers { get; set; }
         public DbSet<CommonWord> CommonWords { get; set; }
         public DbSet<ArticleScore> ArticleScores { get; set; }
+        public DbSet<Alert> Alerts { get; set; }
 
         public static string ReadConnectionString(string key)
         {

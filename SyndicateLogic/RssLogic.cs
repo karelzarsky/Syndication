@@ -25,8 +25,8 @@ namespace SyndicateLogic
         private static int minTickers = 10;
         private static decimal lowScore = -0.4m;
         private static decimal highScore = 0.1m;
-        private static decimal minPositiveScore = 0.6m;
-        private static decimal minNegativeScore = 0.0m;
+        private static decimal minPositiveScoreAlert = 0.6m;
+        private static decimal minNegativeScoreAlert = -0.2m;
 
         public static void FindInstruments(int ArticleID)
         {
@@ -63,6 +63,14 @@ namespace SyndicateLogic
 
         public static Feed GetNextFeed(Db ctx)
         {
+            DateTime retryTime = DateTime.Now.AddDays(-3);
+            foreach (var feed in ctx.Feeds.Where(x => x.Active == false && x.LastCheck < retryTime))
+            {
+                feed.Active = true;
+                ctx.SaveChanges();
+                DataLayer.LogMessage(LogLevel.InvalidFeed, $"R restarting feed {feed.ID} {feed.Url}");
+            }
+
             return ctx.Feeds.Include("RSSServer")
                 .Where(x => x.Active && (x.RSSServer.NextRun == null || x.RSSServer.NextRun < DateTime.Now))
                 .OrderBy(x => x.LastCheck)
@@ -156,13 +164,15 @@ namespace SyndicateLogic
             catch (Exception e)
             {
                 f.Active = false;
-                f.Title = e.Message;
+                f.LastError = DateTime.Now;
+                f.ErrorMessage = e.Message;
                 if (e.InnerException != null)
                 {
                     f.Title += " " + e.InnerException.Message;
                     if (e.InnerException.InnerException != null)
                         f.Title += " " + e.InnerException.InnerException.Message;
                 }
+                context.SaveChanges();
                 DataLayer.LogMessage(LogLevel.InvalidFeed, "ERROR parsing sFeed " + f.ID + " " + f.Title);
             }
             return 0;
@@ -230,7 +240,7 @@ namespace SyndicateLogic
                 return false;
             ea.ReceivedUTC = DateTime.Now.ToUniversalTime();
             ea.FeedID = f.ID;
-            ea.PublishedUTC = item.PublishDate.UtcDateTime;
+            ea.PublishedUTC = item.PublishDate.UtcDateTime == DateTime.MinValue ? DateTime.Now : item.PublishDate.UtcDateTime;
             foreach (var c in item.Categories)
             {
                 if (ea.Categories == null)
@@ -262,18 +272,17 @@ namespace SyndicateLogic
                 }
             }
 
-            if (score.Any(x => x > minPositiveScore || x < minNegativeScore))
                 Alert(ea, score);
 
             for (byte i = 0; i < ShingleLogic.maxInterval; i++)
             {
-                if (score[i] > highScore || score[i] < lowScore)
+                // if (score[i] > highScore || score[i] < lowScore)
                 {
                     context.ArticleScores.AddOrUpdate(new ArticleScore() { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
                 }
             }
             context.SaveChanges();
-            DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}-{score.Max()}");
+            DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}/{score.Max()}");
         }
 
         private static void Alert(Article ea, decimal[] score)
@@ -281,11 +290,20 @@ namespace SyndicateLogic
             var ctx = new Db();
             var instruments = ctx.ArticleRelations.Where(x => x.ArticleID == ea.ID).Select(x => x.Instrument).ToArray();
             if (instruments.Length != 1) return;
-            string subject = $"Stock alert {instruments[0].Ticker} {score.Min()}-{score.Max()}";
-            string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Title + "\r\n" + ea.Summary;
+            ctx.Alerts.Add(new Alert {
+                ArticleID = ea.ID,
+                issued = DateTime.Now,
+                scoreMax = score.Max(),
+                scoreMin = score.Min(),
+                ticker = instruments[0].Ticker});
+            ctx.SaveChanges();
+            if (score.Any(x => x > minPositiveScoreAlert || x < minNegativeScoreAlert))
+            {
+                string subject = $"Stock alert {instruments[0].Ticker} {score.Min()}-{score.Max()}";
+                string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Summary + "\r\n" + ea.Feed.Url;
+                SendMail(subject, body);
 
-            SendMail(subject, body);
-
+            }
         }
 
         private static void SendMail(string subject, string body)

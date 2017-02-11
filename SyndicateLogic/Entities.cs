@@ -128,6 +128,21 @@ namespace SyndicateLogic.Entities
         public DateTime dateComputed { get; set; }
     }
 
+    [Table("fact.alerts")]
+    public class Alert
+    {
+        [Key, Column(Order = 0, TypeName = "varchar"), Required, DatabaseGenerated(DatabaseGeneratedOption.None), MaxLength(10)]
+        public string ticker { get; set; } // Stock market ticker symbol associated with the companies common ticker securities
+        [Index]
+        [Key, Column(Order = 1), Required, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public DateTime issued { get; set; }
+        public decimal scoreMin { get; set; }
+        public decimal scoreMax { get; set; }
+        [ForeignKey("Article")]
+        public int ArticleID { get; set; }
+        public virtual Article Article { get; set; }
+    }
+
     [Table("int.companies")]
     public class Company
     {
@@ -373,10 +388,12 @@ namespace SyndicateLogic.Entities
         public int ID { get; set; }
         public DateTime? LastCheck { get; set; }
         public DateTime? LastArticleReceived { get; set; }
+        public DateTime? LastError { get; set; }
         public bool Active { get; set; }
         [Column(TypeName = "varchar")]
         public string Url { get; set; }
         public string Title { get; set; }
+        public string ErrorMessage { get; set; }
         [Column(TypeName = "varchar")]
         public string Language { get; set; }
         public string Categories { get; set; }

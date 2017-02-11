@@ -336,6 +336,14 @@
     <Compile Include="Migrations\201702111215015_uniqueIndexRelations.Designer.cs">
       <DependentUpon>201702111215015_uniqueIndexRelations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702111743517_alerts.cs" />
+    <Compile Include="Migrations\201702111743517_alerts.Designer.cs">
+      <DependentUpon>201702111743517_alerts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702111932027_feedErrors.cs" />
+    <Compile Include="Migrations\201702111932027_feedErrors.Designer.cs">
+      <DependentUpon>201702111932027_feedErrors.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -565,6 +573,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702111215015_uniqueIndexRelations.resx">
       <DependentUpon>201702111215015_uniqueIndexRelations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702111743517_alerts.resx">
+      <DependentUpon>201702111743517_alerts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702111932027_feedErrors.resx">
+      <DependentUpon>201702111932027_feedErrors.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
