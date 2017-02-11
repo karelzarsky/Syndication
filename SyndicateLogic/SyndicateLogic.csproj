@@ -344,6 +344,10 @@
     <Compile Include="Migrations\201702111932027_feedErrors.Designer.cs">
       <DependentUpon>201702111932027_feedErrors.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702112032105_articleLinks.cs" />
+    <Compile Include="Migrations\201702112032105_articleLinks.Designer.cs">
+      <DependentUpon>201702112032105_articleLinks.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -579,6 +583,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702111932027_feedErrors.resx">
       <DependentUpon>201702111932027_feedErrors.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702112032105_articleLinks.resx">
+      <DependentUpon>201702112032105_articleLinks.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

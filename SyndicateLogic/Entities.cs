@@ -358,7 +358,8 @@ namespace SyndicateLogic.Entities
         public DateTime ReceivedUTC { get; set; }
         [Index]
         public ProcessState Processed { get; set; }
-
+        public string RSS_ID { get; set; }
+        public string URI_links { get; set; }
         public int ComputeHash()
         { return Text().ToLower().GetHashCode(); }
 

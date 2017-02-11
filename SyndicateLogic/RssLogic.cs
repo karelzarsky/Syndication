@@ -206,8 +206,9 @@ namespace SyndicateLogic
             catch (Exception e)
             {
                 f.Active = false;
+                f.LastError = DateTime.Now;
                 f.RSSServer.Errors++;
-                f.Title = e.Message;
+                f.ErrorMessage = e.Message;
                 if (e.InnerException != null)
                 {
                     f.Title += " " + e.InnerException.Message;
@@ -247,6 +248,14 @@ namespace SyndicateLogic
                     ea.Categories = c.Name;
                 else
                     ea.Categories += ", " + c.Name;
+            }
+            ea.RSS_ID = item.Id;
+            foreach (var c in item.Links)
+            {
+                if (ea.URI_links == null)
+                    ea.URI_links = c.Uri.AbsoluteUri;
+                else
+                    ea.URI_links += ", " + c.Uri.AbsoluteUri;
             }
             context.Articles.AddOrUpdate(ea);
             context.SaveChanges();
@@ -300,7 +309,7 @@ namespace SyndicateLogic
             if (score.Any(x => x > minPositiveScoreAlert || x < minNegativeScoreAlert))
             {
                 string subject = $"Stock alert {instruments[0].Ticker} {score.Min()}-{score.Max()}";
-                string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Summary + "\r\n" + ea.Feed.Url;
+                string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Summary + "\r\n" + ea.RSS_ID + "\r\n" + ea.URI_links +"\r\n" + ea.Feed.Url;
                 SendMail(subject, body);
 
             }
