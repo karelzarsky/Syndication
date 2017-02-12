@@ -120,3 +120,23 @@ select * from rss.Shingles where kind = 4
 
 --ALTER TABLE int.Companies ALTER COLUMN ticker  
 --varchar(5)COLLATE Latin1_General_CI_AS NOT NULL; 
+
+-- update join with aggregate function
+update a
+set ticker = subquery.ticker
+from rss.articles a
+join ( select ArticleID, min(ticker) as ticker, count(ticker) as cnt
+		from rss.articleRelations ar
+		join app.instruments i on i.ID = ar.InstrumentID
+		group by ar.ArticleID
+		) as subquery
+ON subquery.ArticleID = a.ID and subquery.cnt = 1
+
+update a
+set ScoreMin = subquery.minS, ScoreMax = subquery.maxS
+from rss.articles a
+join ( select ArticleID, min(s.score) as minS, max(s.score) as maxS
+		from fact.articleScore s
+		group by s.ArticleID
+		) as subquery
+ON subquery.ArticleID = a.ID

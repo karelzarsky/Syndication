@@ -23,9 +23,7 @@ namespace SyndicateLogic
         public static readonly Regex _urlRegex = new Regex("\\w+:\\/{2}[\\d\\w-]+(\\.[\\d\\w-]+)*(?:(?:\\/[^\\s/]*))*", RegexOptions.Compiled);
         private static int minSamples = 30;
         private static int minTickers = 10;
-        private static decimal lowScore = -0.4m;
-        private static decimal highScore = 0.1m;
-        private static decimal minPositiveScoreAlert = 0.6m;
+        private static decimal minPositiveScoreAlert = 0.5m;
         private static decimal minNegativeScoreAlert = -0.2m;
 
         public static void FindInstruments(int ArticleID)
@@ -59,6 +57,10 @@ namespace SyndicateLogic
                 ctx.ArticleRelations.AddOrUpdate(new ArticleRelation { ArticleID = a.ID, InstrumentID = instrument.ID });
                 ctx.SaveChanges();
             }
+            var instruments = ctx.ArticleRelations.Where(x => x.ArticleID == a.ID).Select(x => x.Instrument).ToArray();
+            if (instruments.Length != 1) return;
+            a.Ticker = instruments[0].Ticker;
+            ctx.SaveChanges();
         }
 
         public static Feed GetNextFeed(Db ctx)
@@ -249,7 +251,6 @@ namespace SyndicateLogic
                 else
                     ea.Categories += ", " + c.Name;
             }
-            ea.RSS_ID = item.Id;
             foreach (var c in item.Links)
             {
                 if (ea.URI_links == null)
@@ -280,9 +281,7 @@ namespace SyndicateLogic
                     score[a.interval] += (decimal)a.down + (decimal)a.up - 2;
                 }
             }
-
-                Alert(ea, score);
-
+            Alert(ea, score);
             for (byte i = 0; i < ShingleLogic.maxInterval; i++)
             {
                 // if (score[i] > highScore || score[i] < lowScore)
@@ -290,28 +289,21 @@ namespace SyndicateLogic
                     context.ArticleScores.AddOrUpdate(new ArticleScore() { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
                 }
             }
+            ea.ScoreMin = score.Min();
+            ea.ScoreMax = score.Max();
             context.SaveChanges();
             DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}/{score.Max()}");
         }
 
         private static void Alert(Article ea, decimal[] score)
         {
+            if (ea.Ticker == null) return;
             var ctx = new Db();
-            var instruments = ctx.ArticleRelations.Where(x => x.ArticleID == ea.ID).Select(x => x.Instrument).ToArray();
-            if (instruments.Length != 1) return;
-            ctx.Alerts.Add(new Alert {
-                ArticleID = ea.ID,
-                issued = DateTime.Now,
-                scoreMax = score.Max(),
-                scoreMin = score.Min(),
-                ticker = instruments[0].Ticker});
-            ctx.SaveChanges();
-            if (score.Any(x => x > minPositiveScoreAlert || x < minNegativeScoreAlert))
+            if (ea.ScoreMax > minPositiveScoreAlert || ea.ScoreMin < minNegativeScoreAlert)
             {
-                string subject = $"Stock alert {instruments[0].Ticker} {score.Min()}-{score.Max()}";
-                string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Summary + "\r\n" + ea.RSS_ID + "\r\n" + ea.URI_links +"\r\n" + ea.Feed.Url;
+                string subject = $"Stock alert {ea.Ticker} {ea.ScoreMin}/{ea.ScoreMax}";
+                string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Summary + "\r\n" + ea.URI_links;
                 SendMail(subject, body);
-
             }
         }
 
