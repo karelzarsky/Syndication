@@ -126,6 +126,10 @@ namespace SyndicateLogic.Entities
         public decimal? score { get; set; }
         [Column(TypeName = "Date")]
         public DateTime dateComputed { get; set; }
+        [Column(TypeName = "smallmoney")]
+        public decimal? scoreDown { get; set; }
+        [Column(TypeName = "smallmoney")]
+        public decimal? scoreUp { get; set; }
     }
 
     [Table("int.companies")]
@@ -343,13 +347,17 @@ namespace SyndicateLogic.Entities
         public DateTime ReceivedUTC { get; set; }
         [Index]
         public ProcessState Processed { get; set; }
+        [Index]
+        public ProcessState ProcessedScore { get; set; }
         public string URI_links { get; set; }
         [Index, Column(TypeName = "varchar"), MaxLength(10)]
         public string Ticker { get; set; } // Stock market ticker symbol associated with the companies common ticker securities
-        [Index]
         public decimal ScoreMin { get; set; }
-        [Index]
         public decimal ScoreMax { get; set; }
+        [Index, Column(TypeName = "smallmoney")]
+        public decimal ScoreDownMin { get; set; }
+        [Index, Column(TypeName = "smallmoney")]
+        public decimal ScoreUpMax { get; set; }
 
         public int ComputeHash()
         { return Text().ToLower().GetHashCode(); }

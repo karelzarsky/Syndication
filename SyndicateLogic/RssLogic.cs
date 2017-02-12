@@ -13,6 +13,7 @@ using System.Web;
 using System.Xml;
 using SyndicateLogic.Entities;
 using static SyndicateLogic.Properties.Settings;
+using System.Collections.Generic;
 
 namespace SyndicateLogic
 {
@@ -269,9 +270,18 @@ namespace SyndicateLogic
             return true;
         }
 
-        private static void ScoreArticle(Article ea, Db context)
+        public static void ScoreArticle(Article ea, Db context)
         {
-            var score = new decimal[ShingleLogic.maxInterval+1];
+            var score = new decimal[ShingleLogic.maxInterval + 1];
+            var scoreUp = new decimal[ShingleLogic.maxInterval + 1];
+            var scoreDown = new decimal[ShingleLogic.maxInterval+1];
+            List<decimal>[] scoreDownLists = new List<decimal>[ShingleLogic.maxInterval + 1];
+            List<decimal>[] scoreUpLists = new List<decimal>[ShingleLogic.maxInterval + 1];
+            for (int i = 0; i <= ShingleLogic.maxInterval; i++)
+            {
+                scoreDownLists[i] = new List<decimal>();
+                scoreUpLists[i] = new List<decimal>();
+            }
             var shingles = context.ShingleUses.Where(x => x.ArticleID == ea.ID).ToArray();
             foreach (var shingle in shingles)
             {
@@ -279,8 +289,19 @@ namespace SyndicateLogic
                 foreach (var a in actions)
                 {
                     score[a.interval] += (decimal)a.down + (decimal)a.up - 2;
+                    if (a.down != null) scoreDownLists[a.interval].Add(a.down.Value);
+                    if (a.up != null) scoreUpLists[a.interval].Add(a.up.Value);
                 }
             }
+            ea.ScoreMin = score.Min();
+            ea.ScoreMax = score.Max();
+            for (int i = 0; i <= ShingleLogic.maxInterval; i++)
+            {
+                if (scoreDownLists[i].Count > 0) scoreDown[i] = scoreDownLists[i].Average();
+                if (scoreUpLists[i].Count > 0) scoreUp[i] = scoreUpLists[i].Average();
+            }
+            if ((scoreDown.Where(x => x != 0)).Count() > 0) ea.ScoreDownMin = (1 - scoreDown.Where(x => x!=0).Min())*100;
+            if (scoreUp.Max() != 0) ea.ScoreUpMax = (scoreUp.Max()-1)*100;
             Alert(ea, score);
             for (byte i = 0; i < ShingleLogic.maxInterval; i++)
             {
@@ -289,15 +310,13 @@ namespace SyndicateLogic
                     context.ArticleScores.AddOrUpdate(new ArticleScore() { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
                 }
             }
-            ea.ScoreMin = score.Min();
-            ea.ScoreMax = score.Max();
             context.SaveChanges();
             DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}/{score.Max()}");
         }
 
         private static void Alert(Article ea, decimal[] score)
         {
-            if (ea.Ticker == null) return;
+            if (ea.Ticker == null || ea.ReceivedUTC < DateTime.Now.AddDays(-7)) return;
             var ctx = new Db();
             if (ea.ScoreMax > minPositiveScoreAlert || ea.ScoreMin < minNegativeScoreAlert)
             {

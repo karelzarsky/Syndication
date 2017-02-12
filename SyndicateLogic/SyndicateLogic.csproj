@@ -360,6 +360,14 @@
     <Compile Include="Migrations\201702121050555_removeAlertTable.Designer.cs">
       <DependentUpon>201702121050555_removeAlertTable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702121115134_addProcessedScore.cs" />
+    <Compile Include="Migrations\201702121115134_addProcessedScore.Designer.cs">
+      <DependentUpon>201702121115134_addProcessedScore.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702121502281_articleScoreMax.cs" />
+    <Compile Include="Migrations\201702121502281_articleScoreMax.Designer.cs">
+      <DependentUpon>201702121502281_articleScoreMax.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -607,6 +615,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702121050555_removeAlertTable.resx">
       <DependentUpon>201702121050555_removeAlertTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702121115134_addProcessedScore.resx">
+      <DependentUpon>201702121115134_addProcessedScore.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702121502281_articleScoreMax.resx">
+      <DependentUpon>201702121502281_articleScoreMax.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

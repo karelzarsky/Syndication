@@ -65,10 +65,10 @@ namespace UpdateArticles
             //}
 
             Article ea;
-            while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting )) != null)
+            while ((ea = ctx.Articles.FirstOrDefault(x => x.ProcessedScore == ProcessState.Waiting )) != null)
             {
-                ShingleLogic.ProcessArticleNew(ea.ID);
-                ea.Processed = ProcessState.Done;
+                RssLogic.ScoreArticle(ea, ctx);
+                ea.ProcessedScore = ProcessState.Done;
                 ctx.SaveChanges();
                 ctx.Dispose();
                 ctx = new Db();
