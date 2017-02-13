@@ -140,3 +140,8 @@ join ( select ArticleID, min(s.score) as minS, max(s.score) as maxS
 		group by s.ArticleID
 		) as subquery
 ON subquery.ArticleID = a.ID
+
+-- truncate table with FK
+DELETE FROM rss.shingles
+DBCC CHECKIDENT ('Syndication.rss.shingles',RESEED, 0)
+

@@ -65,7 +65,7 @@ namespace UpdateArticles
             //}
 
             Article ea;
-            while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting && x.Ticker == null )) != null)
+            while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting && x.Ticker != null )) != null)
             {
                 //var sw = Stopwatch.StartNew();
                 ShingleLogic.ProcessArticleNew(ea.ID);

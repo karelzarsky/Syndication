@@ -25,7 +25,7 @@ namespace SyndicateService.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Initial Catalog=Team;User ID=sa;Data Source=wnrsbuild01.wn-cz.local;Password=Oska" +
+        [global::System.Configuration.DefaultSettingValueAttribute("Initial Catalog=Syndication;User ID=sa;Data Source=wnrsbuild01.wn-cz.local;Password=Oska" +
             "r123;Persist Security Info=True;")]
         public string connectionString {
             get {

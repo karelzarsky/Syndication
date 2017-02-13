@@ -22,7 +22,7 @@ namespace SyndicateLogic
     {
         public static readonly char[] wordDelimiters = { ' ' };
         public static readonly char[] sentenceDelimiters = { '.', '?', '!', ',', ';' };
-        public static readonly int tooCommonShingleLimit = 2000;
+        public static readonly int tooCommonShingleLimit = 1000;
         public static readonly Regex currPairRegex = new Regex("^[A-Z][A-Z][A-Z]/?[A-Z][A-Z][A-Z]$", RegexOptions.Compiled);
         public const byte maxInterval = 30;
 
@@ -39,6 +39,7 @@ namespace SyndicateLogic
         {
             using (var ctx = new Db())
             {
+                var sw = Stopwatch.StartNew();
                 var a = ctx.Articles.Include("Feed").Single(x => x.ID == ArticleID);
                 if (a.Processed != ProcessState.Waiting)
                 {
@@ -101,10 +102,18 @@ namespace SyndicateLogic
                     ctx.Dispose();
                     DataLayer.LogException(e);
                 }
+                sw.Stop();
                 if (Environment.UserInteractive)
                 {
-                    Console.WriteLine($"\r\n======================================== {a.ID} {a.Title}");
-                    Console.WriteLine($"common:{sCommon.ElapsedMilliseconds / 1000} ticker:{sTicker.ElapsedMilliseconds / 1000} Name:{sName.ElapsedMilliseconds / 1000} CEO:{sCEO.ElapsedMilliseconds / 1000} ConC:{sContainC.ElapsedMilliseconds / 1000} ConT:{sContainT.ElapsedMilliseconds / 1000} Up:{sUpper.ElapsedMilliseconds / 1000} Pair:{sPair.ElapsedMilliseconds / 1000}");
+                    Console.Write($"{a.ID} {sw.ElapsedMilliseconds}ms ");
+                    if (a.Ticker != null)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write(a.Ticker);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                    Console.WriteLine($" {a.Title}");
+                    //Console.WriteLine($"common:{sCommon.ElapsedMilliseconds / 1000} ticker:{sTicker.ElapsedMilliseconds / 1000} Name:{sName.ElapsedMilliseconds / 1000} CEO:{sCEO.ElapsedMilliseconds / 1000} ConC:{sContainC.ElapsedMilliseconds / 1000} ConT:{sContainT.ElapsedMilliseconds / 1000} Up:{sUpper.ElapsedMilliseconds / 1000} Pair:{sPair.ElapsedMilliseconds / 1000}");
                 }
             }
         }
@@ -157,8 +166,8 @@ namespace SyndicateLogic
                 ctx.ShingleUses.AddOrUpdate(new ShingleUse { ShingleID = s.ID, ArticleID = ArticleID });
             }
             ctx.SaveChanges();
-            if (Environment.UserInteractive)
-                Console.Write(s.text + "| ");
+            //if (Environment.UserInteractive)
+            //    Console.Write(s.text + "| ");
         }
 
         public static void SaveShingleUse(string text, string lang, Db ctx, int ArticleID)
