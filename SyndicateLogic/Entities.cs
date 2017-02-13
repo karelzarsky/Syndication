@@ -35,6 +35,15 @@ namespace SyndicateLogic.Entities
         public DateTime? LastPriceUpdate { get; set; }
     }
 
+    [Table("app.investorRSS")]
+    public class InvestorRSSFeed
+    {
+        [Key, Required, MaxLength(10), Column(TypeName = "varchar"), DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string Ticker { get; set; }
+        [Required, Column(TypeName = "varchar"), DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string Url { get; set; }
+    }
+
     [Table("app.instrumentIdentifiers")]
     public class InstrumentIdentifier
     {
@@ -130,6 +139,30 @@ namespace SyndicateLogic.Entities
         public decimal? scoreDown { get; set; }
         [Column(TypeName = "smallmoney")]
         public decimal? scoreUp { get; set; }
+    }
+
+    [Table("fact.predictions")]
+    public class Prediction
+    {
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        [Index]
+        public int StrategyNr { get; set; }
+        [Index]
+        public DateTime TimeOpen { get; set; }
+        public DateTime TimeClose { get; set; }
+        [Index, MaxLength(20), Column(TypeName = "varchar")]
+        public string Ticker { get; set; }
+        public bool BuySignal { get; set; }
+        public decimal Volume { get; set; }
+        public decimal OpenPrice { get; set; }
+        public decimal ClosePrice { get; set; }
+        public decimal Commision { get; set; }
+        public decimal StopLoss { get; set; }
+        public decimal TakeProfit { get; set; }
+        public decimal Swap { get; set; }
+        public decimal Margin { get; set; }
+        public decimal Profit { get; set; }
     }
 
     [Table("int.companies")]
@@ -453,5 +486,12 @@ namespace SyndicateLogic.Entities
         [Key, Column(Order = 1), Required, ForeignKey("Article"), DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ArticleID { get; set; }
         public virtual Article Article { get; set; }
+    }
+
+    [Table("xtb.ETFStocksUS")]
+    public class ETFStock
+    {
+        [Key, Required, MaxLength(10), Column(TypeName = "varchar"), DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public string Ticker { get; set; }
     }
 }

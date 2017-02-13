@@ -145,3 +145,6 @@ ON subquery.ArticleID = a.ID
 DELETE FROM rss.shingles
 DBCC CHECKIDENT ('Syndication.rss.shingles',RESEED, 0)
 
+-- collation conflict
+join app.instruments i on i.Ticker  COLLATE DATABASE_DEFAULT  = cd.ticker  COLLATE DATABASE_DEFAULT 
+

@@ -48,4 +48,11 @@
         stockIndex = 4,
         economyIndex = 5
     }
+
+    public enum Signal : int
+    {
+        Sell = -1,
+        Nothing = 0,
+        Buy = 1,
+    }
 }

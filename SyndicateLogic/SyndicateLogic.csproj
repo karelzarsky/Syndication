@@ -386,6 +386,18 @@
     <Compile Include="Migrations\201702121502281_articleScoreMax.Designer.cs">
       <DependentUpon>201702121502281_articleScoreMax.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702131815081_predictions.cs" />
+    <Compile Include="Migrations\201702131815081_predictions.Designer.cs">
+      <DependentUpon>201702131815081_predictions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702132126013_xtbStocks.cs" />
+    <Compile Include="Migrations\201702132126013_xtbStocks.Designer.cs">
+      <DependentUpon>201702132126013_xtbStocks.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702132138143_investorRSSFeed.cs" />
+    <Compile Include="Migrations\201702132138143_investorRSSFeed.Designer.cs">
+      <DependentUpon>201702132138143_investorRSSFeed.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -639,6 +651,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702121502281_articleScoreMax.resx">
       <DependentUpon>201702121502281_articleScoreMax.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702131815081_predictions.resx">
+      <DependentUpon>201702131815081_predictions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702132126013_xtbStocks.resx">
+      <DependentUpon>201702132126013_xtbStocks.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702132138143_investorRSSFeed.resx">
+      <DependentUpon>201702132138143_investorRSSFeed.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,16 @@
+Ticker;Url
+A;http://www.investor.agilent.com/corporate.rss?c=103274&Rule=Cat=news~subcat=ALL
+AAMC;http://apps.shareholder.com/rss/rss.aspx?channels=9395&companyid=AMDA-1HZPVK&sh_auth=3877536249%2E0%2E0%2E42781%2E43c3697d9502c573bf4c02d141ea8ee6
+AAPL;http://www.apple.com/newsroom/rss-feed.rss
+ABBV;http://investors.abbvie.com/corporate.rss?c=251551&Rule=Cat=news~subcat=ALL
+ADBE;http://rss.adobe.com/en/news_releases.rss
+CSCO;http://investor.cisco.com/rss/pressrelease.aspx
+CSL;http://www.carlisle.com/rss/pressrelease.aspx
+DBD;http://news.dieboldnixdorf.com/press-releases/rss.xml
+IBM;http://www-03.ibm.com/press/us/en/rssfeed.wss?keyword=null&maxFeed=&feedType=RSS&topic=all
+INTC;https://www.intc.com/rss/pressrelease.aspx
+MSFT;https://news.microsoft.com/feed/
+NDAQ;http://apps.shareholder.com/rss/rss.aspx?channels=274&companyid=NDAQ&sh_auth=3877783351%2E0%2E0%2E42781%2E7df80643b919bfa1768fa771a4307831
+TRI;http://ir.thomsonreuters.com/corporate.rss?c=76540&Rule=Cat=news~subcat=ALL
+TSLA;http://apps.shareholder.com/rss/rss.aspx?channels=7196&companyid=ABEA-4CW8X0&sh_auth=3877743900%2E0%2E0%2E42781%2E63abe2a50f0e4309bc3f34fe6f2d4cac
+YHOO;http://apps.shareholder.com/rss/rss.aspx?channels=632&companyid=YHOO&sh_auth=3877844915%2E0%2E0%2E42781%2E9bfab8b24c0a6183b01652b06be35029
