@@ -61,9 +61,6 @@ ORDER BY
 -- OBJECT_NAME(i.object_id) 
 TotalSpaceMB desc
 
-
-
-
 -- import csv
 BULK INSERT app.indexComponents
 FROM 'd:\install\indexComponents.csv'

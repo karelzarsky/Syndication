@@ -41,6 +41,7 @@ namespace SyndicateLogic.Entities
         [Key, Required, MaxLength(10), Column(TypeName = "varchar"), DatabaseGenerated(DatabaseGeneratedOption.None)]
         public string Ticker { get; set; }
         [Required, Column(TypeName = "varchar"), DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Index(IsUnique = true), MaxLength(300)]
         public string Url { get; set; }
     }
 
@@ -122,6 +123,28 @@ namespace SyndicateLogic.Entities
         public DateTime dateComputed { get; set; }
         public int samples { get; set; }
         public int tickers { get; set; }
+        public Int32 down10 { get; set; }
+        public Int32 down09 { get; set; }
+        public Int32 down08 { get; set; }
+        public Int32 down07 { get; set; }
+        public Int32 down06 { get; set; }
+        public Int32 down05 { get; set; }
+        public Int32 down04 { get; set; }
+        public Int32 down03 { get; set; }
+        public Int32 down02 { get; set; }
+        public Int32 down01 { get; set; }
+        public Int32 down00 { get; set; }
+        public Int32 up00 { get; set; }
+        public Int32 up01 { get; set; }
+        public Int32 up02 { get; set; }
+        public Int32 up03 { get; set; }
+        public Int32 up04 { get; set; }
+        public Int32 up05 { get; set; }
+        public Int32 up06 { get; set; }
+        public Int32 up07 { get; set; }
+        public Int32 up08 { get; set; }
+        public Int32 up09 { get; set; }
+        public Int32 up10 { get; set; }
     }
 
     [Table("fact.articleScore")]
@@ -423,7 +446,8 @@ namespace SyndicateLogic.Entities
         public DateTime? LastArticleReceived { get; set; }
         public DateTime? LastError { get; set; }
         public bool Active { get; set; }
-        [Column(TypeName = "varchar")]
+        [Column(TypeName = "varchar"), MaxLength(300)]
+        [Index(IsUnique = true)]
         public string Url { get; set; }
         public string Title { get; set; }
         public string ErrorMessage { get; set; }
