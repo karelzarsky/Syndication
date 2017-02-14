@@ -119,7 +119,6 @@ namespace SyndicateLogic.Entities
         public decimal? down { get; set; }
         [Column(TypeName = "smallmoney")]
         public decimal? up { get; set; }
-        [Column(TypeName = "Date")]
         public DateTime dateComputed { get; set; }
         public int samples { get; set; }
         public int tickers { get; set; }
@@ -145,6 +144,9 @@ namespace SyndicateLogic.Entities
         public Int32 up08 { get; set; }
         public Int32 up09 { get; set; }
         public Int32 up10 { get; set; }
+        public double stddev { get; set; }
+        public double mean { get; set; }
+        public double variance { get; set; }
     }
 
     [Table("fact.articleScore")]

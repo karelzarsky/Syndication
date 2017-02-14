@@ -56,6 +56,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MathNet.Numerics, Version=3.17.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.3.17.0\lib\net40\MathNet.Numerics.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -402,6 +406,14 @@
     <Compile Include="Migrations\201702141145271_shingleActionColumns.Designer.cs">
       <DependentUpon>201702141145271_shingleActionColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702141240080_standardDeviation.cs" />
+    <Compile Include="Migrations\201702141240080_standardDeviation.Designer.cs">
+      <DependentUpon>201702141240080_standardDeviation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702141827198_removeMedian.cs" />
+    <Compile Include="Migrations\201702141827198_removeMedian.Designer.cs">
+      <DependentUpon>201702141827198_removeMedian.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -667,6 +679,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702141145271_shingleActionColumns.resx">
       <DependentUpon>201702141145271_shingleActionColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702141240080_standardDeviation.resx">
+      <DependentUpon>201702141240080_standardDeviation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702141827198_removeMedian.resx">
+      <DependentUpon>201702141827198_removeMedian.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

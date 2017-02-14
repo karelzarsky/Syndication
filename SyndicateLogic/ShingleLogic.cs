@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SyndicateLogic.Entities;
+using MathNet.Numerics.Statistics;
 
 namespace SyndicateLogic
 {
@@ -441,7 +442,7 @@ drop table #selShingles", new SqlParameter("@shingleID", s.ID), new SqlParameter
         private static void SetShingleTooCommon2(Shingle s, Db ctx)
         {
             if (!ctx.CommonWords.Any(x => x.language == s.language && x.text == s.text))
-                ctx.CommonWords.Add(new CommonWord {language = s.language, text = s.text});
+                ctx.CommonWords.Add(new CommonWord { language = s.language, text = s.text });
             ctx.Database.ExecuteSqlCommand(@"delete from rss.ShingleUse where shingleID = @shingleID
 delete from fact.shingleAction where shingleID = @shingleID
 select ID into #selShingles from rss.Shingles where kind in (0, 6, 7) AND language = @lang AND (text like '% ' + @word or text like ' ' +  @word + ' ' or text like @word + ' %')
@@ -467,120 +468,70 @@ WHERE s.kind in (6,7) GROUP BY s.ID, s.LastRecomputeDate HAVING COUNT(1)>10 ORDE
 
         public static void AnalyzeShingle(int ShingleID)
         {
-            var ctx = new Db();
             var sw = Stopwatch.StartNew();
+            var ctx = new Db();
+            ctx.Database.CommandTimeout = 120;
+            const string getActions =
+@"SELECT @shingleID shingleID, cast (interval as tinyint) interval, avg(minDownAvg / op) down, avg(maxUpAvg / op) up, GETDATE() datecomputed, count(1) samples, count(distinct(ticker)) tickers,
+COUNT(CASE WHEN cl / op < 0.90 THEN 1 ELSE NULL END) AS down10,
+COUNT(CASE WHEN cl / op >= 0.90 AND cl / op < 0.91 THEN 1 ELSE NULL END) AS down09,
+COUNT(CASE WHEN cl / op >= 0.91 AND cl / op < 0.92 THEN 1 ELSE NULL END) AS down08,
+COUNT(CASE WHEN cl / op >= 0.92 AND cl / op < 0.93 THEN 1 ELSE NULL END) AS down07,
+COUNT(CASE WHEN cl / op >= 0.93 AND cl / op < 0.94 THEN 1 ELSE NULL END) AS down06,
+COUNT(CASE WHEN cl / op >= 0.94 AND cl / op < 0.95 THEN 1 ELSE NULL END) AS down05,
+COUNT(CASE WHEN cl / op >= 0.95 AND cl / op < 0.96 THEN 1 ELSE NULL END) AS down04,
+COUNT(CASE WHEN cl / op >= 0.96 AND cl / op < 0.97 THEN 1 ELSE NULL END) AS down03,
+COUNT(CASE WHEN cl / op >= 0.97 AND cl / op < 0.98 THEN 1 ELSE NULL END) AS down02,
+COUNT(CASE WHEN cl / op >= 0.98 AND cl / op < 0.99 THEN 1 ELSE NULL END) AS down01,
+COUNT(CASE WHEN cl / op >= 0.99 AND cl / op < 1.00 THEN 1 ELSE NULL END) AS down00,
+COUNT(CASE WHEN cl / op >= 1.00 AND cl / op < 1.01 THEN 1 ELSE NULL END) AS up00,
+COUNT(CASE WHEN cl / op >= 1.01 AND cl / op < 1.02 THEN 1 ELSE NULL END) AS up01,
+COUNT(CASE WHEN cl / op >= 1.02 AND cl / op < 1.03 THEN 1 ELSE NULL END) AS up02,
+COUNT(CASE WHEN cl / op >= 1.03 AND cl / op < 1.04 THEN 1 ELSE NULL END) AS up03,
+COUNT(CASE WHEN cl / op >= 1.04 AND cl / op < 1.05 THEN 1 ELSE NULL END) AS up04,
+COUNT(CASE WHEN cl / op >= 1.05 AND cl / op < 1.06 THEN 1 ELSE NULL END) AS up05,
+COUNT(CASE WHEN cl / op >= 1.06 AND cl / op < 1.07 THEN 1 ELSE NULL END) AS up06,
+COUNT(CASE WHEN cl / op >= 1.07 AND cl / op < 1.08 THEN 1 ELSE NULL END) AS up07,
+COUNT(CASE WHEN cl / op >= 1.08 AND cl / op < 1.09 THEN 1 ELSE NULL END) AS up08,
+COUNT(CASE WHEN cl / op >= 1.09 AND cl / op < 1.10 THEN 1 ELSE NULL END) AS up09,
+COUNT(CASE WHEN cl / op >= 1.10 THEN 1 ELSE NULL END) AS up10,
+STDEV(cl / op) stddev, AVG(cast(cl as float) / op) mean, VAR(cl / op) variance
+FROM
+(SELECT i interval, a.ID, a.Ticker ticker,
+(SELECT TOP 1 adj_open FROM int.prices WITH(NOLOCK) WHERE ticker = a.Ticker AND date >= a.PublishedUTC ORDER BY date) op,
+(SELECT(MIN(adj_low)) FROM int.Prices WITH(NOLOCK) WHERE ticker = a.Ticker AND date >= a.PublishedUTC AND date <= DATEADD(d, numbers1toN.i, a.PublishedUTC)) minDownAvg,
+(SELECT(MAX(adj_high)) FROM int.Prices WITH(NOLOCK) WHERE ticker = a.Ticker AND date >= a.PublishedUTC AND date <= DATEADD(d, numbers1toN.i, a.PublishedUTC)) maxUpAvg,
+(SELECT TOP 1 adj_close FROM int.Prices WITH(NOLOCK) WHERE ticker = a.Ticker AND date >= DATEADD(d, i, a.PublishedUTC) ORDER BY date) cl
+FROM(SELECT DISTINCT i = number FROM master..[spt_values] WHERE number BETWEEN 1 AND @maxInterval) numbers1toN
+JOIN rss.shingleUse su on su.ShingleID = @shingleID
+JOIN rss.articles a on a.ID = su.ArticleID and a.Ticker is not null
+) subs WHERE op <> 0 and minDownAvg <> 0 and maxUpAvg <> 0 group by interval
+having count(1)>50 and count (distinct(ticker)) > 5";
 
-            var articleIdList = ctx.ShingleUses.Where(x => x.ShingleID == ShingleID).Select(x => x.ArticleID).ToArray();
-            var shingleActions = new shingleAction[maxInterval];
-            for (byte i = 0; i < maxInterval; i++)
-            {
-                shingleActions[i] = new shingleAction();
-            }
-            var tickerActions = new List<tickerAction>();
-            foreach (int id in articleIdList)
-            {
-                CountOnePrice(ctx, id, tickerActions);
-            }
-            var sh = ctx.Shingles.Find(ShingleID);
-            for (byte i = 1; i <= maxInterval; i++)
-            {
-                shingleActions[i - 1].shingleID = ShingleID;
-                shingleActions[i - 1].interval = i;
-                shingleActions[i - 1].dateComputed = DateTime.Now;
-                shingleActions[i - 1].samples = tickerActions.Count(x => x.interval == i && x.up != null && x.down != null);
-                shingleActions[i - 1].up = tickerActions.Where(x => x.interval == i && x.up != null).Select(x => x.up).Average();
-                shingleActions[i - 1].down =
-                    tickerActions.Where(x => x.interval == i && x.down != null).Select(x => x.down).Average();
-                shingleActions[i - 1].tickers =
-                    tickerActions.Where(x => x.interval == i).Select(x => x.ticker).Distinct().Count();
-                shingleActions[i - 1].down10 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.89m && x.cl < 0.90m).Count();
-                shingleActions[i - 1].down09 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.90m && x.cl < 0.91m).Count();
-                shingleActions[i - 1].down08 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.91m && x.cl < 0.92m).Count();
-                shingleActions[i - 1].down07 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.92m && x.cl < 0.93m).Count();
-                shingleActions[i - 1].down06 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.93m && x.cl < 0.94m).Count();
-                shingleActions[i - 1].down05 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.94m && x.cl < 0.95m).Count();
-                shingleActions[i - 1].down04 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.95m && x.cl < 0.96m).Count();
-                shingleActions[i - 1].down03 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.96m && x.cl < 0.97m).Count();
-                shingleActions[i - 1].down02 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.97m && x.cl < 0.98m).Count();
-                shingleActions[i - 1].down01 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.98m && x.cl < 0.99m).Count();
-                shingleActions[i - 1].down00 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 0.99m && x.cl < 1.00m).Count();
-                shingleActions[i - 1].up00 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.00m && x.cl < 1.01m).Count();
-                shingleActions[i - 1].up01 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.01m && x.cl < 1.02m).Count();
-                shingleActions[i - 1].up02 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.02m && x.cl < 1.03m).Count();
-                shingleActions[i - 1].up03 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.03m && x.cl < 1.04m).Count();
-                shingleActions[i - 1].up04 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.04m && x.cl < 1.05m).Count();
-                shingleActions[i - 1].up05 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.05m && x.cl < 1.06m).Count();
-                shingleActions[i - 1].up06 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.06m && x.cl < 1.07m).Count();
-                shingleActions[i - 1].up07 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.07m && x.cl < 1.08m).Count();
-                shingleActions[i - 1].up08 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.08m && x.cl < 1.09m).Count();
-                shingleActions[i - 1].up09 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.09m && x.cl < 1.10m).Count();
-                shingleActions[i - 1].up10 = tickerActions.Where(x => x.interval == i && x.cl != null && x.cl >= 1.10m).Count();
-                ctx.ShingleActions.AddOrUpdate(shingleActions[i - 1]);
-                if (i == 2)
-                {
-                    decimal diff = 0;
-                    if (shingleActions[i - 1].up.HasValue && shingleActions[i - 1].down.HasValue)
-                        diff = shingleActions[i - 1].up.Value + shingleActions[i - 1].down.Value - 2;
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    if (shingleActions[i - 1].samples > 5 && diff > (decimal)+0.02) Console.ForegroundColor = ConsoleColor.Red;
-                    if (shingleActions[i - 1].samples > 5 && diff < (decimal)-0.02)
-                        Console.ForegroundColor = ConsoleColor.Green;
-                    sw.Stop();
-                    DataLayer.LogMessage(LogLevel.Analysis, $"S {sw.ElapsedMilliseconds / 1000}s {sh.text} Last:{sh.LastRecomputeDate:dd.MM.} {shingleActions[i - 1].samples} samples {shingleActions[i - 1].tickers} tickers {1 - shingleActions[i - 1].up:P2} {1 - shingleActions[i - 1].down:P2}");
-                }
-            }
+            var actions = ctx.Database.SqlQuery<shingleAction>(getActions,
+                new SqlParameter("@shingleID", ShingleID),
+                new SqlParameter("@maxInterval", maxInterval)).ToList();
+
+            var sh = ctx.Shingles.FirstOrDefault(x => x.ID == ShingleID);
+            var prev = sh.LastRecomputeDate;
             sh.LastRecomputeDate = DateTime.Now;
             ctx.SaveChanges();
-            ctx.Database.CommandTimeout = 120;
 
-            //if (DateTime.Today.DayOfWeek != DayOfWeek.Saturday
-            //    && DateTime.Today.DayOfWeek != DayOfWeek.Sunday
-            //    && DateTime.Now.Hour > 6
-            //    && DateTime.Now.Hour < 18)
-            //    Thread.Sleep(20000); // 20 sec
-        }
+            if (actions.Count == 0) return;
 
-        private static void CountOnePrice(Db ctx, int id, List<tickerAction> tickerActions)
-        {
-            var a = ctx.Articles.Find(id);
-            if (a == null)
+            foreach (var sAction in actions)
             {
-                // no articles for shingle
-                return;
+                ctx.ShingleActions.AddOrUpdate(sAction);
             }
-            //Console.WriteLine(a.Title);
-            var relations = ctx.ArticleRelations.Where(x => x.ArticleID == id).ToArray();
-            if (relations.Length == 0)
-            {
-                // no instrument
-                return;
-            }
-            foreach (var articleRelation in relations)
-            {
-                if (tickerActions.Any(x => x.ticker == articleRelation.Instrument.Ticker && x.date == a.PublishedUTC.Date))
-                    continue;
 
-                const string countPrices =
-@"DECLARE @openPrice SMALLMONEY = (SELECT adj_open FROM int.prices WITH (NOLOCK) WHERE ticker = @ticker AND date = @date)
-IF @openPrice>0
-(SELECT i interval,
-(SELECT(MIN(adj_low )/@openPrice) FROM int.Prices WITH (NOLOCK) WHERE ticker = @ticker AND date >= @date AND date < DATEADD(d, numbers1toN.i, @date)) down,
-(SELECT(MAX(adj_high)/@openPrice) FROM int.Prices WITH (NOLOCK) WHERE ticker = @ticker AND date >= @date AND date < DATEADD(d, numbers1toN.i, @date)) up,
-(SELECT TOP 1 adj_close/@openPrice FROM int.Prices WITH (NOLOCK) WHERE ticker = @ticker AND date >= DATEADD(d, i , @date) ORDER BY date) cl
-FROM(SELECT DISTINCT i = number FROM master..[spt_values] WHERE number BETWEEN 1 AND @maxInterval) numbers1toN)";
-
-                var seznam = ctx.Database.SqlQuery<tickerAction>(countPrices,
-                    new SqlParameter("@ticker", articleRelation.Instrument.Ticker),
-                    new SqlParameter("@maxInterval", maxInterval),
-                    new SqlParameter("@date", a.PublishedUTC.Date)).ToList();
-                foreach (var act in seznam)
-                {
-                    act.ticker = articleRelation.Instrument.Ticker;
-                    act.date = a.PublishedUTC.Date;
-                    if (!tickerActions.Any(x => x.ticker == act.ticker && x.date == act.date && x.interval == act.interval))
-                        tickerActions.Add(act);
-                }
+            var saMax = actions.OrderByDescending(x => x.interval).First();
+            if (sh != null)
+            {
+                if (saMax != null)
+                    DataLayer.LogMessage(LogLevel.Analysis, $"S {sw.ElapsedMilliseconds}ms {ShingleID} {sh.text} prev:{prev:dd.MM.} samples:{saMax.samples} tickers:{saMax.tickers} mean:{saMax.mean:F5}");
             }
+            ctx.SaveChanges();
+            sw.Stop();
         }
     }
 }
