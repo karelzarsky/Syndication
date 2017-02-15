@@ -55,4 +55,12 @@
         Nothing = 0,
         Buy = 1,
     }
+
+    public enum ExitReason : byte
+    {
+        StopLoss = 0,
+        TakeProfit = 1,
+        LastKnownPrice = 2,
+        LongWaiting = 3
+    }
 }

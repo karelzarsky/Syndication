@@ -108,6 +108,15 @@ namespace SyndicateLogic.Entities
         public string text { get; set; }
     }
 
+    [Table("app.problematicShortcut")]
+    public class ProblematicShortcut
+    {
+        [Required, MaxLength(2), Key, Column(TypeName = "varchar", Order = 0)]
+        public string language { get; set; }
+        [Required, MaxLength(50), Key, Column(Order = 1)]
+        public string text { get; set; }
+    }
+
     [Table("fact.shingleAction")]
     public class shingleAction
     {
@@ -188,6 +197,8 @@ namespace SyndicateLogic.Entities
         public decimal Swap { get; set; }
         public decimal Margin { get; set; }
         public decimal Profit { get; set; }
+        public string Comment { get; set; }
+        public ExitReason Exit { get; set; }
     }
 
     [Table("int.companies")]
@@ -416,6 +427,8 @@ namespace SyndicateLogic.Entities
         public decimal ScoreDownMin { get; set; }
         [Index, Column(TypeName = "smallmoney")]
         public decimal ScoreUpMax { get; set; }
+        [Index, MaxLength(2), Column(TypeName = "varchar")]
+        public string language { get; set; }
 
         public int ComputeHash()
         { return Text().ToLower().GetHashCode(); }

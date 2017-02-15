@@ -414,6 +414,18 @@
     <Compile Include="Migrations\201702141827198_removeMedian.Designer.cs">
       <DependentUpon>201702141827198_removeMedian.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702151116249_problematicShortcut.cs" />
+    <Compile Include="Migrations\201702151116249_problematicShortcut.Designer.cs">
+      <DependentUpon>201702151116249_problematicShortcut.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702151135578_articleLanguage.cs" />
+    <Compile Include="Migrations\201702151135578_articleLanguage.Designer.cs">
+      <DependentUpon>201702151135578_articleLanguage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702151420159_exitReason.cs" />
+    <Compile Include="Migrations\201702151420159_exitReason.Designer.cs">
+      <DependentUpon>201702151420159_exitReason.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -685,6 +697,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702141827198_removeMedian.resx">
       <DependentUpon>201702141827198_removeMedian.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702151116249_problematicShortcut.resx">
+      <DependentUpon>201702151116249_problematicShortcut.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702151135578_articleLanguage.resx">
+      <DependentUpon>201702151135578_articleLanguage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702151420159_exitReason.resx">
+      <DependentUpon>201702151420159_exitReason.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

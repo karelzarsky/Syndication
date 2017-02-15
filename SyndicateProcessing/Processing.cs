@@ -25,7 +25,7 @@ namespace SyndicateProcessing
             using (Process p = Process.GetCurrentProcess())
                 p.PriorityClass = ProcessPriorityClass.Idle;
             _scheduleTimer.AutoReset = false;
-            _scheduleTimer.Interval = 5000; // in milliseconds
+            _scheduleTimer.Interval = 1000; // in milliseconds
             _scheduleTimer.Elapsed += delegate { _scheduleEvent.Set(); };
             _thread = new Thread(delegate ()
             {
@@ -81,17 +81,15 @@ namespace SyndicateProcessing
                 using (var ctx = new Db())
                 {
                     ctx.Database.CommandTimeout = 120;
-                    if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
-                    {
-                        ShinglesToProcess = ShingleLogic.GetNextShingleList(ctx);
-                    }
+                    ShinglesToProcess = ShingleLogic.GetNextShingleList(ctx);
                     if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
                         Thread.Sleep(20000);
                     else
                     {
-                        int next = ShinglesToProcess.First();
-                        ShingleLogic.AnalyzeShingle(next);
-                        ShinglesToProcess.Remove(next);
+                        foreach (var s in ShinglesToProcess)
+                        {
+                            ShingleLogic.AnalyzeShingle(s);
+                        }
                     }
                 }
             }

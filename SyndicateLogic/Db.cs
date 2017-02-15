@@ -42,6 +42,7 @@ namespace SyndicateLogic
         public DbSet<Prediction> Predictions { get; set; }
         public DbSet<ETFStock> ETFStocksUS { get; set; }
         public DbSet<InvestorRSSFeed> InvestorRSSFeeds { get; set; }
+        public DbSet<ProblematicShortcut> ProblematicShortcuts { get; set; }
 
         public static string ReadConnectionString(string key)
         {

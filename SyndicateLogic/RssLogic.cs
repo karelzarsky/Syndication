@@ -70,10 +70,9 @@ namespace SyndicateLogic
             foreach (var feed in ctx.Feeds.Where(x => x.Active == false && x.LastCheck < retryTime))
             {
                 feed.Active = true;
-                ctx.SaveChanges();
                 DataLayer.LogMessage(LogLevel.InvalidFeed, $"R restarting feed {feed.ID} {feed.Url}");
             }
-
+            ctx.SaveChanges();
             return ctx.Feeds.Include("RSSServer")
                 .Where(x => x.Active && (x.RSSServer.NextRun == null || x.RSSServer.NextRun < DateTime.Now))
                 .OrderBy(x => x.LastCheck)

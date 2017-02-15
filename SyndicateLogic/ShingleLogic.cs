@@ -51,10 +51,9 @@ namespace SyndicateLogic
                 a.Processed = ProcessState.Running;
                 ctx.SaveChanges();
                 //LogMessage(LogLevel.ShingleProcessing, "SHINGLE1 " + ArticleID);
-                string lang;
-                if (a.Feed.Language != null && a.Feed.Language.Contains("cs")) lang = "cs";
-                else if (a.Feed.Language != null && a.Feed.Language.Contains("de")) lang = "de";
-                else lang = "en";
+                if (a.Feed.Language != null && a.Feed.Language.Contains("cs")) a.language = "cs";
+                else if (a.Feed.Language != null && a.Feed.Language.Contains("de")) a.language = "de";
+                else a.language = "en";
 
                 string text = Regex.Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽ/' &:]", " ")
                     .Replace(": ", " ").Replace(" & ", " ");
@@ -66,7 +65,7 @@ namespace SyndicateLogic
                     .Replace(" & ", " ");
                 ProcessSentences(text, newPhrases);
 
-                var Shingles = newPhrases.Distinct().Select(newPhrase => PrepareShingle(newPhrase, lang, ctx)).ToList();
+                var Shingles = newPhrases.Distinct().Select(newPhrase => PrepareShingle(newPhrase, a.language, ctx)).ToList();
                 Shingles.RemoveAll(x => x.kind == ShingleKind.containCommon || x.kind == ShingleKind.containTicker);
                 foreach (var shingle in Shingles.ToArray())
                 {
@@ -505,8 +504,9 @@ FROM
 FROM(SELECT DISTINCT i = number FROM master..[spt_values] WHERE number BETWEEN 1 AND @maxInterval) numbers1toN
 JOIN rss.shingleUse su on su.ShingleID = @shingleID
 JOIN rss.articles a on a.ID = su.ArticleID and a.Ticker is not null
-) subs WHERE op <> 0 and minDownAvg <> 0 and maxUpAvg <> 0 group by interval
-having count(1)>50 and count (distinct(ticker)) > 5";
+JOIN rss.shingles s on s.id = @shingleID and s.language = a.language
+) subs WHERE op <> 0 and minDownAvg <> 0 and maxUpAvg <> 0 and cl <> 0 group by interval
+having count(1)>10 and count (distinct(ticker)) > 3";
 
             var actions = ctx.Database.SqlQuery<shingleAction>(getActions,
                 new SqlParameter("@shingleID", ShingleID),
@@ -515,12 +515,18 @@ having count(1)>50 and count (distinct(ticker)) > 5";
             var sh = ctx.Shingles.FirstOrDefault(x => x.ID == ShingleID);
             var prev = sh.LastRecomputeDate;
             sh.LastRecomputeDate = DateTime.Now;
+
             ctx.SaveChanges();
 
-            if (actions.Count == 0) return;
+            if (actions.Count == 0)
+            {
+                DataLayer.LogMessage(LogLevel.Analysis, $"S {sw.ElapsedMilliseconds}ms {ShingleID} {sh.text} prev:{prev:dd.MM.}");
+                return;
+            }
 
             foreach (var sAction in actions)
             {
+                if (sAction.stddev == double.NaN) sAction.stddev = 0;
                 ctx.ShingleActions.AddOrUpdate(sAction);
             }
 

@@ -1,3 +1,5 @@
+compute actions only with shingle in same lang
+
 gather links to investor news releases for each company
 
 subscribe investor emails
