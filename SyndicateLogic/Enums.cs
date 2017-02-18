@@ -49,7 +49,7 @@
         economyIndex = 5
     }
 
-    public enum Signal : int
+    public enum DirectionType : int
     {
         Sell = -1,
         Nothing = 0,
@@ -60,7 +60,6 @@
     {
         StopLoss = 0,
         TakeProfit = 1,
-        LastKnownPrice = 2,
-        LongWaiting = 3
+        Timeout = 2
     }
 }

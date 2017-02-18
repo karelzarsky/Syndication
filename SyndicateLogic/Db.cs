@@ -43,6 +43,7 @@ namespace SyndicateLogic
         public DbSet<ETFStock> ETFStocksUS { get; set; }
         public DbSet<InvestorRSSFeed> InvestorRSSFeeds { get; set; }
         public DbSet<ProblematicShortcut> ProblematicShortcuts { get; set; }
+        public DbSet<Backtest> Backtests { get; set; }
 
         public static string ReadConnectionString(string key)
         {

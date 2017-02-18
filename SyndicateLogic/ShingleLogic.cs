@@ -106,14 +106,14 @@ namespace SyndicateLogic
                 sw.Stop();
                 if (Environment.UserInteractive)
                 {
-                    Console.Write($"{a.ID} {sw.ElapsedMilliseconds}ms ");
+                    //Console.Write($"{a.ID} {sw.ElapsedMilliseconds}ms ");
                     if (a.Ticker != null)
                     {
                         Console.ForegroundColor = ConsoleColor.Yellow;
-                        Console.Write(a.Ticker);
+                        Console.WriteLine(a.Ticker);
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
-                    Console.WriteLine($" {a.Title}");
+                    //Console.WriteLine($" {a.Title}");
                     //Console.WriteLine($"common:{sCommon.ElapsedMilliseconds / 1000} ticker:{sTicker.ElapsedMilliseconds / 1000} Name:{sName.ElapsedMilliseconds / 1000} CEO:{sCEO.ElapsedMilliseconds / 1000} ConC:{sContainC.ElapsedMilliseconds / 1000} ConT:{sContainT.ElapsedMilliseconds / 1000} Up:{sUpper.ElapsedMilliseconds / 1000} Pair:{sPair.ElapsedMilliseconds / 1000}");
                 }
             }
@@ -457,7 +457,7 @@ update rss.Shingles set kind = 1, LastRecomputeDate = NULL where ID = @shingleID
         {
             return ctx.Database.SqlQuery<int>(
 @"SELECT TOP 100 s.ID FROM rss.shingles s WITH (NOLOCK) JOIN rss.shingleuse su WITH (NOLOCK) ON su.ShingleID = s.ID
-WHERE s.kind in (6,7) GROUP BY s.ID, s.LastRecomputeDate HAVING COUNT(1)>10 ORDER BY s.LastRecomputeDate").ToArray();
+WHERE s.kind in (6,7) AND s.LastRecomputeDate > DATEADD(day, 1, getdate()) GROUP BY s.ID, s.LastRecomputeDate HAVING COUNT(1)>10 ORDER BY s.LastRecomputeDate").ToArray();
         }
 
         public static List<int> GetNextShingleList(Db ctx)
@@ -503,7 +503,7 @@ FROM
 (SELECT TOP 1 adj_close FROM int.Prices WITH(NOLOCK) WHERE ticker = a.Ticker AND date >= DATEADD(d, i, a.PublishedUTC) ORDER BY date) cl
 FROM(SELECT DISTINCT i = number FROM master..[spt_values] WHERE number BETWEEN 1 AND @maxInterval) numbers1toN
 JOIN rss.shingleUse su on su.ShingleID = @shingleID
-JOIN rss.articles a on a.ID = su.ArticleID and a.Ticker is not null
+JOIN rss.articles a on a.ID = su.ArticleID and a.Ticker is not null and a.PublishedUTC < '2016-12-01'
 JOIN rss.shingles s on s.id = @shingleID and s.language = a.language
 ) subs WHERE op <> 0 and minDownAvg <> 0 and maxUpAvg <> 0 and cl <> 0 group by interval
 having count(1)>10 and count (distinct(ticker)) > 3";

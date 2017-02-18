@@ -426,6 +426,14 @@
     <Compile Include="Migrations\201702151420159_exitReason.Designer.cs">
       <DependentUpon>201702151420159_exitReason.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201702181234058_backtestTable.cs" />
+    <Compile Include="Migrations\201702181234058_backtestTable.Designer.cs">
+      <DependentUpon>201702181234058_backtestTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201702181527440_backtestKey.cs" />
+    <Compile Include="Migrations\201702181527440_backtestKey.Designer.cs">
+      <DependentUpon>201702181527440_backtestKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -438,7 +446,14 @@
     <Compile Include="SyndicationFeedXmlReader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Migrations\201702181234058_backtestTable.resx">
+      <DependentUpon>201702181234058_backtestTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201702181527440_backtestKey.resx">
+      <DependentUpon>201702181527440_backtestKey.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="App.config" />
+    <EmbeddedResource Include="InvestorRSS.csv" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

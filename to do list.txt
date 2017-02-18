@@ -1,27 +1,11 @@
-compute actions only with shingle in same lang
-
 gather links to investor news releases for each company
-
 subscribe investor emails
-
 html emails
-
-automated trading
-
 optimize strategy (SL, TP, time)
-
 analysis graphs
-
-count actions only for articles referencing single instrument
-
 country detection
-
 futures detection
-
 number of tickers and samples from shingle action to shingles
-
 shingle action forex
-
 shingle action futures
-
 update only used prices

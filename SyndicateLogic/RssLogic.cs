@@ -142,6 +142,32 @@ namespace SyndicateLogic
             {
                 DataLayer.LogMessage(LogLevel.Error, "ERROR: Cannot load feeds resource file.");
             }
+            try
+            {
+                using (
+                    var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SyndicateLogic.InvestorRSS.csv"))
+                    if (stream != null)
+                        using (var reader = new StreamReader(stream))
+                        {
+                            string line;
+                            while ((line = reader.ReadLine()) != null)
+                            {
+                                string[] words = line.Split(',');
+                                if (words.Length != 3) continue;
+                                if (string.IsNullOrWhiteSpace(words[0]) || string.IsNullOrWhiteSpace(words[2])) continue;
+                                string ticker = words[0];
+                                string Url = words[2];
+                                if (feedsList.Any(f => f.Url == Url)) continue;
+                                var instr = context.Instruments.Where(x => x.Ticker == ticker).FirstOrDefault();
+                                context.Feeds.AddOrUpdate(f => f.ID, new Feed { Active = true, Url = words[2], LastCheck = DateTime.Today, AffectedInstrument = instr });
+                                freshFeeds++;
+                            }
+                        }
+            }
+            catch (Exception e)
+            {
+                DataLayer.LogMessage(LogLevel.Error, "ERROR: Cannot load investor feeds resource file.");
+            }
             if (freshFeeds <= 0) return;
             context.SaveChanges();
             DataLayer.LogMessage(LogLevel.Info, $"{freshFeeds} new feeds from resource file.");
