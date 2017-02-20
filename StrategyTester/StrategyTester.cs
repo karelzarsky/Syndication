@@ -42,7 +42,9 @@ namespace StrategyTester
             //    for (double sl = - 0.5; sl > -3 ; sl -= 0.2)
             //for (int sl = 1; sl <= 10; sl++)
             //    for (int tp = 2; tp <= 20; tp++)
-                    TestStrategy005(TPPercent : 20, SLPercent: 10, DaysToTimeout: 30, BuyLimit: 0.7, SellLimit: -3);
+            for (double bl = 0.5; bl < 3; bl += 0.1)
+                for (int i = 1; i <= 30; i++)
+                    TestStrategy006(TPPercent : 20, SLPercent: 10, DaysToTimeout: 30, BuyLimit: bl, SellLimit: -3, interval: i);
         }
 
         public static Order[] GetSignals005(int interval, double BuyLimit, double SellLimit, decimal TPPercent, decimal SLPercent, DateTime FromDate, DateTime TillDate)
@@ -96,6 +98,65 @@ order by a.PublishedUTC";
                     new SqlParameter("@till", TillDate)).ToArray();
             }
         }
+
+        private static void TestStrategy006(decimal TPPercent, decimal SLPercent, int DaysToTimeout, double BuyLimit, double SellLimit, int interval)
+        {
+            var PredictionList = new List<Prediction>();
+            using (var ctx = new Db())
+            {
+                int? strategyNr = ctx.Database.SqlQuery<int?>("select 1 + max (StrategyNr) from fact.predictions").FirstOrDefault();
+                var b = new Backtest
+                {
+                    StrategyNr = strategyNr == null ? 0 : strategyNr.Value,
+                    TimeCalculated = DateTime.Now,
+                    TakeProfitPercent = TPPercent,
+                    StopLossPercent = SLPercent,
+                    DaysToTimeout = DaysToTimeout,
+                    SignalName = "Signal006",
+                    SellLimit = SellLimit,
+                    BuyLimit = BuyLimit,
+                    FromDate = new DateTime(2016, 12, 1),
+                    TillDate = new DateTime(2017, 1, 15),
+                    MinShingleSamples = 10,
+                    ShingleInterval = DaysToTimeout,
+                    Comment = $"Signal006 Buylimit:{BuyLimit:0.##} Selllimit:{SellLimit:0.##} interval:{interval}"
+                };
+
+                var orders = GetSignals006(interval, BuyLimit, SellLimit, TPPercent, SLPercent, b.FromDate, b.TillDate);
+                foreach (var ord in orders)
+                {
+                    var lastTrade = ctx.Database.SqlQuery<DateTime?>("select max(TimeClose) from fact.predictions where Ticker = @ticker and StrategyNr = @nr",
+                        new SqlParameter("@ticker", ord.Ticker),
+                        new SqlParameter("@nr", b.StrategyNr)).FirstOrDefault();
+                    if (lastTrade != null && lastTrade.Value >= ord.Issued) continue;
+                    Prediction t = Trade(ord.Direction, ord.Ticker, ord.Issued, b.TakeProfitPercent, b.StopLossPercent, b.Comment, DaysToTimeout, b.StrategyNr);
+                    if (t == null) continue;
+                    DisplayPrediction(t);
+                    PredictionList.Add(t);
+                    ctx.Predictions.Add(t);
+                    ctx.SaveChanges();
+                }
+                if (PredictionList.Count > 0)
+                {
+                    b.Wins = PredictionList.Count(x => x.Profit > 0);
+                    b.Loses = PredictionList.Count(x => x.Profit <= 0);
+                    b.Takeprofits = PredictionList.Count(x => x.Exit == ExitReason.TakeProfit);
+                    b.Stoploses = PredictionList.Count(x => x.Exit == ExitReason.StopLoss);
+                    b.Timeouts = PredictionList.Count(x => x.Exit == ExitReason.Timeout);
+                    b.Buys = PredictionList.Count(x => x.BuySignal);
+                    b.Sells = PredictionList.Count(x => !x.BuySignal);
+                    b.BuyProfit = PredictionList.Where(x => x.BuySignal).Select(x => x.Profit).Sum();
+                    b.SellProfit = PredictionList.Where(x => !x.BuySignal).Select(x => x.Profit).Sum();
+                    b.WinProfit = PredictionList.Where(x => x.Profit > 0).Select(x => x.Profit).Sum();
+                    b.LossProfit = PredictionList.Where(x => x.Profit < 0).Select(x => x.Profit).Sum();
+                    b.TimeoutProfit = PredictionList.Where(x => x.Exit == ExitReason.Timeout).Select(x => x.Profit).Sum();
+                    b.AverageTradeLength = PredictionList.Select(x => (decimal)((x.TimeClose - x.TimeOpen).Days)).Average();
+                    ctx.Backtests.Add(b);
+                    ctx.SaveChanges();
+                }
+            }
+        }
+
 
         private static void TestStrategy005(decimal TPPercent, decimal SLPercent, int DaysToTimeout, double BuyLimit, double SellLimit)
         {
@@ -225,9 +286,14 @@ order by a.PublishedUTC";
 
         private static Prediction Trade(DirectionType s, string ticker, DateTime receivedUTC, decimal TPPercent, decimal SLPercent, string comment, int longestTrade, int StrategyNr)
         {
+            decimal maxMargin = 3000;
+            decimal oneMargin = 600;
+            decimal leverage = 10;
             var ctx = new Db();
             var open = ctx.Prices.OrderBy(x => x.date).FirstOrDefault(x => x.ticker == ticker && x.date >= receivedUTC && x.adj_open != null);
             if (open == null || open.adj_open == null || open.adj_open.Value == 0) return null;
+            var currentMargin = ctx.Predictions.Where(x => x.StrategyNr == StrategyNr && x.TimeOpen <= receivedUTC && x.TimeClose >= receivedUTC).Select(x => x.Margin).DefaultIfEmpty(0).Sum();
+            if (currentMargin + oneMargin > maxMargin) return null;
             var res = new Prediction
             {
                 Ticker = ticker,
@@ -237,8 +303,8 @@ order by a.PublishedUTC";
                 Commision = 8,
                 TimeOpen = open.date,
                 OpenPrice = open.adj_open.Value,
-                Volume = Math.Round(4000 / open.adj_open.Value),
-                Margin = Math.Round(4000 / open.adj_open.Value) * open.adj_open.Value * 0.1m,
+                Volume = Math.Round(oneMargin * leverage / open.adj_open.Value),
+                Margin = Math.Round(oneMargin * leverage / open.adj_open.Value) * open.adj_open.Value /leverage,
                 StopLoss = open.adj_open.Value * ((100 - (SLPercent * (int)s)) / 100),
                 TakeProfit = open.adj_open.Value * ((100 + (TPPercent * (int)s)) / 100)
             };
