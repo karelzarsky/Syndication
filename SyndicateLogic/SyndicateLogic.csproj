@@ -76,7 +76,34 @@
   <ItemGroup>
     <Compile Include="DataLayer.cs" />
     <Compile Include="Db.cs" />
-    <Compile Include="Entities.cs" />
+    <Compile Include="Entities\ETFStock.cs" />
+    <Compile Include="Entities\Article.cs" />
+    <Compile Include="Entities\ArticleRelation.cs" />
+    <Compile Include="Entities\ArticleScore.cs" />
+    <Compile Include="Entities\Backtest.cs" />
+    <Compile Include="Entities\CommonWord.cs" />
+    <Compile Include="Entities\CompaniesResponse.cs" />
+    <Compile Include="Entities\Company.cs" />
+    <Compile Include="Entities\CompanyDetail.cs" />
+    <Compile Include="Entities\CompanyName.cs" />
+    <Compile Include="Entities\Currency.cs" />
+    <Compile Include="Entities\Feed.cs" />
+    <Compile Include="Entities\IndexComponent.cs" />
+    <Compile Include="Entities\Instrument.cs" />
+    <Compile Include="Entities\InstrumentIdentifier.cs" />
+    <Compile Include="Entities\IntrinioJson.cs" />
+    <Compile Include="Entities\InvestorRSSFeed.cs" />
+    <Compile Include="Entities\Log.cs" />
+    <Compile Include="Entities\Prediction.cs" />
+    <Compile Include="Entities\Price.cs" />
+    <Compile Include="Entities\PricesResponse.cs" />
+    <Compile Include="Entities\RSSServer.cs" />
+    <Compile Include="Entities\Security.cs" />
+    <Compile Include="Entities\Shingle.cs" />
+    <Compile Include="Entities\ShingleAction.cs" />
+    <Compile Include="Entities\ShingleUse.cs" />
+    <Compile Include="Entities\StockIndex.cs" />
+    <Compile Include="Entities\StockIndicesResponse.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Migrations\201608111016563_firstTables.cs" />
     <Compile Include="Migrations\201608111016563_firstTables.Designer.cs">
@@ -435,6 +462,7 @@
       <DependentUpon>201702181527440_backtestKey.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Entities\ProblematicShortcut.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -443,6 +471,7 @@
     </Compile>
     <Compile Include="RssLogic.cs" />
     <Compile Include="ShingleLogic.cs" />
+    <Compile Include="Entities\StockTicker.cs" />
     <Compile Include="SyndicationFeedXmlReader.cs" />
   </ItemGroup>
   <ItemGroup>

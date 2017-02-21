@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using SyndicateLogic.Entities;
-using MathNet.Numerics.Statistics;
 
 namespace SyndicateLogic
 {
@@ -508,7 +507,7 @@ JOIN rss.shingles s on s.id = @shingleID and s.language = a.language
 ) subs WHERE op <> 0 and minDownAvg <> 0 and maxUpAvg <> 0 and cl <> 0 group by interval
 having count(1)>10 and count (distinct(ticker)) > 3";
 
-            var actions = ctx.Database.SqlQuery<shingleAction>(getActions,
+            var actions = ctx.Database.SqlQuery<ShingleAction>(getActions,
                 new SqlParameter("@shingleID", ShingleID),
                 new SqlParameter("@maxInterval", maxInterval)).ToList();
 

@@ -310,7 +310,7 @@ namespace SyndicateLogic
             var shingles = context.ShingleUses.Where(x => x.ArticleID == ea.ID).ToArray();
             foreach (var shingle in shingles)
             {
-                shingleAction[] actions = context.ShingleActions.Where(x => x.shingleID == shingle.ShingleID && x.samples > minSamples && x.tickers > minTickers && x.up != null && x.down != null).ToArray();
+                ShingleAction[] actions = context.ShingleActions.Where(x => x.shingleID == shingle.ShingleID && x.samples > minSamples && x.tickers > minTickers && x.up != null && x.down != null).ToArray();
                 foreach (var a in actions)
                 {
                     score[a.interval] += (decimal)a.down + (decimal)a.up - 2;

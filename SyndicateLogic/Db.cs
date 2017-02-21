@@ -31,9 +31,9 @@ namespace SyndicateLogic
         public DbSet<Instrument> Instruments { get; set; }
         public DbSet<InstrumentIdentifier> InstrumentIdentifiers { get; set; }
         public DbSet<ArticleRelation> ArticleRelations { get; set; }
-        public DbSet<indexComponent> IndexComponents { get; set; }
+        public DbSet<IndexComponent> IndexComponents { get; set; }
         public DbSet<RSSServer> RssServers { get; set; }
-        public DbSet<shingleAction> ShingleActions { get; set; }
+        public DbSet<ShingleAction> ShingleActions { get; set; }
         public DbSet<CompanyName> CompanyNames { get; set; }
         public DbSet<Currency> Currencies { get; set; }
         public DbSet<StockTicker> StockTickers { get; set; }
