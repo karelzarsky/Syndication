@@ -1,0 +1,5 @@
+﻿@model SyndicateLogic.Entities.Log
+@foreach (var restaurant in Model.Restaurants)
+{
+    @Html.Partial("_Summary", restaurant)
+}

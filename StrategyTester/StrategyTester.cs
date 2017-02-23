@@ -10,6 +10,8 @@ namespace StrategyTester
 {
     class Program
     {
+        static decimal commisionsPerTrade = 16;
+
         static void Main(string[] args)
         {
             const double sellLimit = -0.1;
@@ -298,7 +300,7 @@ order by a.PublishedUTC";
                 BuySignal = s == DirectionType.Buy,
                 Comment = $"TP:{TPPercent:00.#} SL:{SLPercent:00.#} {comment}",
                 StrategyNr = StrategyNr,
-                Commision = 8,
+                Commision = commisionsPerTrade,
                 TimeOpen = open.date,
                 OpenPrice = open.adj_open.Value,
                 Volume = Math.Round(oneMargin * leverage / open.adj_open.Value),
