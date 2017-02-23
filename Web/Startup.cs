@@ -7,8 +7,12 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
+using SyndicationWeb.Services;
+using SyndicateLogic;
 
-namespace Web
+namespace SyndicationWeb
 {
     public class Startup
     {
@@ -29,6 +33,8 @@ namespace Web
         {
             // Add framework services.
             services.AddMvc();
+            services.AddScoped<ILogData, LogData>();
+            services.AddScoped<Db>(_ => new Db(Configuration.GetConnectionString("SyndicationDb")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

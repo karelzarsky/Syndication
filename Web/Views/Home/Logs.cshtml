@@ -1,0 +1,11 @@
+﻿@model SyndicationWeb.ViewModels.LogViewModel
+@{
+    ViewData["Title"] = "Logs";
+}
+<h1>Last logs</h1>
+<table>
+    @foreach (var log in Model.Logs)
+    {
+        @Html.Partial("_Log", log)
+    }
+</table>

@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "exports": {
+    "SyndicateLogic/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.5.2",
+      "compile": {
+        "../bin/SyndicateLogic.dll": {}
+      },
+      "runtime": {
+        "../bin/SyndicateLogic.dll": {},
+        "../packages/EntityFramework.6.1.3/lib/net45/EntityFramework.SqlServer.dll": {},
+        "../packages/EntityFramework.6.1.3/lib/net45/EntityFramework.dll": {},
+        "../packages/MathNet.Numerics.3.17.0/lib/net40/MathNet.Numerics.dll": {}
+      },
+      "contentFiles": {
+        "../bin/SyndicateLogic.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}

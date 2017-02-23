@@ -5,9 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Web.Services
+namespace SyndicationWeb.Services
 {
-    public class LogData
+    public interface ILogData
+    {
+        IEnumerable<Log> GetAll();
+    }
+
+    public class LogData : ILogData
     {
         private Db _ctx;
 
@@ -18,7 +23,7 @@ namespace Web.Services
 
         public IEnumerable<Log> GetAll()
         {
-            return _ctx.Logs.ToArray();
+            return _ctx.Logs.OrderByDescending(l => l.Id).Take(100).ToArray();
         }
     }
 }
