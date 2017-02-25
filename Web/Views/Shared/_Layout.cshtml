@@ -4,21 +4,38 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Web</title>
-    <link rel="stylesheet" href="~/css/cosmo-bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/cosmo-bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 
 <body>
-    <div id="sidebar" class="container-fluid">
-        <ul class="nav">
-            <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
-            <li><a asp-area="" asp-controller="Home" asp-action="Logs">Logs</a></li>
-            <li><a asp-area="" asp-controller="Home" asp-action="Company">Company</a></li>
-            <li><a asp-area="" asp-controller="Home" asp-action="Tips">Daily Tips</a></li>
-        </ul>
-    </div>
-
-    <div id="main" class="container-fluid">
+    <nav class="navbar navbar-inverse sidebar" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Brand</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Index">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home" /></a></li>
+                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Logs">Logs<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list" /></a></li>
+                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Company">Company<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-apple" /></a></li>
+                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Tips">Daily Tips<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-thumbs-up" /></a></li>
+                </ul>
+                <div class="form-group">
+                    <input type="text" class="form-control" name="ticker" placeholder="Ticker" />
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="main">
         @RenderBody()
     </div>
 

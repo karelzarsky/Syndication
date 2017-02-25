@@ -28,7 +28,7 @@ namespace SyndicationWeb.Services
 FROM fact.shingleAction sa
 JOIN rss.shingleUse su on su.ShingleID = sa.shingleID
 JOIN rss.articles a on a.ID = su.ArticleID
-WHERE a.ticker is not null and sa.interval = 30 and sa.samples > 30 and mean <> 0 and a.ReceivedUTC >= GETDATE()-1
+WHERE a.ticker is not null and sa.interval = 30 and sa.samples > 30 and mean <> 0 and a.ReceivedUTC >= GETDATE()-3
 GROUP BY a.ID, a.Ticker, a.ReceivedUTC, a.PublishedUTC, a.URI_links, a.Title
 HAVING AVG(sa.down + sa.up -2) > .04
 ORDER BY AVG(sa.down + sa.up) DESC";

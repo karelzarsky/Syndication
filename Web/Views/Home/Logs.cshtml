@@ -2,12 +2,22 @@
 @{
     ViewData["Title"] = "Logs";
 }
-<h1>Last logs</h1>
-<div class="container-fluid">
-    @foreach (var log in Model.Logs)
-    {
-        <div class="row">
-            @Html.Partial("_Log", log)
-        </div>
-    }
+<div class="container">
+    <h1>Last logs </h1>
+
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <td width="90px">Time</td>
+                <td>Severity</td>
+                <td>Message</td>
+            </tr>
+        </thead>
+        @foreach (var log in Model.Logs)
+        {
+            <tr>
+                @Html.Partial("_Log", log)
+            </tr>
+        }
+    </table>
 </div>

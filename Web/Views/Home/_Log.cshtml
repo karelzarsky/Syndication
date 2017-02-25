@@ -1,4 +1,4 @@
 ﻿@model Log
-<div class="col-lg-2">@Model.Time</div>
-<div class="col-lg-1">@Model.Severity</div>
-<div class="col-lg-9">@Model.Message</div>
+<td>@Model.Time.ToLocalTime().ToString("dd.MM. hh:mm")</td>
+<td align="center">@Model.Severity</td>
+<td>@Model.Message</td>

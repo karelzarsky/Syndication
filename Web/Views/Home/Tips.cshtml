@@ -2,13 +2,19 @@
 @{
     ViewData["Title"] = "Today Tips";
 }
-<h1>Todays trade tips</h1>
-
 <div class="container">
+    <div class="row ">
+        <h1>Todays trade tips</h1>
+    </div>
+    <div class="row container">
+        <div class="col-lg-1">ArticleID</div>
+        <div class="col-lg-2">Published</div>
+        <div class="col-lg-1">Score</div>
+        <div class="col-lg-1">Ticker</div>
+        <div class="col-lg-7">Title</div>
+    </div>
     @foreach (var tip in Model.Tips)
     {
-        <div class="row">
-            @Html.Partial("_Tip", tip)
-        </div>
+        @Html.Partial("_Tip", tip)
     }
 </div>

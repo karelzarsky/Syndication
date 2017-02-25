@@ -291,7 +291,8 @@ namespace SyndicateLogic
             ShingleLogic.ProcessArticleNew(ea.ID);
             ScoreArticle(ea, context);
             sw.Stop();
-            DataLayer.LogMessage(LogLevel.NewArticle, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax -2)} Ticker:{ea.Ticker} {ea.Title}");
+            string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";
+            DataLayer.LogMessage(LogLevel.NewArticle, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
             return true;
         }
 
@@ -391,7 +392,7 @@ namespace SyndicateLogic
             foreach (var article in olderList)
             {
                 ctx.Entry(article).State = EntityState.Deleted;
-                string difference = FindDifference(article.Summary, ea.Summary) + " | " + FindDifference(ea.Summary, article.Summary);
+                string difference = FindDifference(article.Summary, ea.Summary);
                 DataLayer.LogMessage(LogLevel.Info, $"D Deleting duplicate article {article.ID} from {article.ReceivedUTC}. New version: {ea.ID} Difference: {difference}");
             }
             ctx.SaveChanges();
