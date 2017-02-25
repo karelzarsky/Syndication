@@ -289,9 +289,9 @@ namespace SyndicateLogic
             DeleteOlderVersions(ea);
             FindInstruments(ea.ID);
             ShingleLogic.ProcessArticleNew(ea.ID);
-            sw.Stop();
-            DataLayer.LogMessage(LogLevel.NewArticle, $"A {sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
             ScoreArticle(ea, context);
+            sw.Stop();
+            DataLayer.LogMessage(LogLevel.NewArticle, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax -2)} Ticker:{ea.Ticker} {ea.Title}");
             return true;
         }
 
@@ -336,7 +336,7 @@ namespace SyndicateLogic
                 }
             }
             context.SaveChanges();
-            DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}/{score.Max()}");
+            //DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}/{score.Max()}");
         }
 
         private static void Alert(Article ea, decimal[] score)

@@ -1,6 +1,4 @@
 ﻿@model Log
-<tr>
-    <td width="180">@Model.Time</td>
-    <td>@Model.Severity</td>
-    <td>@Model.Message</td>
-</tr>
+<div class="col-lg-2">@Model.Time</div>
+<div class="col-lg-1">@Model.Severity</div>
+<div class="col-lg-9">@Model.Message</div>

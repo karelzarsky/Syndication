@@ -34,6 +34,7 @@ namespace SyndicationWeb
             // Add framework services.
             services.AddMvc();
             services.AddScoped<ILogData, LogData>();
+            services.AddScoped<ITipsData, TipsData>();
             services.AddScoped<Db>(_ => new Db(Configuration.GetConnectionString("SyndicationDb")));
         }
 

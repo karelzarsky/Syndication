@@ -90,7 +90,7 @@ namespace SyndicateService
                 Feed f = RssLogic.GetNextFeed(context);
                 if (f != null)
                 {
-                    DataLayer.LogMessage(LogLevel.Info, $"N Next feed {f.ID} {f.Url}");
+                    //DataLayer.LogMessage(LogLevel.Info, $"N Next feed {f.ID} {f.Url}");
                     RssLogic.ProcessFeed(f, context);
                     //DataLayer.LogMessage(LogLevel.Info, $"Completed feed {f.ID} {f.Url}");
                     context.SaveChanges();

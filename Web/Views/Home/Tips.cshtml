@@ -1,0 +1,14 @@
+﻿@model SyndicationWeb.ViewModels.TipsViewModel
+@{
+    ViewData["Title"] = "Today Tips";
+}
+<h1>Todays trade tips</h1>
+
+<div class="container">
+    @foreach (var tip in Model.Tips)
+    {
+        <div class="row">
+            @Html.Partial("_Tip", tip)
+        </div>
+    }
+</div>

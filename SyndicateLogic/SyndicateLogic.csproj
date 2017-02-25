@@ -105,6 +105,7 @@
     <Compile Include="Entities\StockIndex.cs" />
     <Compile Include="Entities\StockIndicesResponse.cs" />
     <Compile Include="Enums.cs" />
+    <Compile Include="FeedParser.cs" />
     <Compile Include="Migrations\201608111016563_firstTables.cs" />
     <Compile Include="Migrations\201608111016563_firstTables.Designer.cs">
       <DependentUpon>201608111016563_firstTables.cs</DependentUpon>

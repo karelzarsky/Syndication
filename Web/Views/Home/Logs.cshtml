@@ -3,9 +3,11 @@
     ViewData["Title"] = "Logs";
 }
 <h1>Last logs</h1>
-<table>
+<div class="container-fluid">
     @foreach (var log in Model.Logs)
     {
-        @Html.Partial("_Log", log)
+        <div class="row">
+            @Html.Partial("_Log", log)
+        </div>
     }
-</table>
+</div>
