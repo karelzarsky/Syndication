@@ -1,0 +1,14 @@
+﻿@model Article
+
+<div class="row">
+    <div class="col-lg-1">@Model.ReceivedUTC.ToLocalTime().ToString("dd.MM. HH:mm")</div>
+    <div class="col-lg-1">@Model.PublishedUTC.ToLocalTime().ToString("dd.MM. HH:mm")</div>
+    <div class="col-lg-1">@(100.00m*(Model.ScoreMin + Model.ScoreMax))</div>
+    <div class="col-lg-1">@Model.language</div>
+    <div class="col-lg-1 info"><strong>@Model.Ticker</strong></div>
+    <div class="col-lg-7"><a href="@Model.URI_links">@Model.Title</a></div>
+</div>
+<div class="row">
+    <div class="col-lg-12 small">@Model.Summary</div>
+</div>
+<hr/>

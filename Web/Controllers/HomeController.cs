@@ -13,11 +13,13 @@ namespace SyndicationWeb.Controllers
     {
         private ILogData _logData;
         private ITipsData _tipsData;
+        private IArticlesData _articlesData;
 
-        public HomeController(ILogData logData, ITipsData tipsData)
+        public HomeController(ILogData logData, ITipsData tipsData, IArticlesData articlesData)
         {
             _logData = logData;
             _tipsData = tipsData;
+            _articlesData = articlesData;
         }
 
         public IActionResult Index()
@@ -38,6 +40,12 @@ namespace SyndicationWeb.Controllers
         {
             var model = new TipsViewModel();
             model.Tips = _tipsData.GetTips();
+            return View(model);
+        }
+
+        public IActionResult Articles()
+        {
+            var model = _articlesData.GetArticles();
             return View(model);
         }
 
