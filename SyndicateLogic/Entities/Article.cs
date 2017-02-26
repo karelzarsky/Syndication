@@ -18,7 +18,9 @@ namespace SyndicateLogic.Entities
         public string Summary { get; set; }
         public string Categories { get; set; }
         [Index]
+        [Display(Name = "Published")]
         public DateTime PublishedUTC { get; set; }
+        [Display(Name = "Received")]
         public DateTime ReceivedUTC { get; set; }
         [Index]
         public ProcessState Processed { get; set; }

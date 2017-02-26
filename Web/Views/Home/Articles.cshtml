@@ -6,16 +6,30 @@
     <div class="row ">
         <h1 class="text-center">Latest articles <span class="showopacity glyphicon glyphicon-file" /></h1>
     </div>
-    <div class="row bg-primary">
-        <div class="col-lg-1"><strong>Received</strong></div>
-        <div class="col-lg-1"><strong>Published</strong></div>
-        <div class="col-lg-1"><strong>Score</strong></div>
-        <div class="col-lg-1"><strong>Language</strong></div>
-        <div class="col-lg-1"><strong>Ticker</strong></div>
-        <div class="col-lg-7"><strong>Title</strong></div>
-    </div>
+    <form asp-action="Articles" method="get">
+        Filter: <input type="text" name="id" value="@ViewData["id"]" placeholder="ticker…" />
+        <input type="text" name="lang" value="@ViewData["lang"]" placeholder="language…" />
+        <input type="submit" value="Filter" class="btn" />
+        <a asp-action="Articles" class="btn">Clear</a>
+        <div class="row">
+            <div class="col-lg-1">
+                <a asp-route-sortOrder="@ViewBag.ReceivedSortParm">
+                    <strong>@Html.DisplayNameFor(model => model.ReceivedUTC)</strong>
+                </a>
+            </div>
+            <div class="col-lg-1">
+                <a asp-route-sortOrder="@ViewBag.PublishedSortParm">
+                    <strong>@Html.DisplayNameFor(model => model.PublishedUTC)</strong>
+                </a>
+            </div>
+            <div class="col-lg-1"><strong>Score</strong></div>
+            <div class="col-lg-1"><strong>Language</strong></div>
+            <div class="col-lg-1"><strong>Ticker</strong></div>
+            <div class="col-lg-7"><strong>Title</strong></div>
+        </div>
+    </form>
     @foreach (var a in Model)
     {
-            @Html.Partial("_Article", a)
+        @Html.Partial("_Article", a)
     }
 </div>

@@ -45,12 +45,37 @@ namespace SyndicationWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Articles(string id = "")
+        public IActionResult Articles(string id = "", string sortOrder = "", string lang = "")
         {
+            ViewData["PublishedSortParm"] = string.IsNullOrEmpty(sortOrder) ? "published_desc" : "";
+            ViewData["ReceivedSortParm"] = sortOrder == "received" ? "received_desc" : "received";
+
+            IQueryable<Article> articleQuery;
+
             if (string.IsNullOrEmpty(id))
-                return View(_articlesData.GetArticles());
+            {
+                articleQuery = _articlesData.GetArticles();
+            }
             else
-                return View(_articlesData.GetArticlesByTicker(id));
+            {
+                articleQuery = _articlesData.GetArticlesByTicker(id);
+                ViewData["id"] = id;
+            }
+
+            if (!string.IsNullOrEmpty(lang))
+            {
+                articleQuery = articleQuery.Where(a => a.language == lang);
+                ViewData["lang"] = lang;
+            }
+
+            switch (sortOrder)
+            {
+                case "published": return View(articleQuery.OrderBy(a => a.PublishedUTC).Take(100));
+                case "published_desc": return View(articleQuery.OrderByDescending(a => a.PublishedUTC).Take(100));
+                case "received": return View(articleQuery.OrderBy(a => a.ReceivedUTC).Take(100));
+                case "received_desc": return View(articleQuery.OrderByDescending(a => a.ReceivedUTC).Take(100));
+            }
+            return View(articleQuery.OrderByDescending(a => a.ID).Take(100));
         }
 
         public IActionResult Error()
@@ -65,16 +90,6 @@ namespace SyndicationWeb.Controllers
                 return NotFound();
             else
                 return View(model);
-        }
-
-        [HttpPost]
-        public IActionResult CompanyByTicker(string ticker)
-        {
-            var model = _companyData.GetCompany(ticker);
-            if (model == null || model.Detail == null)
-                return NotFound();
-            else
-                return View("Company", model);
         }
     }
 }
