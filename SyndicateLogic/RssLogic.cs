@@ -24,7 +24,7 @@ namespace SyndicateLogic
         public static readonly Regex _urlRegex = new Regex("\\w+:\\/{2}[\\d\\w-]+(\\.[\\d\\w-]+)*(?:(?:\\/[^\\s/]*))*", RegexOptions.Compiled);
         private static int minSamples = 30;
         private static int minTickers = 10;
-        private static decimal minPositiveScoreAlert = 0.5m;
+        private static decimal minPositiveScoreAlert = 4m;
         private static decimal minNegativeScoreAlert = -0.2m;
 
         public static void FindInstruments(int ArticleID)
@@ -344,9 +344,9 @@ namespace SyndicateLogic
         {
             if (ea.Ticker == null || ea.ReceivedUTC < DateTime.Now.AddDays(-7)) return;
             var ctx = new Db();
-            if (ea.ScoreMax > minPositiveScoreAlert || ea.ScoreMin < minNegativeScoreAlert)
+            if (score.Max() >= minPositiveScoreAlert)
             {
-                string subject = $"Stock alert {ea.Ticker} {ea.ScoreMin}/{ea.ScoreMax}";
+                string subject = $"Stock alert {ea.Ticker} {score.Max()}";
                 string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Summary + "\r\n" + ea.URI_links;
                 SendMail(subject, body);
             }

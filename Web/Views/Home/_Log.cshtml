@@ -1,4 +1,4 @@
 ﻿@model Log
-<td>@Model.Time.ToLocalTime().ToString("dd.MM. HH:mm:ss")</td>
-<td align="center">@Model.Severity</td>
+<td>@Model.Time.ToString("dd.MM. HH:mm:ss")</td>
+<td align="center">@Enum.GetName(typeof(SyndicateLogic.LogLevel), Model.Severity)</td>
 <td>@Model.Message</td>

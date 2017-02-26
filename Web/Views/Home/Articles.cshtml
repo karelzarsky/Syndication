@@ -1,25 +1,50 @@
-﻿@model IEnumerable<Article>
+﻿@model PaginatedList<Article>
 @{
     ViewData["Title"] = "Latest articles";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
+
 <div class="container-fluid">
     <div class="row ">
         <h1 class="text-center">Latest articles <span class="showopacity glyphicon glyphicon-file" /></h1>
     </div>
     <form asp-action="Articles" method="get">
-        Filter: <input type="text" name="id" value="@ViewData["id"]" placeholder="ticker…" />
+        <div class="btn-group" role="group">
+            <a asp-action="Articles"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-page="@(Model.PageIndex - 1)"
+               asp-route-lang="@ViewData["lang"]"
+               asp-route-ticker="@ViewData["ticker"]"
+               class="btn btn-sm btn-info @prevDisabled"
+               role="group">
+                Prev<div><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" /></div>
+            </a>
+            <a class="btn btn-sm btn-info disabled" role="group"><div>Page</div>@Model.PageIndex</a>
+            <a asp-action="Articles"
+               asp-route-sortOrder="@ViewData["CurrentSort"]"
+               asp-route-page="@(Model.PageIndex + 1)"
+               asp-route-lang="@ViewData["lang"]"
+               asp-route-ticker="@ViewData["ticker"]"
+               class="btn btn-sm btn-info @nextDisabled"
+               role="group">
+                Next
+                <div><span class="glyphicon glyphicon-chevron-right" aria-hidden="true" /></div>
+            </a>
+        </div>
+        Filter: <input type="text" name="ticker" value="@ViewData["ticker"]" placeholder="ticker…" />
         <input type="text" name="lang" value="@ViewData["lang"]" placeholder="language…" />
-        <input type="submit" value="Filter" class="btn" />
-        <a asp-action="Articles" class="btn">Clear</a>
+        <input type="submit" value="Filter" class="btn btn-info" />
+        <a asp-action="Articles" class="btn btn-info">Clear</a>
         <div class="row">
             <div class="col-lg-1">
                 <a asp-route-sortOrder="@ViewBag.ReceivedSortParm">
-                    <strong>@Html.DisplayNameFor(model => model.ReceivedUTC)</strong>
+                    <strong>Received</strong>
                 </a>
             </div>
             <div class="col-lg-1">
                 <a asp-route-sortOrder="@ViewBag.PublishedSortParm">
-                    <strong>@Html.DisplayNameFor(model => model.PublishedUTC)</strong>
+                    <strong>Published</strong>
                 </a>
             </div>
             <div class="col-lg-1"><strong>Score</strong></div>

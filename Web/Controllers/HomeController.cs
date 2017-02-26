@@ -45,21 +45,22 @@ namespace SyndicationWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Articles(string id = "", string sortOrder = "", string lang = "")
+        public IActionResult Articles(string ticker = "", string sortOrder = "", string lang = "", int? page = 1)
         {
+            ViewData["CurrentSort"] = sortOrder;
             ViewData["PublishedSortParm"] = string.IsNullOrEmpty(sortOrder) ? "published_desc" : "";
             ViewData["ReceivedSortParm"] = sortOrder == "received" ? "received_desc" : "received";
+            ViewData["ticker"] = ticker;
 
             IQueryable<Article> articleQuery;
 
-            if (string.IsNullOrEmpty(id))
+            if (string.IsNullOrEmpty(ticker))
             {
                 articleQuery = _articlesData.GetArticles();
             }
             else
             {
-                articleQuery = _articlesData.GetArticlesByTicker(id);
-                ViewData["id"] = id;
+                articleQuery = _articlesData.GetArticlesByTicker(ticker);
             }
 
             if (!string.IsNullOrEmpty(lang))
@@ -70,12 +71,12 @@ namespace SyndicationWeb.Controllers
 
             switch (sortOrder)
             {
-                case "published": return View(articleQuery.OrderBy(a => a.PublishedUTC).Take(100));
-                case "published_desc": return View(articleQuery.OrderByDescending(a => a.PublishedUTC).Take(100));
-                case "received": return View(articleQuery.OrderBy(a => a.ReceivedUTC).Take(100));
-                case "received_desc": return View(articleQuery.OrderByDescending(a => a.ReceivedUTC).Take(100));
+                case "published": articleQuery = articleQuery.OrderBy(a => a.PublishedUTC); break;
+                case "published_desc": articleQuery = articleQuery.OrderByDescending(a => a.PublishedUTC); break;
+                case "received": articleQuery = articleQuery.OrderBy(a => a.ReceivedUTC); break;
+                default: articleQuery = articleQuery.OrderByDescending(a => a.ReceivedUTC); break;
             }
-            return View(articleQuery.OrderByDescending(a => a.ID).Take(100));
+            return View(PaginatedList<Article>.Create(articleQuery, page ?? 1, 100));
         }
 
         public IActionResult Error()
