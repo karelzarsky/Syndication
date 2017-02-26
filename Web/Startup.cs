@@ -36,7 +36,8 @@ namespace SyndicationWeb
             services.AddScoped<ILogData, LogData>();
             services.AddScoped<ITipsData, TipsData>();
             services.AddScoped<IArticlesData, ArticlesData>();
-            services.AddScoped<Db>(_ => new Db(Configuration.GetConnectionString("SyndicationDb")));
+            services.AddScoped<ICompanyData, CompanyData>();
+            services.AddScoped(_ => new Db(Configuration.GetConnectionString("SyndicationDb")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +62,7 @@ namespace SyndicationWeb
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{controller=Home}/{action=Tips}/{id?}");
             });
         }
     }

@@ -2,16 +2,16 @@
 @{
     ViewData["Title"] = "Today Tips";
 }
-<div class="container">
-    <div class="row ">
-        <h1>Todays trade tips</h1>
+<div class="container-fluid">
+    <div class="row">
+        <h1>Todays trade tips <span class="showopacity glyphicon glyphicon-thumbs-up" /></h1>
     </div>
-    <div class="row container">
-        <div class="col-lg-1">ArticleID</div>
-        <div class="col-lg-2">Published</div>
-        <div class="col-lg-1">Score</div>
-        <div class="col-lg-1">Ticker</div>
-        <div class="col-lg-7">Title</div>
+    <div class="row bg-primary">
+        <div class="col-lg-1"><strong>ArticleID</strong></div>
+        <div class="col-lg-1"><strong>Published</strong></div>
+        <div class="col-lg-1"><strong>Score</strong></div>
+        <div class="col-lg-1"><strong>Ticker</strong></div>
+        <div class="col-lg-8"><strong>Title</strong></div>
     </div>
     @foreach (var tip in Model.Tips)
     {

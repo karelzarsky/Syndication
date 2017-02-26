@@ -14,12 +14,14 @@ namespace SyndicationWeb.Controllers
         private ILogData _logData;
         private ITipsData _tipsData;
         private IArticlesData _articlesData;
+        private ICompanyData _companyData;
 
-        public HomeController(ILogData logData, ITipsData tipsData, IArticlesData articlesData)
+        public HomeController(ILogData logData, ITipsData tipsData, IArticlesData articlesData, ICompanyData companyData)
         {
             _logData = logData;
             _tipsData = tipsData;
             _articlesData = articlesData;
+            _companyData = companyData;
         }
 
         public IActionResult Index()
@@ -49,23 +51,18 @@ namespace SyndicationWeb.Controllers
             return View(model);
         }
 
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
         public IActionResult Error()
         {
             return View();
+        }
+
+        public IActionResult Company(string Id)
+        {
+            var model = _companyData.GetCompany(Id);
+            if (model == null || model.Detail == null)
+                return NotFound();
+            else
+                return View(model);
         }
     }
 }
