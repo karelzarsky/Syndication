@@ -45,10 +45,12 @@ namespace SyndicationWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Articles()
+        public IActionResult Articles(string id = "")
         {
-            var model = _articlesData.GetArticles();
-            return View(model);
+            if (string.IsNullOrEmpty(id))
+                return View(_articlesData.GetArticles());
+            else
+                return View(_articlesData.GetArticlesByTicker(id));
         }
 
         public IActionResult Error()
@@ -63,6 +65,16 @@ namespace SyndicationWeb.Controllers
                 return NotFound();
             else
                 return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult CompanyByTicker(string ticker)
+        {
+            var model = _companyData.GetCompany(ticker);
+            if (model == null || model.Detail == null)
+                return NotFound();
+            else
+                return View("Company", model);
         }
     }
 }

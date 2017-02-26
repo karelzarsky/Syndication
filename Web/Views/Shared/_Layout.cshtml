@@ -19,7 +19,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Seer</a>
+                <a class="navbar-brand" href="#">Invest Seer</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
@@ -29,10 +29,11 @@
                     <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Tips">Daily Tips<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-thumbs-up" /></a></li>
                     <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Articles">Articles<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-file" /></a></li>
                 </ul>
-                <div class="form-group">
-                    <input type="text" class="form-control" name="ticker" placeholder="Company Ticker" />
-                </div>
             </div>
+            <form asp-action="CompanyByTicker" asp-controller="Home" method="POST">
+                <input type="text" name="ticker" class="form-control" placeholder="ticker" />
+                <input type="submit" value="Search ticker" class="btn btn-group-justified" />
+            </form>
         </div>
     </nav>
     <div class="main">

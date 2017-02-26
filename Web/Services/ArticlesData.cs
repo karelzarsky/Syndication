@@ -10,6 +10,7 @@ namespace SyndicationWeb.Services
     public interface IArticlesData
     {
         IEnumerable<Article> GetArticles();
+        IEnumerable<Article> GetArticlesByTicker(string ticker);
     }
 
     public class ArticlesData : IArticlesData
@@ -20,9 +21,15 @@ namespace SyndicationWeb.Services
         {
             _ctx = ctx;
         }
+
         public IEnumerable<Article> GetArticles()
         {
             return _ctx.Articles.OrderByDescending(a => a.ID).Take(100).ToArray();
+        }
+
+        public IEnumerable<Article> GetArticlesByTicker(string ticker)
+        {
+            return _ctx.Articles.Where(a => a.Ticker == ticker).OrderByDescending(a => a.ID).Take(100).ToArray();
         }
     }
 }
