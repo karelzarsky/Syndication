@@ -78,9 +78,9 @@ namespace SyndicationWeb.Controllers
             return View();
         }
 
-        public IActionResult Company(string Id)
+        public IActionResult Company(string ticker)
         {
-            var model = _companyData.GetCompany(Id);
+            var model = _companyData.GetCompany(ticker);
             if (model == null || model.Detail == null)
                 return NotFound();
             else

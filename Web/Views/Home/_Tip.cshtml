@@ -2,5 +2,6 @@
 <div class="col-lg-1">@Model.ArticleID</div>
 <div class="col-lg-1">@Model.Published.ToLocalTime().ToString("dd.MM. HH:mm")</div>
 <div class="col-lg-1">@Model.Score</div>
+<div class="col-lg-1"><b class="text-success">BUY</b></div>
 <div class="col-lg-1"><a asp-controller="Home" asp-action="Company" asp-route-id="@Model.Ticker"><strong>@Model.Ticker</strong></a></div>
-<div class="col-lg-8"><a href="@Model.Link">@Model.Title</a></div>
+<div class="col-lg-7"><a href="@Model.Link">@Model.Title</a></div>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Web</title>
+    <title>@ViewData["Title"] - Invest Seer</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/spacelab-bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
@@ -24,24 +24,28 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                    <li class="nav"><a asp-action="Tips">Daily Tips<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-thumbs-up" /></a></li>
+                    <li class="nav"><a asp-action="Articles">Articles<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-file" /></a></li>
+                    <li class="nav"><a asp-action="Companies">Companies<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-apple" /></a></li>
+                    <li class="nav">
+                        <form asp-action="Company" asp-controller="Home" method="GET">
+                            <input type="text" name="ticker" class="form-control" placeholder="ticker…" />
+                            <button type="submit" class="btn btn-group-justified">
+                                Search ticker<i class="glyphicon glyphicon-search pull-right"></i>
+                            </button>
+                        </form>
+                    </li>
+                    <li class="nav">
+                        <form asp-action="Companies" asp-controller="Home" method="GET">
+                            <input type="text" name="nameFilter" class="form-control" placeholder="name…" />
+                            <button type="submit" class="btn btn-group-justified">
+                                Search name<i class="glyphicon glyphicon-search pull-right"></i>
+                            </button>
+                        </form>
+                    </li>
                     <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Logs">Logs<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list" /></a></li>
-                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Tips">Daily Tips<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-thumbs-up" /></a></li>
-                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Articles">Articles<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-file" /></a></li>
-                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Companies">Companies<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-apple" /></a></li>
                 </ul>
-                <form asp-action="Company" asp-controller="Home" method="GET">
-                    <input type="text" name="id" class="form-control" placeholder="ticker…" />
-                    <button type="submit" class="btn btn-group-justified">
-                        Search ticker<i class="glyphicon glyphicon-search pull-right"></i>
-                    </button>
-                </form>
                 <br />
-                <form asp-action="Companies" asp-controller="Home" method="GET">
-                    <input type="text" name="nameFilter" class="form-control" placeholder="name…" />
-                    <button type="submit" class="btn btn-group-justified">
-                        Search name<i class="glyphicon glyphicon-search pull-right"></i>
-                    </button>
-                </form>
             </div>
         </div>
     </nav>
