@@ -87,9 +87,10 @@ namespace SyndicationWeb.Controllers
                 return View(model);
         }
 
-        public IActionResult Companies()
+        public IActionResult Companies(int page = 1, string nameFilter = "")
         {
-            return View(PaginatedList <CompanyDetail>.Create(_companyData.GetCompaniesByName("").OrderBy(c => c.ticker), 1, 100));
+            ViewData["nameFilter"] = nameFilter;
+            return View(PaginatedList <CompanyDetail>.Create(_companyData.GetCompaniesByName(nameFilter).OrderBy(c => c.ticker), page, 100));
         }
     }
 }
