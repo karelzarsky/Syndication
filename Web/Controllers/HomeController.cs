@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SyndicateLogic.Entities;
 using SyndicationWeb.Services;
@@ -26,16 +23,13 @@ namespace SyndicationWeb.Controllers
 
         public IActionResult Index()
         {
-            var model = new LogViewModel();
-            model.Logs = _logData.GetAll();
+            var model = _logData.GetAll();
             return View(model);
         }
 
-        public IActionResult Logs()
+        public IActionResult Logs(byte level = 0, bool descending = true, int page = 1, int pageSize = 100 )
         {
-            var model = new LogViewModel();
-            model.Logs = _logData.GetAll();
-            return View(model);
+            return View(_logData.GetAll(level, descending, page, pageSize));
         }
 
         public IActionResult Tips()
@@ -91,6 +85,11 @@ namespace SyndicationWeb.Controllers
                 return NotFound();
             else
                 return View(model);
+        }
+
+        public IActionResult Companies()
+        {
+            return View(PaginatedList <CompanyDetail>.Create(_companyData.GetCompaniesByName("").OrderBy(c => c.ticker), 1, 100));
         }
     }
 }

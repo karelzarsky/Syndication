@@ -1,15 +1,14 @@
 ﻿using SyndicateLogic;
+using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SyndicationWeb.Services
 {
     public interface ICompanyData
     {
         CompanyViewModel GetCompany(string Id);
+        IQueryable<CompanyDetail> GetCompaniesByName(string name);
     }
 
     public class CompanyData : ICompanyData
@@ -27,6 +26,11 @@ namespace SyndicationWeb.Services
             {
                 Detail = _ctx.CompanyDetails.FirstOrDefault(c => c.ticker == Id)
             };
+        }
+
+        public IQueryable<CompanyDetail> GetCompaniesByName(string name)
+        {
+            return _ctx.CompanyDetails.Where(c => c.name.Contains(name) || c.legal_name.Contains(name));
         }
     }
 }

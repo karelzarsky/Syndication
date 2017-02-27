@@ -66,7 +66,7 @@ namespace SyndicateLogic
             }
             catch (Exception e)
             {
-                DataLayer.LogMessage(LogLevel.Error, "Cannot parse XML feed.");
+                DataLayer.LogMessage(LogLevel.FeedError, "Cannot parse XML feed.");
                 DataLayer.LogException(e);
             }
             return dateVal;

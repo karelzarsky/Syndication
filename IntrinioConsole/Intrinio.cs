@@ -171,7 +171,7 @@ namespace IntrinioConsole
                 var ctx2 = new Db();
                 if (!ctx2.Companies.Select(d => d.ticker).Contains(ic.StockTicker))
                 {
-                    DataLayer.LogMessage(LogLevel.Error, $"Company {ic.StockTicker} is not in Intrinio DB.");
+                    DataLayer.LogMessage(LogLevel.IntrinioError, $"Company {ic.StockTicker} is not in Intrinio DB.");
                     continue;
                 }
                 if (!ctx2.CompanyDetails.Select(d => d.ticker).Contains(ic.StockTicker))
@@ -186,13 +186,13 @@ namespace IntrinioConsole
             var ctx = new Db();
             if (!ctx.Companies.Any(x => x.ticker == ticker))
             {
-                DataLayer.LogMessage(LogLevel.Error, $"Ticker {ticker} unknown to Intrinio.");
+                DataLayer.LogMessage(LogLevel.IntrinioError, $"Ticker {ticker} unknown to Intrinio.");
                 return;
             }
             var detail = download_serialized_json_data<CompanyDetail>(string.Format($@"https://api.intrinio.com/companies?ticker={ticker}"));
             if (detail == null || string.IsNullOrEmpty(detail.name))
             {
-                DataLayer.LogMessage(LogLevel.Error, $"Detail for ticker {ticker} not found.");
+                DataLayer.LogMessage(LogLevel.IntrinioError, $"Detail for ticker {ticker} not found.");
                 return;
             }
             ctx.CompanyDetails.AddOrUpdate(detail);
@@ -290,7 +290,7 @@ namespace IntrinioConsole
             var ctx = new Db();
             if (!ctx.Companies.Any(x => x.ticker == ticker))
             {
-                DataLayer.LogMessage(LogLevel.Error, $"Ticker {ticker} unknown to Intrinio.");
+                DataLayer.LogMessage(LogLevel.IntrinioError, $"Ticker {ticker} unknown to Intrinio.");
                 return;
             }
             if (ctx.Prices.Any(x => x.ticker == ticker))

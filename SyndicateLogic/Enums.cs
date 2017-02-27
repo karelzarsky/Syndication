@@ -2,18 +2,21 @@
 {
     public enum LogLevel : byte
     {
-        Info = 0,
-        NewArticle = 1,
-        Summary = 2,
+        Info = 1,
+        Article = 2,
         Service = 3,
         Intrinio = 4,
         ShingleProcessing = 5,
-        HashCollision = 6,
-        FeedProcessed = 7,
-        Analysis = 8,
-        Error = 253,
-        InvalidFeed = 254,
-        Fatal = 255
+        Feed = 6,
+        Analysis = 7,
+        Duplicate = 8,
+        IntrinioError = 253,
+        FeedError = 254,
+        Error = 255
+
+        //HashCollision = 6,
+        //Summary = 3,
+        //Fatal = 255
     }
 
     public enum ProcessState : byte

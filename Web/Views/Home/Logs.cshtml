@@ -1,9 +1,48 @@
 ﻿@model SyndicationWeb.ViewModels.LogViewModel
 @{
     ViewData["Title"] = "Logs";
+    var prevDisabled = !Model.Logs.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Logs.HasNextPage ? "disabled" : "";
 }
 <div class="container-fluid">
     <h1 class="text-center">Last logs <span class="showopacity glyphicon glyphicon-list" /></h1>
+
+    <form asp-action="Articles" method="get">
+        <div class="btn-group" role="group">
+            <a asp-action="Logs"
+               asp-route-page="@(Model.Logs.PageIndex - 1)"
+               asp-route-descending="@ViewData["descending"]"
+               asp-route-level="@ViewData["level"]"
+               class="btn btn-sm btn-info @prevDisabled"
+               role="group">
+                Prev<div><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" /></div>
+            </a>
+            <a class="btn btn-sm btn-info disabled" role="group"><div>Page</div>@Model.Logs.PageIndex / @Model.TotalPages</a>
+            <a asp-action="Logs"
+               asp-route-page="@(Model.Logs.PageIndex + 1)"
+               asp-route-descending="@ViewData["descending"]"
+               class="btn btn-sm btn-info @nextDisabled"
+               role="group">
+                Next
+                <div><span class="glyphicon glyphicon-chevron-right" aria-hidden="true" /></div>
+            </a>
+        </div>
+        <div class="btn-group" role="group">
+            @foreach (var l in Model.LogLevels)
+            {
+            <a asp-action="Logs"
+               asp-route-page="1"
+               asp-route-descending="@ViewData["descending"]"
+               asp-route-level="@l.Number"
+               class="btn btn-sm btn-success"
+               role="group">
+                @l.DisplayName
+            </a>
+            }
+        </div>
+    </form>
+
+    Records: @Model.TotalRecords
 
     <table class="table table-condensed table-striped">
         <thead>
@@ -13,8 +52,8 @@
                 <td>Message</td>
             </tr>
         </thead>
-        @foreach (var log in Model.Logs)
-        {
+        @foreach (var log in Model.Logs.ToArray())
+            {
             <tr>
                 @Html.Partial("_Log", log)
             </tr>

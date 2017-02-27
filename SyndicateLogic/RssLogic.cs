@@ -70,7 +70,7 @@ namespace SyndicateLogic
             foreach (var feed in ctx.Feeds.Where(x => x.Active == false && x.LastCheck < retryTime))
             {
                 feed.Active = true;
-                DataLayer.LogMessage(LogLevel.InvalidFeed, $"R restarting feed {feed.ID} {feed.Url}");
+                DataLayer.LogMessage(LogLevel.Feed, $"R restarting feed {feed.ID} {feed.Url}");
             }
             ctx.SaveChanges();
             return ctx.Feeds.Include("RSSServer")
@@ -140,7 +140,7 @@ namespace SyndicateLogic
             }
             catch (Exception)
             {
-                DataLayer.LogMessage(LogLevel.Error, "ERROR: Cannot load feeds resource file.");
+                DataLayer.LogMessage(LogLevel.FeedError, "ERROR: Cannot load feeds resource file.");
             }
             try
             {
@@ -166,7 +166,7 @@ namespace SyndicateLogic
             }
             catch (Exception e)
             {
-                DataLayer.LogMessage(LogLevel.Error, "ERROR: Cannot load investor feeds resource file.");
+                DataLayer.LogMessage(LogLevel.FeedError, "ERROR: Cannot load investor feeds resource file.");
             }
             if (freshFeeds <= 0) return;
             context.SaveChanges();
@@ -185,7 +185,7 @@ namespace SyndicateLogic
                 {
                     int itemsProcessed = feed.Items.Count(item => ProcessItem(item, f, context));
                     sw.Stop();
-                    DataLayer.LogMessage(LogLevel.FeedProcessed, $"F {f.ID}, {itemsProcessed}/{feed.Items.Count()} articles {sw.ElapsedMilliseconds}ms {f.Url}");
+                    DataLayer.LogMessage(LogLevel.Feed, $"F {f.ID}, {itemsProcessed}/{feed.Items.Count()} articles {sw.ElapsedMilliseconds}ms {f.Url}");
                     return itemsProcessed;
                 }
             }
@@ -201,7 +201,7 @@ namespace SyndicateLogic
                         f.Title += " " + e.InnerException.InnerException.Message;
                 }
                 context.SaveChanges();
-                DataLayer.LogMessage(LogLevel.InvalidFeed, "ERROR parsing sFeed " + f.ID + " " + f.Title);
+                DataLayer.LogMessage(LogLevel.FeedError, "ERROR parsing sFeed " + f.ID + " " + f.Title);
             }
             return 0;
         }
@@ -243,7 +243,7 @@ namespace SyndicateLogic
                     if (e.InnerException.InnerException != null)
                         f.Title += " " + e.InnerException.InnerException.Message;
                 }
-                DataLayer.LogMessage(LogLevel.InvalidFeed, "ERROR downloading Feed " + f.ID + " " + f.Title);
+                DataLayer.LogMessage(LogLevel.FeedError, "ERROR downloading Feed " + f.ID + " " + f.Title);
                 DataLayer.LogException(e);
             }
             f.LastCheck = DateTime.Now;
@@ -292,7 +292,7 @@ namespace SyndicateLogic
             ScoreArticle(ea, context);
             sw.Stop();
             string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";
-            DataLayer.LogMessage(LogLevel.NewArticle, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
+            DataLayer.LogMessage(LogLevel.Article, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
             return true;
         }
 
@@ -393,7 +393,7 @@ namespace SyndicateLogic
             {
                 ctx.Entry(article).State = EntityState.Deleted;
                 string difference = FindDifference(article.Summary, ea.Summary);
-                DataLayer.LogMessage(LogLevel.Info, $"D Deleting duplicate article {article.ID} from {article.ReceivedUTC}. New version: {ea.ID} Difference: {difference}");
+                DataLayer.LogMessage(LogLevel.Duplicate, $"D Deleting duplicate article {article.ID} from {article.ReceivedUTC}. New version: {ea.ID} Difference: {difference}");
             }
             ctx.SaveChanges();
         }

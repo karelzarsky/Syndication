@@ -1,0 +1,23 @@
+﻿@model PaginatedList<CompanyDetail>
+
+@{
+    ViewData["Title"] = "List of companies";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<div class="container-fluid">
+    <div class="row ">
+        <h1 class="text-center">Latest articles <span class="showopacity glyphicon glyphicon-apple" /></h1>
+    </div>
+    @foreach (var c in Model)
+    {
+        <div class="row">
+            <div class="col-md-1">@c.stock_exchange:<strong>@c.ticker</strong></div>
+            <div class="col-md-4">@c.name</div>
+            <div class="col-md-2">@c.hq_country</div>
+            <div class="col-md-1">@c.hq_state</div>
+            <div class="col-md-2"><a href="@c.company_url">@c.company_url</a></div>
+        </div>
+    }
+</div>
