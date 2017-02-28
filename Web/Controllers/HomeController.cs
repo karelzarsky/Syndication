@@ -45,32 +45,9 @@ namespace SyndicationWeb.Controllers
             ViewData["PublishedSortParm"] = string.IsNullOrEmpty(sortOrder) ? "published_desc" : "";
             ViewData["ReceivedSortParm"] = sortOrder == "received" ? "received_desc" : "received";
             ViewData["ticker"] = ticker;
+            ViewData["lang"] = lang;
 
-            IQueryable<Article> articleQuery;
-
-            if (string.IsNullOrEmpty(ticker))
-            {
-                articleQuery = _articlesData.GetArticles();
-            }
-            else
-            {
-                articleQuery = _articlesData.GetArticlesByTicker(ticker);
-            }
-
-            if (!string.IsNullOrEmpty(lang))
-            {
-                articleQuery = articleQuery.Where(a => a.language == lang);
-                ViewData["lang"] = lang;
-            }
-
-            switch (sortOrder)
-            {
-                case "published": articleQuery = articleQuery.OrderBy(a => a.PublishedUTC); break;
-                case "published_desc": articleQuery = articleQuery.OrderByDescending(a => a.PublishedUTC); break;
-                case "received": articleQuery = articleQuery.OrderBy(a => a.ReceivedUTC); break;
-                default: articleQuery = articleQuery.OrderByDescending(a => a.ReceivedUTC); break;
-            }
-            return View(PaginatedList<Article>.Create(articleQuery, page ?? 1, 100));
+            return View(_articlesData.GetArticles(ticker, lang, sortOrder, page ?? 1));
         }
 
         public IActionResult Error()
