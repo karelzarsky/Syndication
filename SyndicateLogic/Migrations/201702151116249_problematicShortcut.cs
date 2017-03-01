@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class problematicShortcut : DbMigration
     {
         public override void Up()
@@ -11,7 +11,7 @@ namespace SyndicateLogic.Migrations
                 c => new
                     {
                         language = c.String(nullable: false, maxLength: 2, unicode: false),
-                        text = c.String(nullable: false, maxLength: 50),
+                        text = c.String(nullable: false, maxLength: 50)
                     })
                 .PrimaryKey(t => new { t.language, t.text });
             

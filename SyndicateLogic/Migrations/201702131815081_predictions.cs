@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class predictions : DbMigration
     {
         public override void Up()
@@ -24,7 +24,7 @@ namespace SyndicateLogic.Migrations
                         TakeProfit = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Swap = c.Decimal(nullable: false, precision: 18, scale: 2),
                         Margin = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Profit = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Profit = c.Decimal(nullable: false, precision: 18, scale: 2)
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.StrategyNr)

@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class tableCurrencies : DbMigration
     {
         public override void Up()
@@ -16,7 +16,7 @@ namespace SyndicateLogic.Migrations
                         AplhabeticCode = c.String(maxLength: 3, unicode: false),
                         NumericCode = c.Short(),
                         MinorUnit = c.String(),
-                        WithdrawalDate = c.String(),
+                        WithdrawalDate = c.String()
                     })
                 .PrimaryKey(t => t.ID)
                 .Index(t => t.AplhabeticCode);

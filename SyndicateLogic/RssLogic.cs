@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
@@ -13,7 +14,6 @@ using System.Web;
 using System.Xml;
 using SyndicateLogic.Entities;
 using static SyndicateLogic.Properties.Settings;
-using System.Collections.Generic;
 
 namespace SyndicateLogic
 {
@@ -333,7 +333,7 @@ namespace SyndicateLogic
             {
                 // if (score[i] > highScore || score[i] < lowScore)
                 {
-                    context.ArticleScores.AddOrUpdate(new ArticleScore() { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
+                    context.ArticleScores.AddOrUpdate(new ArticleScore { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
                 }
             }
             context.SaveChanges();
@@ -347,7 +347,7 @@ namespace SyndicateLogic
             if (score.Max() >= minPositiveScoreAlert)
             {
                 string subject = $"Stock alert {ea.Ticker} {score.Max()}";
-                string body = ea.PublishedUTC.ToLocalTime().ToString() + "\r\n" + ea.Summary + "\r\n" + ea.URI_links;
+                string body = ea.PublishedUTC.ToLocalTime() + "\r\n" + ea.Summary + "\r\n" + ea.URI_links;
                 SendMail(subject, body);
             }
         }

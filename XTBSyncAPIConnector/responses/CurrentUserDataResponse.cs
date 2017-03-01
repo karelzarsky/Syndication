@@ -1,7 +1,9 @@
+using System;
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Responses
 {
-    using System;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
 	public class CurrentUserDataResponse : BaseResponse
 	{
@@ -16,14 +18,14 @@ namespace xAPI.Responses
         public CurrentUserDataResponse(string body)
             : base(body)
 		{
-			JSONObject ob = (JSONObject) this.ReturnData;
-            this.currency = (string)ob["currency"];
-            this.leverage = (long?)ob["leverage"];
-            this.leverageMultiplier = (double?)ob["leverageMultiplier"];
-            this.group = (string)ob["group"];
-            this.companyUnit = (int?)ob["companyUnit"];
-            this.spreadType = (string)ob["spreadType"];
-            this.ibAccount = (bool?)ob["ibAccount"];
+			JSONObject ob = (JSONObject) ReturnData;
+            currency = (string)ob["currency"];
+            leverage = (long?)ob["leverage"];
+            leverageMultiplier = (double?)ob["leverageMultiplier"];
+            group = (string)ob["group"];
+            companyUnit = (int?)ob["companyUnit"];
+            spreadType = (string)ob["spreadType"];
+            ibAccount = (bool?)ob["ibAccount"];
 		}
 
         public virtual string Currency

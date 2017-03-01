@@ -17,7 +17,7 @@ namespace xAPI.Codes
 
         public override string ToString()
         {
-            return this.Code.ToString();
+            return Code.ToString();
         }
     }
 }

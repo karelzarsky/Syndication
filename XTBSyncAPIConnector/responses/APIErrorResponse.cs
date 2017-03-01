@@ -1,10 +1,9 @@
 using System;
+using xAPI.Errors;
 
 namespace xAPI.Responses
 {
-	using ERR_CODE = xAPI.Errors.ERR_CODE;
-
-	public class APIErrorResponse : Exception
+    public class APIErrorResponse : Exception
 	{
 		private ERR_CODE code;
 		private string errDesc;

@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class StockIndex : DbMigration
     {
         public override void Up()
@@ -13,7 +13,7 @@ namespace SyndicateLogic.Migrations
                         symbol = c.String(nullable: false, maxLength: 10),
                         index_name = c.String(),
                         continent = c.String(),
-                        country = c.String(),
+                        country = c.String()
                     })
                 .PrimaryKey(t => t.symbol);
             
@@ -27,7 +27,7 @@ namespace SyndicateLogic.Migrations
                 c => new
                     {
                         symbol = c.String(nullable: false, maxLength: 128),
-                        index_name = c.String(),
+                        index_name = c.String()
                     })
                 .PrimaryKey(t => t.symbol);
             

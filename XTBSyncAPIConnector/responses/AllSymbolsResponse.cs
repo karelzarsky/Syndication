@@ -1,18 +1,19 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using xAPI.Records;
 
 namespace xAPI.Responses
 {
-    using JSONArray = Newtonsoft.Json.Linq.JArray;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONArray = JArray;
+    using JSONObject = JObject;
 
     public class AllSymbolsResponse : BaseResponse
 	{
-		private LinkedList<SymbolRecord> symbolRecords = (LinkedList<SymbolRecord>)new LinkedList<SymbolRecord>();
+		private LinkedList<SymbolRecord> symbolRecords = new LinkedList<SymbolRecord>();
 
 		public AllSymbolsResponse(string body) : base(body)
 		{
-			JSONArray symbolRecords = (JSONArray) this.ReturnData;
+			JSONArray symbolRecords = (JSONArray) ReturnData;
             foreach (JSONObject e in symbolRecords)
             {
                 SymbolRecord symbolRecord = new SymbolRecord();

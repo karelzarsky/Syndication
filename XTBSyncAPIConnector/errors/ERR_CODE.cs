@@ -36,7 +36,7 @@ namespace xAPI.Errors
 
 		public ERR_CODE(string code)
 		{
-			this.stringCode = code;
+			stringCode = code;
 		}
 
 		public virtual string StringValue
@@ -55,36 +55,36 @@ namespace xAPI.Errors
 
         public string getDescription()
         {
-            if (this.stringCode.Equals("")) return "";
-            if (this.stringCode.Equals(ERR_CODE.INVALID_PRICE.StringValue)) return "Invalid price.";
-            if (this.stringCode.Equals(ERR_CODE.INVALID_SL_TP.StringValue)) return "Invalid SL/TP.";
-            if (this.stringCode.Equals(ERR_CODE.INVALID_VOLUME.StringValue)) return "Invalid volume.";
-            if (this.stringCode.Equals(ERR_CODE.LOGIN_DISABLED.StringValue)) return "Login disabled.";
-            if (this.stringCode.Equals(ERR_CODE.LOGIN_NOT_FOUND.StringValue)) return "Login not found.";
-            if (this.stringCode.Equals(ERR_CODE.MARKET_IS_CLOSED.StringValue)) return "Market is closed!";
-            if (this.stringCode.Equals(ERR_CODE.MISMATCHED_PARAMETERS.StringValue)) return "Mismatched parameters.";
-            if (this.stringCode.Equals(ERR_CODE.MODIFICATION_DENIED.StringValue)) return "Modification denied.";
-            if (this.stringCode.Equals(ERR_CODE.NOT_ENOUGH_MONEY.StringValue)) return "Not enough money!";
-            if (this.stringCode.Equals(ERR_CODE.QUOTES_ARE_OFF.StringValue)) return "Quotes are off!";
-            if (this.stringCode.Equals(ERR_CODE.OPPOSITE_POSITIONS_PROHIBITED.StringValue)) return "Opposite positions prohibited!";
-            if (this.stringCode.Equals(ERR_CODE.SHORT_POSITIONS_PROHIBITED.StringValue)) return "Short positions prohibited!";
-            if (this.stringCode.Equals(ERR_CODE.PRICE_HAS_CHANGED.StringValue)) return "Price has changed..";
-            if (this.stringCode.Equals(ERR_CODE.REQUESTS_TOO_FREQUENT.StringValue)) return "Requests too frequent!";
-            if (this.stringCode.Equals(ERR_CODE.REQUOTE.StringValue)) return "Requote..";
-            if (this.stringCode.Equals(ERR_CODE.TOO_MANY_TRADE_REQUESTS.StringValue)) return "Too many trade requests!";
-            if (this.stringCode.Equals(ERR_CODE.TRADE_IS_DISABLED.StringValue)) return "Trade is disabled.";
-            if (this.stringCode.Equals(ERR_CODE.TRADE_TIMEOUT.StringValue)) return "Trade timeout..";
-            if (this.stringCode.Equals(ERR_CODE.SYMBOL_NOT_EXIST_FOR_ACCOUNT.StringValue)) return "Symbol not existent for account.";
-            if (this.stringCode.Equals(ERR_CODE.CANNOT_TRADE_ON_SYMBOL.StringValue)) return "Cannot trade on symbol.";
-            if (this.stringCode.Equals(ERR_CODE.CANNOT_CLOSE_PENDING.StringValue)) return "Cannot close pending.";
-            if (this.stringCode.Equals(ERR_CODE.CANNOT_CLOSE_ALREADY_CLOSED_ORDER.StringValue)) return "Cannot close - order already closed.";
-            if (this.stringCode.Equals(ERR_CODE.NO_SUCH_TRANSACTION.StringValue)) return "No such transaction.";
-            if (this.stringCode.Equals(ERR_CODE.UNKNOWN_SYMBOL.StringValue)) return "Unknown symbol.";
-            if (this.stringCode.Equals(ERR_CODE.UNKNOWN_TRANSACTION_TYPE.StringValue)) return "Unknown transaction type.";
-            if (this.stringCode.Equals(ERR_CODE.USER_NOT_LOGGED.StringValue)) return "User not logged.";
-            if (this.stringCode.Equals(ERR_CODE.COMMAND_NOT_EXIST.StringValue)) return "Command does not exist.";
-            if (this.stringCode.Equals(ERR_CODE.INTERNAL_ERROR.StringValue)) return "Internal error.";
-            if (this.stringCode.Equals(ERR_CODE.OTHER_ERROR.StringValue)) return "Internal error (2).";
+            if (stringCode.Equals("")) return "";
+            if (stringCode.Equals(INVALID_PRICE.StringValue)) return "Invalid price.";
+            if (stringCode.Equals(INVALID_SL_TP.StringValue)) return "Invalid SL/TP.";
+            if (stringCode.Equals(INVALID_VOLUME.StringValue)) return "Invalid volume.";
+            if (stringCode.Equals(LOGIN_DISABLED.StringValue)) return "Login disabled.";
+            if (stringCode.Equals(LOGIN_NOT_FOUND.StringValue)) return "Login not found.";
+            if (stringCode.Equals(MARKET_IS_CLOSED.StringValue)) return "Market is closed!";
+            if (stringCode.Equals(MISMATCHED_PARAMETERS.StringValue)) return "Mismatched parameters.";
+            if (stringCode.Equals(MODIFICATION_DENIED.StringValue)) return "Modification denied.";
+            if (stringCode.Equals(NOT_ENOUGH_MONEY.StringValue)) return "Not enough money!";
+            if (stringCode.Equals(QUOTES_ARE_OFF.StringValue)) return "Quotes are off!";
+            if (stringCode.Equals(OPPOSITE_POSITIONS_PROHIBITED.StringValue)) return "Opposite positions prohibited!";
+            if (stringCode.Equals(SHORT_POSITIONS_PROHIBITED.StringValue)) return "Short positions prohibited!";
+            if (stringCode.Equals(PRICE_HAS_CHANGED.StringValue)) return "Price has changed..";
+            if (stringCode.Equals(REQUESTS_TOO_FREQUENT.StringValue)) return "Requests too frequent!";
+            if (stringCode.Equals(REQUOTE.StringValue)) return "Requote..";
+            if (stringCode.Equals(TOO_MANY_TRADE_REQUESTS.StringValue)) return "Too many trade requests!";
+            if (stringCode.Equals(TRADE_IS_DISABLED.StringValue)) return "Trade is disabled.";
+            if (stringCode.Equals(TRADE_TIMEOUT.StringValue)) return "Trade timeout..";
+            if (stringCode.Equals(SYMBOL_NOT_EXIST_FOR_ACCOUNT.StringValue)) return "Symbol not existent for account.";
+            if (stringCode.Equals(CANNOT_TRADE_ON_SYMBOL.StringValue)) return "Cannot trade on symbol.";
+            if (stringCode.Equals(CANNOT_CLOSE_PENDING.StringValue)) return "Cannot close pending.";
+            if (stringCode.Equals(CANNOT_CLOSE_ALREADY_CLOSED_ORDER.StringValue)) return "Cannot close - order already closed.";
+            if (stringCode.Equals(NO_SUCH_TRANSACTION.StringValue)) return "No such transaction.";
+            if (stringCode.Equals(UNKNOWN_SYMBOL.StringValue)) return "Unknown symbol.";
+            if (stringCode.Equals(UNKNOWN_TRANSACTION_TYPE.StringValue)) return "Unknown transaction type.";
+            if (stringCode.Equals(USER_NOT_LOGGED.StringValue)) return "User not logged.";
+            if (stringCode.Equals(COMMAND_NOT_EXIST.StringValue)) return "Command does not exist.";
+            if (stringCode.Equals(INTERNAL_ERROR.StringValue)) return "Internal error.";
+            if (stringCode.Equals(OTHER_ERROR.StringValue)) return "Internal error (2).";
 
             return "Unknown error";
         }

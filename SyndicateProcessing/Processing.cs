@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
 using SyndicateLogic;
+using Timer = System.Timers.Timer;
 
 namespace SyndicateProcessing
 {
@@ -17,7 +19,7 @@ namespace SyndicateProcessing
         private Thread _thread;
         private readonly ManualResetEvent _shutdownEvent = new ManualResetEvent(false);
         private readonly ManualResetEvent _scheduleEvent = new ManualResetEvent(false);
-        private readonly System.Timers.Timer _scheduleTimer = new System.Timers.Timer();
+        private readonly Timer _scheduleTimer = new Timer();
 
         protected override void OnStart(string[] args)
         {
@@ -92,7 +94,7 @@ namespace SyndicateProcessing
                     }
                 }
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 DataLayer.LogException(e);
             }

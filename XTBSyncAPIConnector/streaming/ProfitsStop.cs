@@ -1,13 +1,11 @@
-﻿namespace xAPI.Streaming
+﻿using Newtonsoft.Json.Linq;
+
+namespace xAPI.Streaming
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     class ProfitsStop
     {
-        public ProfitsStop()
-        {
-        }
-
         public override string ToString()
         {
             JSONObject result = new JSONObject();

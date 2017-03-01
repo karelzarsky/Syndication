@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using SyndicationWeb.Services;
 using SyndicateLogic;
+using SyndicationWeb.Services;
 
 namespace SyndicationWeb
 {

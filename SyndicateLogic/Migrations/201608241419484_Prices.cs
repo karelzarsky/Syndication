@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class Prices : DbMigration
     {
         public override void Up()
@@ -23,7 +23,7 @@ namespace SyndicateLogic.Migrations
                         adj_high = c.Decimal(nullable: false, precision: 18, scale: 5),
                         adj_low = c.Decimal(nullable: false, precision: 18, scale: 5),
                         adj_close = c.Decimal(nullable: false, precision: 18, scale: 5),
-                        adj_volume = c.Decimal(nullable: false, precision: 18, scale: 5),
+                        adj_volume = c.Decimal(nullable: false, precision: 18, scale: 5)
                     })
                 .PrimaryKey(t => new { t.ticker, t.date })
                 .ForeignKey("dbo.Companies", t => t.ticker, cascadeDelete: true)

@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class backtestTable : DbMigration
     {
         public override void Up()
@@ -35,7 +35,7 @@ namespace SyndicateLogic.Migrations
                         LossProfit = c.Decimal(nullable: false, precision: 18, scale: 2),
                         TimeoutProfit = c.Decimal(nullable: false, precision: 18, scale: 2),
                         AverageTradeLength = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        Comment = c.String(),
+                        Comment = c.String()
                         //TotalTrades = c.Int(nullable: false),
                         //TotalProfit = c.Decimal(nullable: false, precision: 18, scale: 2),
                         //AverageProfit = c.Decimal(nullable: false, precision: 18, scale: 2),

@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class TickRecord : BaseResponseRecord
 	{
@@ -16,11 +18,7 @@ namespace xAPI.Records
 		private string symbol;
 		private long? timestamp;
 
-		public TickRecord()
-		{
-		}
-		
-		public virtual double? Ask
+	    public virtual double? Ask
 		{
 			get
 			{
@@ -115,17 +113,17 @@ namespace xAPI.Records
 
 		public bool FieldsFromJSONObject(JSONObject value, string str)
 		{
-            this.ask = (double?)value["ask"];
-            this.askVolume = (long?)value["askVolume"];
-			this.bid = (double?)value["bid"];
-			this.bidVolume = (long?)value["bidVolume"];
-            this.high = (double?)value["high"];
-            this.level = (long?)value["level"];
-            this.low = (double?)value["low"];
-            this.spreadRaw = (double?)value["spreadRaw"];
-            this.spreadTable = (double?)value["spreadTable"];
-			this.symbol = (string)value["symbol"];
-			this.timestamp = (long?)value["timestamp"];
+            ask = (double?)value["ask"];
+            askVolume = (long?)value["askVolume"];
+			bid = (double?)value["bid"];
+			bidVolume = (long?)value["bidVolume"];
+            high = (double?)value["high"];
+            level = (long?)value["level"];
+            low = (double?)value["low"];
+            spreadRaw = (double?)value["spreadRaw"];
+            spreadTable = (double?)value["spreadTable"];
+			symbol = (string)value["symbol"];
+			timestamp = (long?)value["timestamp"];
 
              if ((ask == null) || (bid == null) || (symbol == null) || (timestamp == null)) return false;
             return true;

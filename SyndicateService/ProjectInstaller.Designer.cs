@@ -1,11 +1,14 @@
-﻿namespace SyndicateService
+﻿using System.ComponentModel;
+using System.ServiceProcess;
+
+namespace SyndicateService
 {
     partial class ProjectInstaller
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary> 
         /// Clean up any resources being used.
@@ -52,7 +55,7 @@
 
         #endregion
 
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+        private ServiceProcessInstaller serviceProcessInstaller1;
+        private ServiceInstaller serviceInstaller1;
     }
 }

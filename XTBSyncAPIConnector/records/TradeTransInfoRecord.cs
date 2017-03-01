@@ -1,9 +1,10 @@
 using System;
+using Newtonsoft.Json.Linq;
 using xAPI.Codes;
 
 namespace xAPI.Records
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class TradeTransInfoRecord
 	{
@@ -18,16 +19,16 @@ namespace xAPI.Records
         private TRADE_TRANSACTION_TYPE type;
         private double? volume;
 
-        public TRADE_OPERATION_CODE Cmd { get { return cmd; } set { this.cmd = value; } }
-        public string CustomComment { get { return customComment; } set { this.customComment = value; } }
-        public long? Expiration { get { return expiration; } set { this.expiration = value; } }
-        public long? Order { get { return order; } set { this.order = value; } }
-        public double? Price { get { return price; } set { this.price = value; } }
-        public double? Sl { get { return sl; } set { this.sl = value; } }
-        public string Symbol { get { return symbol; } set { this.symbol = value; } }
-        public double? Tp { get { return tp; } set { this.tp = value; } }
-        public TRADE_TRANSACTION_TYPE Type { get { return type; } set { this.type = value; } }
-        public double? Volume { get { return volume; } set { this.volume = value; } }
+        public TRADE_OPERATION_CODE Cmd { get { return cmd; } set { cmd = value; } }
+        public string CustomComment { get { return customComment; } set { customComment = value; } }
+        public long? Expiration { get { return expiration; } set { expiration = value; } }
+        public long? Order { get { return order; } set { order = value; } }
+        public double? Price { get { return price; } set { price = value; } }
+        public double? Sl { get { return sl; } set { sl = value; } }
+        public string Symbol { get { return symbol; } set { symbol = value; } }
+        public double? Tp { get { return tp; } set { tp = value; } }
+        public TRADE_TRANSACTION_TYPE Type { get { return type; } set { type = value; } }
+        public double? Volume { get { return volume; } set { volume = value; } }
 
         public TradeTransInfoRecord(TRADE_OPERATION_CODE cmd, TRADE_TRANSACTION_TYPE type, double? price, double? sl, double? tp, string symbol, double? volume, long? order, string customComment, long? expiration)
         {
@@ -55,14 +56,14 @@ namespace xAPI.Records
             this.volume = volume;
             this.order = order;
             this.expiration = expiration;
-            this.customComment = comment;
+            customComment = comment;
         }
 
 		public virtual JSONObject toJSONObject()
 		{
 			JSONObject obj = new JSONObject();
-            obj.Add("cmd", (long)cmd.Code);
-            obj.Add("type", (long)type.Code);
+            obj.Add("cmd", cmd.Code);
+            obj.Add("type", type.Code);
 			obj.Add("price", price);
 			obj.Add("sl", sl);
 			obj.Add("tp", tp);
@@ -77,16 +78,16 @@ namespace xAPI.Records
         public override string ToString()
         {
             return "TradeTransInfo [" +
-                cmd.ToString() + ", " +
-                type.ToString() + ", " +
-                price.ToString() + ", " +
-                sl.ToString() + ", " +
-                tp.ToString() + ", " +
-                symbol.ToString() + ", " +
-                volume.ToString() +
-                order.ToString() + ", " +
-                customComment.ToString() + ", " +
-                expiration.ToString() + ", " +
+                cmd + ", " +
+                type + ", " +
+                price + ", " +
+                sl + ", " +
+                tp + ", " +
+                symbol + ", " +
+                volume +
+                order + ", " +
+                customComment + ", " +
+                expiration + ", " +
                 "]";
         }
 	}

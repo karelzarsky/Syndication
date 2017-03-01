@@ -1,8 +1,9 @@
+using Newtonsoft.Json.Linq;
 using xAPI.Codes;
 
 namespace xAPI.Records
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class ChartLastInfoRecord
 	{

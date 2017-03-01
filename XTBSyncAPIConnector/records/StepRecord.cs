@@ -1,20 +1,18 @@
-﻿namespace xAPI.Records
+﻿using Newtonsoft.Json.Linq;
+
+namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class StepRecord : BaseResponseRecord
     {
         private double FromValue;
         private double Step;
 
-        public StepRecord()
-        {
-        }
-
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.FromValue = (double)value["fromValue"];
-            this.Step = (double)value["step"];
+            FromValue = (double)value["fromValue"];
+            Step = (double)value["step"];
         }
     }
 }

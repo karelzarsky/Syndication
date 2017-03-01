@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
-using System.Data.SqlClient;
 
 namespace StrategyTester
 {

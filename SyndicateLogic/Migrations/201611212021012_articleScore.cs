@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class articleScore : DbMigration
     {
         public override void Up()
@@ -13,7 +13,7 @@ namespace SyndicateLogic.Migrations
                         articleID = c.Int(nullable: false),
                         interval = c.Byte(nullable: false),
                         score = c.Decimal(storeType: "smallmoney"),
-                        dateComputed = c.DateTime(nullable: false, storeType: "date"),
+                        dateComputed = c.DateTime(nullable: false, storeType: "date")
                     })
                 .PrimaryKey(t => new { t.articleID, t.interval });
             

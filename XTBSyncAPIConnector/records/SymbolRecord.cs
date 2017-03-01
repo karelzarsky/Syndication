@@ -1,10 +1,12 @@
+using System;
+using Newtonsoft.Json.Linq;
+using xAPI.Codes;
+
 namespace xAPI.Records
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
-    using System;
-    using xAPI.Codes;
+	using JSONObject = JObject;
 
-	public class SymbolRecord : BaseResponseRecord
+    public class SymbolRecord : BaseResponseRecord
 	{
 		private double? ask;
 		private double? bid;
@@ -50,11 +52,7 @@ namespace xAPI.Records
         private string timeString;
 		private long? type;
 
-		public SymbolRecord()
-		{
-		}
-
-		public virtual double? Ask
+	    public virtual double? Ask
 		{
 			get
 			{
@@ -62,7 +60,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.ask = value;
+				ask = value;
 			}
 		}
 
@@ -74,7 +72,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.bid = value;
+				bid = value;
 			}
 		}
 
@@ -86,7 +84,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.categoryName = value;
+				categoryName = value;
 			}
 		}
 
@@ -98,7 +96,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.contractSize = value;
+				contractSize = value;
 			}
 		}
 
@@ -110,7 +108,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.currency = value;
+				currency = value;
 			}
 		}
 
@@ -122,7 +120,7 @@ namespace xAPI.Records
             }
             set
             {
-                this.currencyPair = value;
+                currencyPair = value;
             }
         }
 
@@ -152,7 +150,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.description = value;
+				description = value;
 			}
 		}
 
@@ -164,7 +162,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.expiration = value;
+				expiration = value;
 			}
 		}
 
@@ -176,7 +174,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.groupName = value;
+				groupName = value;
 			}
 		}
 
@@ -188,7 +186,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.high = value;
+				high = value;
 			}
 		}
 
@@ -200,7 +198,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.initialMargin = value;
+				initialMargin = value;
 			}
 		}
 
@@ -212,7 +210,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.instantMaxVolume = value;
+				instantMaxVolume = value;
 			}
 		}
 
@@ -224,7 +222,7 @@ namespace xAPI.Records
             }
             set
             {
-                this.leverage = value;
+                leverage = value;
             }
         }
 
@@ -236,7 +234,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.longOnly = value;
+				longOnly = value;
 			}
 		}
 
@@ -248,7 +246,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.lotMax = value;
+				lotMax = value;
 			}
 		}
 
@@ -260,7 +258,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.lotMin = value;
+				lotMin = value;
 			}
 		}
 
@@ -272,7 +270,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.lotStep = value;
+				lotStep = value;
 			}
 		}
 
@@ -284,7 +282,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.low = value;
+				low = value;
 			}
 		}
 
@@ -296,7 +294,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.marginHedged = value;
+				marginHedged = value;
 			}
 		}
 
@@ -308,7 +306,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.marginHedgedStrong = value;
+				marginHedgedStrong = value;
 			}
 		}
 
@@ -320,7 +318,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.marginMaintenance = value;
+				marginMaintenance = value;
 			}
 		}
 
@@ -332,7 +330,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.marginMode = value;
+				marginMode = value;
 			}
 		}
 
@@ -344,7 +342,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.precision = value;
+				precision = value;
 			}
 		}
 
@@ -356,7 +354,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.percentage = value;
+				percentage = value;
 			}
 		}
 
@@ -368,7 +366,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.profitMode = value;
+				profitMode = value;
 			}
 		}
 
@@ -392,7 +390,7 @@ namespace xAPI.Records
             }
             set
             {
-                this.spreadTable = value;
+                spreadTable = value;
             }
         }
 
@@ -404,7 +402,7 @@ namespace xAPI.Records
             }
             set
             {
-                this.spreadTable = value;
+                spreadTable = value;
             }
         }
 
@@ -416,7 +414,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.starting = value;
+				starting = value;
 			}
 		}
 		
@@ -428,7 +426,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.stepRuleId = value;
+				stepRuleId = value;
 			}
 		}
 		
@@ -440,7 +438,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.stopsLevel = value;
+				stopsLevel = value;
 			}
 		}
 
@@ -452,7 +450,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.swapEnable = value;
+				swapEnable = value;
 			}
 		}
 
@@ -464,7 +462,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.swapLong = value;
+				swapLong = value;
 			}
 		}
 
@@ -476,7 +474,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.swapShort = value;
+				swapShort = value;
 			}
 		}
 
@@ -488,7 +486,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.swapType = value;
+				swapType = value;
 			}
 		}
 
@@ -500,7 +498,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.swapRollover = value;
+				swapRollover = value;
 			}
 		}
 
@@ -512,7 +510,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.symbol = value;
+				symbol = value;
 			}
 		}
 
@@ -524,7 +522,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.tickSize = value;
+				tickSize = value;
 			}
 		}
 
@@ -536,7 +534,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.tickValue = value;
+				tickValue = value;
 			}
 		}
 
@@ -548,7 +546,7 @@ namespace xAPI.Records
             }
             set
             {
-                this.time = value;
+                time = value;
             }
         }
 
@@ -560,7 +558,7 @@ namespace xAPI.Records
             }
             set
             {
-                this.timeString = value;
+                timeString = value;
             }
         }
 
@@ -572,55 +570,55 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.type = value;
+				type = value;
 			}
 		}
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.Ask = (double?)value["ask"];
-            this.Bid = (double?)value["bid"];
-            this.CategoryName = (string)value["categoryName"];
-            this.Currency = (string)value["currency"];
-            this.CurrencyPair = (bool?)value["currencyPair"];
-            this.CurrencyProfit = (string)value["currencyProfit"];
-            this.Description = (string)value["description"];
-            this.Expiration = (long?)value["expiration"];
-            this.GroupName = (string)value["groupName"];
-            this.High = (double?)value["high"];
-            this.InstantMaxVolume = (long?)value["instantMaxVolume"];
-            this.Leverage = (double)value["leverage"];
-            this.LongOnly = (bool?)value["longOnly"];
-            this.LotMax = (double?)value["lotMax"];
-            this.LotMin = (double?)value["lotMin"];
-            this.LotStep = (double?)value["lotStep"];
-            this.Low = (double?)value["low"];
-            this.Precision = (long?)value["precision"];
-            this.Starting = (long?)value["starting"];
-            this.StopsLevel = (long?)value["stopsLevel"];
-            this.Symbol = (string)value["symbol"];
-            this.Time = (long?)value["time"];
-            this.TimeString = (string)value["timeString"];
-            this.Type = (long?)value["type"];
-            this.ContractSize = (long?) value["contractSize"];
-            this.InitialMargin = (long?)value["initialMargin"];
-            this.MarginHedged = (long?)value["marginHedged"];
-            this.MarginHedgedStrong = (bool?) value["marginHedgedStrong"];
-            this.MarginMaintenance = (long?)value["marginMaintenance"];
-            this.MarginMode = new MARGIN_MODE((long)value["marginMode"]);
-            this.Percentage = (double?)value["percentage"];
-            this.ProfitMode = new PROFIT_MODE((long)value["profitMode"]);
-            this.QuoteId = (long?)value["quoteId"];
-            this.SpreadRaw = (double?)value["spreadRaw"];
-            this.SpreadTable = (double?)value["spreadTable"];
-			this.StepRuleId = (long?)value["stepRuleId"];
-            this.SwapEnable = (bool?)value["swapEnable"];
-            this.SwapLong = (double?)value["swapLong"];
-            this.SwapShort = (double?)value["swapShort"];
-            this.SwapType = new SWAP_TYPE((long) value["swapType"]);
-            this.SwapRollover = new SWAP_ROLLOVER_TYPE((long)value["swap_rollover3days"]);
-            this.TickSize = (double?)value["tickSize"];
-            this.TickValue = (double?)value["tickValue"];
+            Ask = (double?)value["ask"];
+            Bid = (double?)value["bid"];
+            CategoryName = (string)value["categoryName"];
+            Currency = (string)value["currency"];
+            CurrencyPair = (bool?)value["currencyPair"];
+            CurrencyProfit = (string)value["currencyProfit"];
+            Description = (string)value["description"];
+            Expiration = (long?)value["expiration"];
+            GroupName = (string)value["groupName"];
+            High = (double?)value["high"];
+            InstantMaxVolume = (long?)value["instantMaxVolume"];
+            Leverage = (double)value["leverage"];
+            LongOnly = (bool?)value["longOnly"];
+            LotMax = (double?)value["lotMax"];
+            LotMin = (double?)value["lotMin"];
+            LotStep = (double?)value["lotStep"];
+            Low = (double?)value["low"];
+            Precision = (long?)value["precision"];
+            Starting = (long?)value["starting"];
+            StopsLevel = (long?)value["stopsLevel"];
+            Symbol = (string)value["symbol"];
+            Time = (long?)value["time"];
+            TimeString = (string)value["timeString"];
+            Type = (long?)value["type"];
+            ContractSize = (long?) value["contractSize"];
+            InitialMargin = (long?)value["initialMargin"];
+            MarginHedged = (long?)value["marginHedged"];
+            MarginHedgedStrong = (bool?) value["marginHedgedStrong"];
+            MarginMaintenance = (long?)value["marginMaintenance"];
+            MarginMode = new MARGIN_MODE((long)value["marginMode"]);
+            Percentage = (double?)value["percentage"];
+            ProfitMode = new PROFIT_MODE((long)value["profitMode"]);
+            QuoteId = (long?)value["quoteId"];
+            SpreadRaw = (double?)value["spreadRaw"];
+            SpreadTable = (double?)value["spreadTable"];
+			StepRuleId = (long?)value["stepRuleId"];
+            SwapEnable = (bool?)value["swapEnable"];
+            SwapLong = (double?)value["swapLong"];
+            SwapShort = (double?)value["swapShort"];
+            SwapType = new SWAP_TYPE((long) value["swapType"]);
+            SwapRollover = new SWAP_ROLLOVER_TYPE((long)value["swap_rollover3days"]);
+            TickSize = (double?)value["tickSize"];
+            TickValue = (double?)value["tickValue"];
         }
     }
 }

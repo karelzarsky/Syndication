@@ -3,6 +3,7 @@ using System.ServiceProcess;
 using System.Threading;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
+using Timer = System.Timers.Timer;
 
 // instalace:
 // c:\windows\microsoft.net\framework\v4.0.30319\installutil.exe c:\GIT\trade\SyndicateService\SyndicateService\bin\Debug\SyndicateService.exe 
@@ -23,7 +24,7 @@ namespace SyndicateService
         private Thread _thread;
         private readonly ManualResetEvent _shutdownEvent = new ManualResetEvent(false);
         private readonly ManualResetEvent _scheduleEvent = new ManualResetEvent(false);
-        private readonly System.Timers.Timer _scheduleTimer = new System.Timers.Timer();
+        private readonly Timer _scheduleTimer = new Timer();
 
         protected override void OnStart(string[] args)
         {
@@ -94,10 +95,6 @@ namespace SyndicateService
                     RssLogic.ProcessFeed(f, context);
                     //DataLayer.LogMessage(LogLevel.Info, $"Completed feed {f.ID} {f.Url}");
                     context.SaveChanges();
-                }
-                else
-                {
-                    //DataLayer.LogMessage(LogLevel.Info, "No feed waiting for download.");
                 }
             }
             _scheduleTimer.Start();

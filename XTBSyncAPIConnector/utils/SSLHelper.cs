@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 
 namespace xAPI.Utils
 {
@@ -12,7 +13,7 @@ namespace xAPI.Utils
         /// <param name="chain"></param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public static bool TrustAllCertificatesCallback(object sender, X509Certificate cert, X509Chain chain, System.Net.Security.SslPolicyErrors errors)
+        public static bool TrustAllCertificatesCallback(object sender, X509Certificate cert, X509Chain chain, SslPolicyErrors errors)
         {
             return true;
         }

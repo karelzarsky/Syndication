@@ -5,7 +5,7 @@ namespace xAPI.Responses
 {
     public class AllSymbolGroupsResponse : BaseResponse
 	{
-		private LinkedList<SymbolGroupRecord> symbolGroupRecords = (LinkedList<SymbolGroupRecord>)new LinkedList<SymbolGroupRecord>();
+		private LinkedList<SymbolGroupRecord> symbolGroupRecords = new LinkedList<SymbolGroupRecord>();
 
 		public AllSymbolGroupsResponse(string body) : base(body)
 		{

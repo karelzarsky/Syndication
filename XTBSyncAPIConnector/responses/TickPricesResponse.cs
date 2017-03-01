@@ -1,18 +1,19 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using xAPI.Records;
 
 namespace xAPI.Responses
 {
-    using JSONArray = Newtonsoft.Json.Linq.JArray;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONArray = JArray;
+    using JSONObject = JObject;
 
     public class TickPricesResponse : BaseResponse
 	{
-		private LinkedList<TickRecord> ticks = (LinkedList<TickRecord>) new LinkedList<TickRecord>();
+		private LinkedList<TickRecord> ticks = new LinkedList<TickRecord>();
 
 		public TickPricesResponse(string body) : base(body)
 		{
-			JSONObject ob = (JSONObject) this.ReturnData;
+			JSONObject ob = (JSONObject) ReturnData;
 			JSONArray arr = (JSONArray) ob["quotations"];
 			foreach (JSONObject e in arr)
 			{

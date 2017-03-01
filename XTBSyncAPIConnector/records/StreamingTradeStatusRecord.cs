@@ -1,8 +1,9 @@
-﻿using xAPI.Codes;
+﻿using Newtonsoft.Json.Linq;
+using xAPI.Codes;
 
 namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class StreamingTradeStatusRecord : BaseResponseRecord
     {
@@ -40,11 +41,11 @@ namespace xAPI.Records
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.customComment = (string)value["customComment"];
-            this.message = (string)value["message"];
-            this.order = (long?)value["order"];
-            this.price = (double?)value["price"];
-            this.requestStatus = new REQUEST_STATUS((long)value["requestStatus"]);
+            customComment = (string)value["customComment"];
+            message = (string)value["message"];
+            order = (long?)value["order"];
+            price = (double?)value["price"];
+            requestStatus = new REQUEST_STATUS((long)value["requestStatus"]);
         }
 
         public override string ToString()

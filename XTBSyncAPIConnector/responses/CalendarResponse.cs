@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using xAPI.Records;
 
 namespace xAPI.Responses
 {
-    using JSONArray = Newtonsoft.Json.Linq.JArray;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONArray = JArray;
+    using JSONObject = JObject;
 
     public class CalendarResponse : BaseResponse
 	{
@@ -13,13 +14,13 @@ namespace xAPI.Responses
         public CalendarResponse(string body)
             : base(body)
 		{
-            JSONArray returnData = (JSONArray)this.ReturnData;
+            JSONArray returnData = (JSONArray)ReturnData;
 
             foreach (JSONObject e in returnData)
 			{
                 CalendarRecord record = new CalendarRecord();
 				record.FieldsFromJSONObject(e);
-                this.calendarRecords.Add(record);
+                calendarRecords.Add(record);
 			}
 		}
 

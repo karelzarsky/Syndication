@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Records
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class HoursRecord : BaseResponseRecord
 	{
@@ -34,14 +36,14 @@ namespace xAPI.Records
 
 		public void FieldsFromJSONObject(JSONObject value)
 		{
-				this.day = (long?) value["day"];
-				this.fromT = (long?) value["fromT"];
-				this.toT = (long?) value["toT"];
+				day = (long?) value["day"];
+				fromT = (long?) value["fromT"];
+				toT = (long?) value["toT"];
 		}
 
         public override string ToString()
         {
-            return "HoursRecord{" + "day=" + this.day + ", fromT=" + this.fromT + ", toT=" + this.toT + '}';
+            return "HoursRecord{" + "day=" + day + ", fromT=" + fromT + ", toT=" + toT + '}';
         }
 	}
 }

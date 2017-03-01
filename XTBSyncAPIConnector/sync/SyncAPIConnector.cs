@@ -1,14 +1,15 @@
 using System;
-using System.Threading;
-using System.Net.Sockets;
-using System.Net.Security;
 using System.IO;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
-using JSONObject = Newtonsoft.Json.Linq.JObject;
-using xAPI.Errors;
-using xAPI.Commands;
-using xAPI.Utils;
+using System.Threading;
 using SyncAPIConnect.Utils;
+using xAPI.Commands;
+using xAPI.Errors;
+using xAPI.Utils;
+using JSONObject = Newtonsoft.Json.Linq.JObject;
 
 namespace xAPI.Sync
 {
@@ -68,7 +69,7 @@ namespace xAPI.Sync
         /// <summary>
         /// Last command timestamp (used to calculate interval between each command).
         /// </summary>
-        private long lastCommandTimestamp = 0;
+        private long lastCommandTimestamp;
 
         /// <summary>
         /// Lock object used to synchronize access to read/write socket operations.
@@ -93,7 +94,7 @@ namespace xAPI.Sync
         private void Connect(Server server, bool lookForBackups = true)
         {
             this.server = server;
-            this.apiSocket = new System.Net.Sockets.TcpClient();
+            apiSocket = new TcpClient();
 
             bool connectionAttempted = false;
 
@@ -110,7 +111,7 @@ namespace xAPI.Sync
                     if (lookForBackups)
                     {
                         this.server = Servers.GetBackup(this.server);
-                        apiSocket = new System.Net.Sockets.TcpClient();
+                        apiSocket = new TcpClient();
                     }
                     else
                     {
@@ -121,13 +122,13 @@ namespace xAPI.Sync
 
             if (server.Secure)
             {
-                SslStream sl = new SslStream(apiSocket.GetStream(), false, new RemoteCertificateValidationCallback(SSLHelper.TrustAllCertificatesCallback));
+                SslStream sl = new SslStream(apiSocket.GetStream(), false, SSLHelper.TrustAllCertificatesCallback);
 
                 //sl.AuthenticateAsClient(server.Address);
 
                 bool authenticated = ExecuteWithTimeLimit.Execute(TimeSpan.FromMilliseconds(5000), () =>
                 {
-                    sl.AuthenticateAsClient(server.Address, new X509CertificateCollection(), System.Security.Authentication.SslProtocols.Default, false);
+                    sl.AuthenticateAsClient(server.Address, new X509CertificateCollection(), SslProtocols.Default, false);
                 });
 
                 if (!authenticated)
@@ -143,13 +144,13 @@ namespace xAPI.Sync
                 apiReadStream = new StreamReader(ns);
             }
 
-            this.apiConnected = true;
+            apiConnected = true;
             
             if(OnConnected != null)
                 OnConnected.Invoke(this.server);
 
 
-            this.streamingConnector = new StreamingAPIConnector(this.server);
+            streamingConnector = new StreamingAPIConnector(this.server);
         }
 
         /// <summary>
@@ -157,8 +158,8 @@ namespace xAPI.Sync
         /// </summary>
         public void Connect()
         {
-            if (this.server != null)
-                Connect(this.server);
+            if (server != null)
+                Connect(server);
 
             throw new APICommunicationException("No server to connect to");
         }
@@ -183,7 +184,7 @@ namespace xAPI.Sync
             if (OnRedirected != null)
                 OnRedirected.Invoke(server);
 
-            if (this.apiConnected)
+            if (apiConnected)
                 Disconnect(true);
 
             Connect(server);
@@ -198,7 +199,7 @@ namespace xAPI.Sync
 		{
 			try
 			{
-				return (JSONObject)JSONObject.Parse(this.ExecuteCommand(cmd.ToJSONString()));
+				return JSONObject.Parse(ExecuteCommand(cmd.ToJSONString()));
 			}
 			catch (Exception ex)
 			{
@@ -225,11 +226,11 @@ namespace xAPI.Sync
                     Thread.Sleep((int)(COMMAND_TIME_SPACE - interval));
                 }
 
-                this.WriteMessage(message);
+                WriteMessage(message);
 
-                this.lastCommandTimestamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
+                lastCommandTimestamp = DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond;
 
-                string response = this.ReadMessage();
+                string response = ReadMessage();
 
                 if (response == null || response.Equals(""))
                 {
@@ -248,11 +249,11 @@ namespace xAPI.Sync
         [Obsolete("Use Streaming.Connect() instead")]
         public StreamingAPIConnector ConnectStreaming()
         {
-            if (this.streamingConnector != null)
-                this.streamingConnector.Disconnect();
+            if (streamingConnector != null)
+                streamingConnector.Disconnect();
 
-            this.streamingConnector = new StreamingAPIConnector(this.server);
-            return this.streamingConnector;
+            streamingConnector = new StreamingAPIConnector(server);
+            return streamingConnector;
         }
 
         /// <summary>
@@ -261,8 +262,8 @@ namespace xAPI.Sync
         [Obsolete("Use Streaming.Disconnect() instead")]
         public void DisconnectStreaming()
         {
-            if (this.streamingConnector != null)
-                this.streamingConnector.Disconnect();
+            if (streamingConnector != null)
+                streamingConnector.Disconnect();
         }
 
         /// <summary>
@@ -270,7 +271,7 @@ namespace xAPI.Sync
         /// </summary>
         public StreamingAPIConnector Streaming
         {
-            get { return this.streamingConnector; }
+            get { return streamingConnector; }
         }
 
         /// <summary>

@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Responses
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
     public class PingResponse : BaseResponse
 	{
@@ -9,7 +11,7 @@ namespace xAPI.Responses
 
 		public PingResponse(string body) : base(body)
 		{
-			JSONObject ob = (JSONObject) this.ReturnData;
+			JSONObject ob = (JSONObject) ReturnData;
 		}
 	}
 }

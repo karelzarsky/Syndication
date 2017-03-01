@@ -1,6 +1,8 @@
-﻿namespace xAPI.Records
+﻿using Newtonsoft.Json.Linq;
+
+namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class SpreadRecord : BaseResponseRecord
     {
@@ -8,10 +10,6 @@
         private string symbol;
         private long? value;
         private long? quoteId;
-
-        public SpreadRecord()
-        {
-        }
 
         public virtual long? Precision
         {
@@ -21,7 +19,7 @@
             }
             set
             {
-                this.precision = value;
+                precision = value;
             }
         }
 
@@ -33,7 +31,7 @@
             }
             set
             {
-                this.symbol = value;
+                symbol = value;
             }
         }
 
@@ -53,7 +51,7 @@
         {
             get 
             { 
-                return this.value; 
+                return value; 
             }
             set 
             { 
@@ -63,10 +61,10 @@
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.Symbol = (string)value["symbol"];
-            this.Precision = (long?)value["precision"];
-            this.Value = (long?)value["value"];
-            this.QuoteId = (long?)value["quoteId"];
+            Symbol = (string)value["symbol"];
+            Precision = (long?)value["precision"];
+            Value = (long?)value["value"];
+            QuoteId = (long?)value["quoteId"];
         }
     }
 }

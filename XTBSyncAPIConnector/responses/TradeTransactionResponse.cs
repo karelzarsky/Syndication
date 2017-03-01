@@ -1,16 +1,18 @@
+using System;
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Responses
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
-    using System;
+	using JSONObject = JObject;
 
-	public class TradeTransactionResponse : BaseResponse
+    public class TradeTransactionResponse : BaseResponse
 	{
         private long? order;
 
 		public TradeTransactionResponse(string body) : base(body)
 		{
-            JSONObject ob = (JSONObject)this.ReturnData;
-            this.order = (long?)ob["order"];
+            JSONObject ob = (JSONObject)ReturnData;
+            order = (long?)ob["order"];
 		}
 
         [Obsolete("Use Order instead")]

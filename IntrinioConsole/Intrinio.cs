@@ -117,7 +117,7 @@ namespace IntrinioConsole
                 }
                 using (var ctx = new Db())
                 {
-                    ctx.IntrinioJsons.Add(new IntrinioJson()
+                    ctx.IntrinioJsons.Add(new IntrinioJson
                     {
                         ClassT = typeof(T).Name,
                         Compressed = DataLayer.Zip(json_data),
@@ -259,7 +259,7 @@ namespace IntrinioConsole
             //    Console.WriteLine($"Prices for {ticker} already in DB.");
             //    return;
             //}
-            DataLayer.LogMessage(LogLevel.Intrinio, $"I Downloading prices for {ticker}.");
+            //DataLayer.LogMessage(LogLevel.Intrinio, $"I Downloading prices for {ticker}.");
             DateTime last = DateTime.MinValue;
             var firstDate = ctx.Prices.Where(x => x.ticker == ticker).OrderByDescending(x => x.date).FirstOrDefault();
             if (firstDate != null)

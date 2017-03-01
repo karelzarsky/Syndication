@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class rssServer : DbMigration
     {
         public override void Up()
@@ -13,7 +13,7 @@ namespace SyndicateLogic.Migrations
                         ID = c.Int(nullable: false, identity: true),
                         HostName = c.String(maxLength: 40),
                         LastCheck = c.DateTime(),
-                        Interval = c.Int(nullable: false),
+                        Interval = c.Int(nullable: false)
                     })
                 .PrimaryKey(t => t.ID)
                 .Index(t => t.HostName)

@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Responses
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class MarginLevelResponse : BaseResponse
 	{
@@ -14,14 +16,14 @@ namespace xAPI.Responses
 
 		public MarginLevelResponse(string body) : base(body)
 		{
-			JSONObject ob = (JSONObject) this.ReturnData;
-			this.balance = (double?) ob["balance"];
-			this.equity = (double?) ob["equity"];
-			this.currency = (string) ob["currency"];
-			this.margin = (double?) ob["margin"];
-			this.margin_free = (double?) ob["margin_free"];
-			this.margin_level = (double?) ob["margin_level"];
-            this.credit = (double?) ob["credit"];
+			JSONObject ob = (JSONObject) ReturnData;
+			balance = (double?) ob["balance"];
+			equity = (double?) ob["equity"];
+			currency = (string) ob["currency"];
+			margin = (double?) ob["margin"];
+			margin_free = (double?) ob["margin_free"];
+			margin_level = (double?) ob["margin_level"];
+            credit = (double?) ob["credit"];
 		}
 
 		public virtual double? Balance

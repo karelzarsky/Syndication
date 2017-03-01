@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Responses
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class CommissionDefResponse : BaseResponse
 	{
@@ -9,9 +11,9 @@ namespace xAPI.Responses
 
 		public CommissionDefResponse(string body) : base(body)
 		{
-			JSONObject rd = (JSONObject) this.ReturnData;
-			this.commission = (double?) rd["commission"];
-			this.rateOfExchange = (double?) rd["rateOfExchange"];
+			JSONObject rd = (JSONObject) ReturnData;
+			commission = (double?) rd["commission"];
+			rateOfExchange = (double?) rd["rateOfExchange"];
 		}
 
 		public virtual double? Commission

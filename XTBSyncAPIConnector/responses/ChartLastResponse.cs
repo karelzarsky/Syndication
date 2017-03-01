@@ -1,27 +1,28 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using xAPI.Records;
 
 namespace xAPI.Responses
 {
-    using JSONArray = Newtonsoft.Json.Linq.JArray;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONArray = JArray;
+    using JSONObject = JObject;
 
     public class ChartLastResponse : BaseResponse
 	{
 		private long? digits;
-		private LinkedList<RateInfoRecord> rateInfos = (LinkedList<RateInfoRecord>)new LinkedList<RateInfoRecord>();
+		private LinkedList<RateInfoRecord> rateInfos = new LinkedList<RateInfoRecord>();
 
 		public ChartLastResponse(string body) : base(body)
 		{
-			JSONObject rd = (JSONObject) this.ReturnData;
-			this.digits = (long?) rd["digits"];
+			JSONObject rd = (JSONObject) ReturnData;
+			digits = (long?) rd["digits"];
 			JSONArray arr = (JSONArray) rd["rateInfos"];
 
 			foreach (JSONObject e in arr)
 			{
 				RateInfoRecord record = new RateInfoRecord();
 				record.FieldsFromJSONObject(e);
-                this.rateInfos.AddLast(record);
+                rateInfos.AddLast(record);
 			}
 		}
 

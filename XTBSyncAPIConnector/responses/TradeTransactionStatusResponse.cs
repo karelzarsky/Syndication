@@ -1,8 +1,9 @@
+using Newtonsoft.Json.Linq;
 using xAPI.Codes;
 
 namespace xAPI.Responses
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
 	public class TradeTransactionStatusResponse : BaseResponse
 	{
@@ -15,13 +16,13 @@ namespace xAPI.Responses
 
 		public TradeTransactionStatusResponse(string body) : base(body)
 		{
-			JSONObject ob = (JSONObject) this.ReturnData;
-            this.ask = (double?)ob["ask"];
-            this.bid = (double?)ob["bid"];
-            this.customComment = (string)ob["customComment"];
-            this.message = (string)ob["message"];
-			this.order = (long?) ob["order"];
-			this.requestStatus = new REQUEST_STATUS((long) ob["requestStatus"]);
+			JSONObject ob = (JSONObject) ReturnData;
+            ask = (double?)ob["ask"];
+            bid = (double?)ob["bid"];
+            customComment = (string)ob["customComment"];
+            message = (string)ob["message"];
+			order = (long?) ob["order"];
+			requestStatus = new REQUEST_STATUS((long) ob["requestStatus"]);
 		}
 
 		public virtual double? Ask
@@ -33,7 +34,7 @@ namespace xAPI.Responses
 
 			set
 			{
-				this.ask = value;
+				ask = value;
 			}
 		}
 
@@ -45,7 +46,7 @@ namespace xAPI.Responses
             }
             set
             {
-                this.bid = value;
+                bid = value;
             }
         }
 
@@ -63,7 +64,7 @@ namespace xAPI.Responses
             }
             set
             {
-                this.message = value;
+                message = value;
             }
         }
 
@@ -75,7 +76,7 @@ namespace xAPI.Responses
             }
 			set
 			{
-				this.order = value;
+				order = value;
 			}
 		}
 
@@ -87,7 +88,7 @@ namespace xAPI.Responses
             }
             set
 			{
-				this.requestStatus = value;
+				requestStatus = value;
 			}
 		}
 	}

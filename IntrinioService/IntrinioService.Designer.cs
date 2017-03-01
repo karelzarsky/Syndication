@@ -1,11 +1,13 @@
-﻿namespace IntrinioService
+﻿using System.ComponentModel;
+
+namespace IntrinioService
 {
     partial class IntrinioService
     {
         /// <summary> 
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        private IContainer components = null;
 
         /// <summary>
         /// Clean up any resources being used.

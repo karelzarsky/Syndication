@@ -10,32 +10,32 @@ namespace xAPI.Records
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.mainPort = (int)value["mainPort"];
-            this.streamingPort = (int)value["streamingPort"];
-            this.address = (string)value["address"];
+            mainPort = (int)value["mainPort"];
+            streamingPort = (int)value["streamingPort"];
+            address = (string)value["address"];
         }
 
         public int MainPort
         {
-            get { return this.mainPort; }
+            get { return mainPort; }
         }
 
         public int StreamingPort
         {
-            get { return this.streamingPort; }
+            get { return streamingPort; }
         }
 
         public string Address
         {
-            get { return this.address; }
+            get { return address; }
         }
 
         public override string ToString()
         {
             return "RedirectRecord [" +
-                "mainPort=" + this.mainPort +
-                ", streamingPort=" + this.streamingPort +
-                ", address=" + this.address + "]";
+                "mainPort=" + mainPort +
+                ", streamingPort=" + streamingPort +
+                ", address=" + address + "]";
         }
     }
 }

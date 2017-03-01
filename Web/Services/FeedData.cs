@@ -1,10 +1,8 @@
-﻿using SyndicateLogic;
+﻿using System.Collections.Generic;
+using System.Linq;
+using SyndicateLogic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SyndicationWeb.Services
 {
@@ -36,8 +34,8 @@ namespace SyndicationWeb.Services
                 res.Feeds.Add(new FeedViewModel
                 {
                     FeedEntity = item,
-                    articles = _ctx.Articles.Where(a => a.FeedID == item.ID).Count(),
-                    articlesWithTicker = _ctx.Articles.Where(a => a.FeedID == item.ID && a.Ticker != "").Count()
+                    articles = _ctx.Articles.Count(a => a.FeedID == item.ID),
+                    articlesWithTicker = _ctx.Articles.Count(a => a.FeedID == item.ID && a.Ticker != "")
                 });
             }
             return res;

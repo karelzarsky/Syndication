@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class alerts : DbMigration
     {
         public override void Up()
@@ -14,7 +14,7 @@ namespace SyndicateLogic.Migrations
                         issued = c.DateTime(nullable: false),
                         scoreMin = c.Decimal(nullable: false, precision: 18, scale: 2),
                         scoreMax = c.Decimal(nullable: false, precision: 18, scale: 2),
-                        ArticleID = c.Int(nullable: false),
+                        ArticleID = c.Int(nullable: false)
                     })
                 .PrimaryKey(t => new { t.ticker, t.issued })
                 .ForeignKey("rss.articles", t => t.ArticleID, cascadeDelete: true)

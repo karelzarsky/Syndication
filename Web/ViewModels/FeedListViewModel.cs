@@ -1,9 +1,5 @@
-﻿using SyndicateLogic.Entities;
-using SyndicationWeb.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using SyndicateLogic.Entities;
 
 namespace SyndicationWeb.ViewModels
 {

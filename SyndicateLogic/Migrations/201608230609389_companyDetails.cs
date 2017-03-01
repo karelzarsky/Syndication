@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class companyDetails : DbMigration
     {
         public override void Up()
@@ -33,7 +33,7 @@ namespace SyndicateLogic.Migrations
                         employees = c.Int(nullable: false),
                         sector = c.String(),
                         industry_category = c.String(),
-                        industry_group = c.String(),
+                        industry_group = c.String()
                     })
                 .PrimaryKey(t => t.ticker);
             
@@ -52,7 +52,7 @@ namespace SyndicateLogic.Migrations
                         financial_status = c.String(),
                         primary_security = c.Boolean(nullable: false),
                         delisted_security = c.Boolean(nullable: false),
-                        last_crsp_adj_date = c.DateTime(nullable: false),
+                        last_crsp_adj_date = c.DateTime(nullable: false)
                     })
                 .PrimaryKey(t => t.ticker);
             

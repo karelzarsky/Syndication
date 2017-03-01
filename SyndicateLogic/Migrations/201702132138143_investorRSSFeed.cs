@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class investorRSSFeed : DbMigration
     {
         public override void Up()
@@ -11,7 +11,7 @@ namespace SyndicateLogic.Migrations
                 c => new
                     {
                         Ticker = c.String(nullable: false, maxLength: 10, unicode: false),
-                        Url = c.String(nullable: false, maxLength: 8000, unicode: false),
+                        Url = c.String(nullable: false, maxLength: 8000, unicode: false)
                     })
                 .PrimaryKey(t => t.Ticker);
             

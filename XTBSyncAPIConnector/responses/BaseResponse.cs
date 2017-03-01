@@ -1,11 +1,11 @@
 using System;
+using Newtonsoft.Json.Linq;
+using xAPI.Errors;
 
 namespace xAPI.Responses
 {
-    using JSONAware = Newtonsoft.Json.Linq.JContainer;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
-    using ERR_CODE = xAPI.Errors.ERR_CODE;
-    using APIReplyParseException = xAPI.Errors.APIReplyParseException;
+    using JSONAware = JContainer;
+    using JSONObject = JObject;
 
     public class BaseResponse
 	{
@@ -20,7 +20,7 @@ namespace xAPI.Responses
 			JSONObject ob;
 			try
 			{
-				ob = (JSONObject)JSONObject.Parse(body);
+				ob = JSONObject.Parse(body);
                 
 			}
 			catch (Exception x)
@@ -32,31 +32,28 @@ namespace xAPI.Responses
 			{
 				throw new APIReplyParseException("JSON Parse exception: " + body);
 			}
-			else
-			{
-				this.status = (bool?) ob["status"];
-                this.errCode = new ERR_CODE((string)ob["errorCode"]);
-                this.errorDescr = (string) ob["errorDescr"];
-				this.returnData = (JSONAware) ob["returnData"];
-                this.customTag = (string)ob["customTag"];
+		    status = (bool?) ob["status"];
+		    errCode = new ERR_CODE((string)ob["errorCode"]);
+		    errorDescr = (string) ob["errorDescr"];
+		    returnData = (JSONAware) ob["returnData"];
+		    customTag = (string)ob["customTag"];
 
-				if (this.status == null)
-				{
-					Console.Error.WriteLine(body);
-					throw new APIReplyParseException("JSON Parse error: " + "\"status\" is null!");
-				}
+		    if (status == null)
+		    {
+		        Console.Error.WriteLine(body);
+		        throw new APIReplyParseException("JSON Parse error: " + "\"status\" is null!");
+		    }
 
-				if ((this.status==null) || ((bool)!this.status))
-				{
-                    // If status is false check if redirect exists in given response
-                    if (ob["redirect"] == null)
-                    {
-                        if (this.errorDescr == null)
-                            this.errorDescr = ERR_CODE.getErrorDescription(this.errCode.StringValue);
-                        throw new APIErrorResponse(errCode, errorDescr, body);
-                    }
-				}
-			}
+		    if ((status==null) || ((bool)!status))
+		    {
+		        // If status is false check if redirect exists in given response
+		        if (ob["redirect"] == null)
+		        {
+		            if (errorDescr == null)
+		                errorDescr = ERR_CODE.getErrorDescription(errCode.StringValue);
+		            throw new APIErrorResponse(errCode, errorDescr, body);
+		        }
+		    }
 		}
 
 		public virtual object ReturnData

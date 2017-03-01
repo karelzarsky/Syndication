@@ -1,7 +1,7 @@
-﻿using SyndicateLogic;
-using SyndicateLogic.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using SyndicateLogic;
+using SyndicateLogic.Entities;
 
 namespace SyndicationWeb.Services
 {
@@ -14,7 +14,7 @@ namespace SyndicationWeb.Services
 
     public class ArticlesData : IArticlesData
     {
-        private Db _ctx;
+        private readonly Db _ctx;
 
         public ArticlesData(Db ctx)
         {
@@ -28,16 +28,7 @@ namespace SyndicationWeb.Services
 
         public IEnumerable<Article> GetArticles(string ticker, string lang, string sortOrder, int page = 1, int pageSize = 100)
         {
-            IQueryable<Article> articleQuery;
-
-            if (string.IsNullOrEmpty(ticker))
-            {
-                articleQuery = _ctx.Articles;
-            }
-            else
-            {
-                articleQuery = _ctx.Articles.Where(a => a.Ticker == ticker);
-            }
+            var articleQuery = string.IsNullOrEmpty(ticker) ? _ctx.Articles : _ctx.Articles.Where(a => a.Ticker == ticker);
 
             if (!string.IsNullOrEmpty(lang))
             {

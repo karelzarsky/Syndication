@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class shingles : DbMigration
     {
         public override void Up()
@@ -11,7 +11,7 @@ namespace SyndicateLogic.Migrations
                 c => new
                     {
                         hash = c.Int(nullable: false),
-                        text = c.String(),
+                        text = c.String()
                     })
                 .PrimaryKey(t => t.hash);
             
@@ -20,7 +20,7 @@ namespace SyndicateLogic.Migrations
                 c => new
                     {
                         ShingleHash = c.Int(nullable: false),
-                        ArticleHash = c.Binary(nullable: false, maxLength: 32),
+                        ArticleHash = c.Binary(nullable: false, maxLength: 32)
                     })
                 .PrimaryKey(t => t.ShingleHash)
                 .ForeignKey("dbo.Articles", t => t.ArticleHash, cascadeDelete: true)

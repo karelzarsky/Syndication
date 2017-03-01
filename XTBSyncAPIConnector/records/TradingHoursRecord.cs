@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
-    using JSONArray = Newtonsoft.Json.Linq.JArray;
+    using JSONObject = JObject;
+    using JSONArray = JArray;
 
     public class TradingHoursRecord : BaseResponseRecord
     {
         private string symbol;
-        private LinkedList<HoursRecord> quotes = (LinkedList<HoursRecord>)new LinkedList<HoursRecord>();
-        private LinkedList<HoursRecord> trading = (LinkedList<HoursRecord>)new LinkedList<HoursRecord>();
+        private LinkedList<HoursRecord> quotes = new LinkedList<HoursRecord>();
+        private LinkedList<HoursRecord> trading = new LinkedList<HoursRecord>();
 
         public virtual string Symbol
         {
@@ -42,7 +43,7 @@ namespace xAPI.Records
 
         public bool FieldsFromJSONObject(JSONObject value, string str)
         {
-            this.symbol = (string)value["symbol"];
+            symbol = (string)value["symbol"];
             quotes = new LinkedList<HoursRecord>();
             if (value["quotes"] != null)
             {
@@ -71,7 +72,7 @@ namespace xAPI.Records
 
         public override string ToString()
         {
-            return "TradingHoursRecord{" + "symbol=" + symbol + ", quotes=" + quotes.ToString() + ", trading=" + trading.ToString() + '}';
+            return "TradingHoursRecord{" + "symbol=" + symbol + ", quotes=" + quotes + ", trading=" + trading + '}';
         }
     }
 }

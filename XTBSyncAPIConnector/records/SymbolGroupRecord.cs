@@ -1,7 +1,9 @@
+using System;
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Records
 {
-    using System;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
 	public class SymbolGroupRecord : BaseResponseRecord
 	{
@@ -40,9 +42,9 @@ namespace xAPI.Records
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.type = (long?)value["type"];
-            this.description = (string)value["description"];
-            this.name = (string)value["name"];
+            type = (long?)value["type"];
+            description = (string)value["description"];
+            name = (string)value["name"];
         }
     }
 }

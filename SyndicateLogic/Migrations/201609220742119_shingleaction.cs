@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class shingleaction : DbMigration
     {
         public override void Up()
@@ -18,7 +18,7 @@ namespace SyndicateLogic.Migrations
                         up = c.Decimal(storeType: "smallmoney"),
                         dateComputed = c.DateTime(nullable: false, storeType: "date"),
                         samples = c.Int(nullable: false),
-                        tickers = c.Int(nullable: false),
+                        tickers = c.Int(nullable: false)
                     })
                 .PrimaryKey(t => new { t.shingleID, t.interval });
             
@@ -35,7 +35,7 @@ namespace SyndicateLogic.Migrations
                         Date = c.DateTime(nullable: false, storeType: "date"),
                         Interval = c.Byte(nullable: false),
                         changeUp = c.Single(nullable: false),
-                        changeDown = c.Single(nullable: false),
+                        changeDown = c.Single(nullable: false)
                     })
                 .PrimaryKey(t => new { t.Instrument_ID, t.Date, t.Interval });
             

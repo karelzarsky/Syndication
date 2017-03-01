@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class CalendarRecord : BaseResponseRecord
     {
@@ -15,19 +17,19 @@ namespace xAPI.Records
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.country = (string)value["country"];
-            this.current = (string)value["current"];
-            this.forecast = (string)value["forecast"];
-            this.impact = (string)value["impact"];
-            this.period = (string)value["period"];
-            this.previous = (string)value["previous"];
-            this.time = (long?)value["time"];
-            this.title = (string)value["title"];
+            country = (string)value["country"];
+            current = (string)value["current"];
+            forecast = (string)value["forecast"];
+            impact = (string)value["impact"];
+            period = (string)value["period"];
+            previous = (string)value["previous"];
+            time = (long?)value["time"];
+            title = (string)value["title"];
         }
 
         public override string ToString()
         {
-            return "CalendarRecord[" + "country=" + this.country + ", current=" + this.current + ", forecast=" + this.forecast + ", impact=" + this.impact + ", period=" + this.period + ", previous=" + this.previous + ", time=" + this.time + ", title=" + this.title + "]";
+            return "CalendarRecord[" + "country=" + country + ", current=" + current + ", forecast=" + forecast + ", impact=" + impact + ", period=" + period + ", previous=" + previous + ", time=" + time + ", title=" + title + "]";
         }
 
         public string Country

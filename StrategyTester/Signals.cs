@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Linq;
 using SyndicateLogic;
-using System.Data.SqlClient;
 
 namespace StrategyTester
 {

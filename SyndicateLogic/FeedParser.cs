@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace SyndicateLogic
@@ -31,7 +29,7 @@ namespace SyndicateLogic
                 case FeedType.Atom:
                     return ParseAtom(url);
                 default:
-                    throw new NotSupportedException(string.Format("{0} is not supported", feedType.ToString()));
+                    throw new NotSupportedException(string.Format("{0} is not supported", feedType));
             }
         }
 
@@ -118,8 +116,7 @@ namespace SyndicateLogic
             DateTime result;
             if (DateTime.TryParse(date, out result))
                 return result;
-            else
-                return DateTime.MinValue;
+            return DateTime.MinValue;
         }
     }
 

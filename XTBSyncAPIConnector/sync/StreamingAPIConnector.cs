@@ -1,15 +1,15 @@
-﻿using System.IO;
-using System;
-using System.Net.Sockets;
+﻿using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.IO;
 using System.Net.Security;
-using JSONObject = Newtonsoft.Json.Linq.JObject;
-using xAPI.Utils;
-using xAPI.Records;
+using System.Net.Sockets;
+using System.Threading;
 using xAPI.Errors;
+using xAPI.Records;
 using xAPI.Responses;
 using xAPI.Streaming;
+using xAPI.Utils;
+using JSONObject = Newtonsoft.Json.Linq.JObject;
 
 namespace xAPI.Sync
 {
@@ -134,7 +134,7 @@ namespace xAPI.Sync
         /// True if streaming is running
         /// </summary>
         [Obsolete("Used only in older method")]
-        private bool running = false;
+        private bool running;
 
         /// <summary>
         /// Creates new StreamingAPIConnector instance based on given server data.
@@ -143,7 +143,7 @@ namespace xAPI.Sync
         public StreamingAPIConnector(Server server)
         {
             this.server = server;
-            this.apiConnected = false;
+            apiConnected = false;
         }
 
         /// <summary>
@@ -193,17 +193,17 @@ namespace xAPI.Sync
                 throw new APICommunicationException("stream already connected");
             }
 
-            this.sl = streamingListener;
+            sl = streamingListener;
 
-            this.apiSocket = new TcpClient(server.Address, server.StreamingPort);
-            this.apiConnected = true;
+            apiSocket = new TcpClient(server.Address, server.StreamingPort);
+            apiConnected = true;
 
             if (OnConnected != null)
-                OnConnected.Invoke(this.server);
+                OnConnected.Invoke(server);
 
             if (server.Secure)
             {
-                SslStream ssl = new SslStream(apiSocket.GetStream(), false, new RemoteCertificateValidationCallback(SSLHelper.TrustAllCertificatesCallback));
+                SslStream ssl = new SslStream(apiSocket.GetStream(), false, SSLHelper.TrustAllCertificatesCallback);
                 ssl.AuthenticateAsClient(server.Address);
                 apiWriteStream = new StreamWriter(ssl);
                 apiReadStream = new StreamReader(ssl);
@@ -231,8 +231,8 @@ namespace xAPI.Sync
         /// </summary>
         public string StreamSessionId
         {
-            get { return this.streamSessionId; }
-            set { this.streamSessionId = value; }
+            get { return streamSessionId; }
+            set { streamSessionId = value; }
         }
 
         /// <summary>
@@ -246,10 +246,10 @@ namespace xAPI.Sync
         [Obsolete("Use StreamingAPIConnector(Server server) instead")]
         private StreamingAPIConnector(StreamingListener sl, string ip, int port, LoginResponse lr, bool secure)
         {
-            this.running = true;
+            running = true;
             this.sl = sl;
-            this.streamSessionId = lr.StreamSessionId;
-            apiSocket = new System.Net.Sockets.TcpClient(ip, port);
+            streamSessionId = lr.StreamSessionId;
+            apiSocket = new TcpClient(ip, port);
 
             if (secure)
             {
@@ -299,7 +299,7 @@ namespace xAPI.Sync
 
                 if (message != null)
                 {        
-                    JSONObject responseBody = (JSONObject)JSONObject.Parse(message);
+                    JSONObject responseBody = JSONObject.Parse(message);
                     string commandName = responseBody["command"].ToString();
                         
                     if (commandName == "tickPrices")

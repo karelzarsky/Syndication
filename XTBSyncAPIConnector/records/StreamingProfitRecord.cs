@@ -1,6 +1,8 @@
-﻿namespace xAPI.Records
+﻿using Newtonsoft.Json.Linq;
+
+namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class StreamingProfitRecord : BaseResponseRecord
     {
@@ -32,8 +34,8 @@
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.profit = (double?)value["profit"];
-            this.order = (long?)value["order"];
+            profit = (double?)value["profit"];
+            order = (long?)value["order"];
         }
 
         public override string ToString()

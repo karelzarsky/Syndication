@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Commands
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class SymbolCommand : BaseCommand
 	{
@@ -20,7 +22,7 @@ namespace xAPI.Commands
 		{
 			get
 			{
-				return new string[]{"symbol"};
+				return new[]{"symbol"};
 			}
 		}
 	}

@@ -1,18 +1,19 @@
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using xAPI.Records;
 
 namespace xAPI.Responses
 {
-    using JSONArray = Newtonsoft.Json.Linq.JArray;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONArray = JArray;
+    using JSONObject = JObject;
 
     public class TradingHoursResponse : BaseResponse
 	{
-        private LinkedList<TradingHoursRecord> tradingHoursRecords = (LinkedList<TradingHoursRecord>)new LinkedList<TradingHoursRecord>();
+        private LinkedList<TradingHoursRecord> tradingHoursRecords = new LinkedList<TradingHoursRecord>();
 
         public TradingHoursResponse(string body) : base(body)
         {
-            JSONArray ob = (JSONArray)this.ReturnData;
+            JSONArray ob = (JSONArray)ReturnData;
             foreach (JSONObject e in ob)
             {
                 TradingHoursRecord record = new TradingHoursRecord();

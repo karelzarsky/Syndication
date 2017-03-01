@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Linq;
-using xAPI.Sync;
-using xAPI.Responses;
 using xAPI.Commands;
 using xAPI.Records;
+using xAPI.Responses;
+using xAPI.Sync;
 
 namespace xAPITest
 {

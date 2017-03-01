@@ -1,7 +1,9 @@
+using System;
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Records
 {
-    using System;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
 	public class TradeRecord : BaseResponseRecord
 	{
@@ -248,31 +250,31 @@ namespace xAPI.Records
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.close_price = (double?)value["close_price"];
-            this.close_time = (long?)value["close_time"];
-            this.closed = (bool?)value["closed"];
-            this.cmd = (long?)value["cmd"];
-            this.comment = (string)value["comment"];
-            this.commission = (double?)value["commission"];
-            this.commission_agent = (double?)value["commission_agent"];
-            this.customComment = (string)value["customComment"];
-            this.digits = (long?)value["digits"];
-            this.expiration = (long?)value["expiration"];
-            this.expirationString = (string)value["expirationString"];
-            this.margin_rate = (double?)value["margin_rate"];
-            this.open_price = (double?)value["open_price"];
-            this.open_time = (long?)value["open_time"];
-            this.order = (long?)value["order"];
-            this.order2 = (long?)value["order2"];
-            this.position = (long?)value["position"];
-            this.profit = (double?)value["profit"];
-            this.sl = (double?)value["sl"];
-            this.storage = (double?)value["storage"];
-            this.symbol = (string)value["symbol"];
-            this.timestamp = (long?)value["timestamp"];
-            this.tp = (double?)value["tp"];
-            this.value_date = (long?)value["value_date"];
-            this.volume = (double?)value["volume"];
+            close_price = (double?)value["close_price"];
+            close_time = (long?)value["close_time"];
+            closed = (bool?)value["closed"];
+            cmd = (long?)value["cmd"];
+            comment = (string)value["comment"];
+            commission = (double?)value["commission"];
+            commission_agent = (double?)value["commission_agent"];
+            customComment = (string)value["customComment"];
+            digits = (long?)value["digits"];
+            expiration = (long?)value["expiration"];
+            expirationString = (string)value["expirationString"];
+            margin_rate = (double?)value["margin_rate"];
+            open_price = (double?)value["open_price"];
+            open_time = (long?)value["open_time"];
+            order = (long?)value["order"];
+            order2 = (long?)value["order2"];
+            position = (long?)value["position"];
+            profit = (double?)value["profit"];
+            sl = (double?)value["sl"];
+            storage = (double?)value["storage"];
+            symbol = (string)value["symbol"];
+            timestamp = (long?)value["timestamp"];
+            tp = (double?)value["tp"];
+            value_date = (long?)value["value_date"];
+            volume = (double?)value["volume"];
         }
 
         [Obsolete("Method outdated")]

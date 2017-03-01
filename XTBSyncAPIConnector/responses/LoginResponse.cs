@@ -1,8 +1,9 @@
+using Newtonsoft.Json.Linq;
 using xAPI.Records;
 
 namespace xAPI.Responses
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class LoginResponse : BaseResponse
     {
@@ -12,15 +13,15 @@ namespace xAPI.Responses
         public LoginResponse(string body)
             : base(body)
         {
-            JSONObject ob = (JSONObject)JSONObject.Parse(body);
-            this.streamSessionId = (string)ob["streamSessionId"];
+            JSONObject ob = JSONObject.Parse(body);
+            streamSessionId = (string)ob["streamSessionId"];
 
             JSONObject redirectJSON = (JSONObject)ob["redirect"];
 
             if (redirectJSON != null)
             {
-                this.redirectRecord = new RedirectRecord();
-                this.redirectRecord.FieldsFromJSONObject(redirectJSON);
+                redirectRecord = new RedirectRecord();
+                redirectRecord.FieldsFromJSONObject(redirectJSON);
             }
         }
 

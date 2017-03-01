@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Threading;
-using SyndicateLogic;
 using IntrinioConsole;
+using SyndicateLogic;
+using Timer = System.Timers.Timer;
 
 namespace IntrinioService
 {
@@ -22,7 +22,7 @@ namespace IntrinioService
         private Thread _thread;
         private readonly ManualResetEvent _shutdownEvent = new ManualResetEvent(false);
         private readonly ManualResetEvent _scheduleEvent = new ManualResetEvent(false);
-        private readonly System.Timers.Timer _scheduleTimer = new System.Timers.Timer();
+        private readonly Timer _scheduleTimer = new Timer();
 
         protected override void OnStart(string[] args)
         {

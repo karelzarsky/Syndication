@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class json : DbMigration
     {
         public override void Up()
@@ -14,7 +14,7 @@ namespace SyndicateLogic.Migrations
                         time = c.DateTime(nullable: false),
                         Json = c.String(),
                         Url = c.String(),
-                        ClassT = c.String(),
+                        ClassT = c.String()
                     })
                 .PrimaryKey(t => t.Id);
             

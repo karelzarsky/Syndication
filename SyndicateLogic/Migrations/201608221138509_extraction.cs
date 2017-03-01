@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class extraction : DbMigration
     {
         public override void Up()
@@ -16,7 +16,7 @@ namespace SyndicateLogic.Migrations
                         Summary = c.String(),
                         Content = c.String(),
                         Categories = c.String(),
-                        PublishedUTC = c.DateTime(nullable: false),
+                        PublishedUTC = c.DateTime(nullable: false)
                     })
                 .PrimaryKey(t => t.Sha256Hash)
                 .ForeignKey("dbo.Feeds", t => t.FeedID, cascadeDelete: true)

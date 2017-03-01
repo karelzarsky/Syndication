@@ -73,20 +73,12 @@ namespace xAPI.Sync
         private Object writeLocker = new Object();
 
         /// <summary>
-        /// Creates new connector instance.
-        /// </summary>
-        public Connector()
-        {
-
-        }
-
-        /// <summary>
         /// Checks if socket is connected to the remote server.
         /// </summary>
         /// <returns>True if socket is connected, otherwise false</returns>
         public bool Connected()
         {
-            return this.apiConnected;
+            return apiConnected;
         }
 
         /// <summary>
@@ -97,7 +89,7 @@ namespace xAPI.Sync
         {
             lock (writeLocker)
             {
-                if (this.Connected())
+                if (Connected())
                 {
                     try
                     {
@@ -184,7 +176,7 @@ namespace xAPI.Sync
                     OnDisconnected.Invoke();
             }
 
-            this.apiConnected = false;
+            apiConnected = false;
         }
 
         /// <summary>
@@ -192,9 +184,9 @@ namespace xAPI.Sync
         /// </summary>
         public void Dispose()
         {
-            this.apiReadStream.Close();
-            this.apiWriteStream.Close();
-            this.apiSocket.Close();
+            apiReadStream.Close();
+            apiWriteStream.Close();
+            apiSocket.Close();
         }
     }
 }

@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class removeArticlesTable : DbMigration
     {
         public override void Up()
@@ -23,7 +23,7 @@ namespace SyndicateLogic.Migrations
                         Title = c.String(),
                         ReceivedUTC = c.DateTime(nullable: false),
                         RSS20 = c.String(),
-                        PublishedUTC = c.DateTime(nullable: false),
+                        PublishedUTC = c.DateTime(nullable: false)
                     })
                 .PrimaryKey(t => t.Sha256Hash);
             

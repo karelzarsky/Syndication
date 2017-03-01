@@ -60,8 +60,7 @@ namespace SyndicationWeb.Controllers
             var model = _companyData.GetCompany(ticker);
             if (model == null || model.Detail == null)
                 return NotFound();
-            else
-                return View(model);
+            return View(model);
         }
 
         public IActionResult Companies(int page = 1, string nameFilter = "")

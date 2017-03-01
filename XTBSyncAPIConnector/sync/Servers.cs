@@ -127,19 +127,16 @@ namespace xAPI.Sync
             {
                 throw new APICommunicationException("Connection error (and no backup server available for " + address + ")");
             }
-            else
+            // Remove the broken address
+            ADDRESSES.Remove(apiAddress);
+
+            // If there are anymore else take the first
+            if (ADDRESSES.Count > 0)
             {
-                // Remove the broken address
-                ADDRESSES.Remove(apiAddress);
-
-                // If there are anymore else take the first
-                if (ADDRESSES.Count > 0)
-                {
-                    return ADDRESSES[0];
-                }
-
-                throw new APICommunicationException("Connection error (and no more backup servers available)");
+                return ADDRESSES[0];
             }
+
+            throw new APICommunicationException("Connection error (and no more backup servers available)");
         }
 
         private static List<Server> demoServers;

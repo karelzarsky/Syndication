@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Responses
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class ConfirmPricedResponse : BaseResponse
 	{
@@ -8,8 +10,8 @@ namespace xAPI.Responses
 
 		public ConfirmPricedResponse(string body) : base(body)
 		{
-			JSONObject ob = (JSONObject) this.ReturnData;
-			this.newRequestId = (long?) ob["requestId"];
+			JSONObject ob = (JSONObject) ReturnData;
+			newRequestId = (long?) ob["requestId"];
 		}
 
 		public virtual long? NewRequestId

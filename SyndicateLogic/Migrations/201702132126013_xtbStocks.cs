@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class xtbStocks : DbMigration
     {
         public override void Up()
@@ -10,7 +10,7 @@ namespace SyndicateLogic.Migrations
                 "xtb.ETFStocksUS",
                 c => new
                     {
-                        Ticker = c.String(nullable: false, maxLength: 10, unicode: false),
+                        Ticker = c.String(nullable: false, maxLength: 10, unicode: false)
                     })
                 .PrimaryKey(t => t.Ticker);
             

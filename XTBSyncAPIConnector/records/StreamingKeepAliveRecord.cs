@@ -1,6 +1,8 @@
-﻿namespace xAPI.Records
+﻿using Newtonsoft.Json.Linq;
+
+namespace xAPI.Records
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class StreamingKeepAliveRecord : BaseResponseRecord
     {
@@ -12,7 +14,7 @@
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.Timestamp = (long?)value["timestamp"];
+            Timestamp = (long?)value["timestamp"];
         }
 
         public override string ToString()

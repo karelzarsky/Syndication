@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace xAPI.Records
 {
-    using System;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
 	public class NewsTopicRecord : BaseResponseRecord
 	{
@@ -14,11 +15,7 @@ namespace xAPI.Records
         private string timeString;
         private string title;
 
-        public NewsTopicRecord()
-        {
-        }
-
-		public virtual string Body
+	    public virtual string Body
 		{
 			get
 			{
@@ -98,12 +95,12 @@ namespace xAPI.Records
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.body = (string)value["body"];
-            this.bodylen = (long?)value["bodylen"];
-            this.key = (string)value["key"];
-            this.time = (long?)value["time"];
-            this.timeString = (string)value["timeString"];
-            this.title = (string)value["title"];
+            body = (string)value["body"];
+            bodylen = (long?)value["bodylen"];
+            key = (string)value["key"];
+            time = (long?)value["time"];
+            timeString = (string)value["timeString"];
+            title = (string)value["title"];
         }
     }
 }

@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-
     public partial class stockTickersTable : DbMigration
     {
         public override void Up()
@@ -11,7 +11,7 @@ namespace SyndicateLogic.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        ticker = c.String(maxLength: 20, unicode: false),
+                        ticker = c.String(maxLength: 20, unicode: false)
                     })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.ticker);

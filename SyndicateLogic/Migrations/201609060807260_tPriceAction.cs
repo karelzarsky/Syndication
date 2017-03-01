@@ -1,7 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SyndicateLogic.Migrations
 {
-    using System.Data.Entity.Migrations;
-    
     public partial class tPriceAction : DbMigration
     {
         public override void Up()
@@ -14,7 +14,7 @@ namespace SyndicateLogic.Migrations
                         Date = c.DateTime(nullable: false, storeType: "date"),
                         Interval = c.Byte(nullable: false),
                         changeUp = c.Single(nullable: false),
-                        changeDown = c.Single(nullable: false),
+                        changeDown = c.Single(nullable: false)
                     })
                 .PrimaryKey(t => new { t.Instrument_ID, t.Date, t.Interval })
                 .ForeignKey("app.instruments", t => t.Instrument_ID, cascadeDelete: true)

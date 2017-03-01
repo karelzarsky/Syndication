@@ -1,22 +1,23 @@
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 using xAPI.Codes;
 using xAPI.Errors;
-using xAPI.Sync;
 using xAPI.Records;
 using xAPI.Responses;
+using xAPI.Sync;
 
 namespace xAPI.Commands
 {
-    using JSONArray = Newtonsoft.Json.Linq.JArray;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONArray = JArray;
+    using JSONObject = JObject;
 
     public class APICommandFactory
     {
         /// <summary>
         /// Counts redirections.
         /// </summary>
-        private static int redirectCounter = 0;
+        private static int redirectCounter;
 
         #region Command creators
         public static LoginCommand CreateLoginCommand(string userId, string password, bool prettyPrint = false)

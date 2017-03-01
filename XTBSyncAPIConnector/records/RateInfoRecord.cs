@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Records
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class RateInfoRecord : BaseResponseRecord
 	{
@@ -12,11 +14,7 @@ namespace xAPI.Records
         private double? close;
 		private double? vol;
 
-		public RateInfoRecord()
-		{
-		}
-
-		public virtual long? Ctm
+	    public virtual long? Ctm
 		{
 			get
 			{
@@ -24,7 +22,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.ctm = value;
+				ctm = value;
 			}
 		}
 
@@ -36,7 +34,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.open = value;
+				open = value;
 			}
 		}
 
@@ -48,7 +46,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.high = value;
+				high = value;
 			}
 		}
 
@@ -60,7 +58,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.low = value;
+				low = value;
 			}
 		}
 
@@ -72,7 +70,7 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.close = value;
+				close = value;
 			}
 		}
 
@@ -84,19 +82,19 @@ namespace xAPI.Records
 			}
 			set
 			{
-				this.vol = value;
+				vol = value;
 			}
 		}
 
         public void FieldsFromJSONObject(JSONObject value)
         {
             {
-                this.Close = (double?)value["close"];
-                this.Ctm = (long?)value["ctm"];
-                this.High = (double?)value["high"];
-                this.Low = (double?)value["low"];
-                this.Open = (double?)value["open"];
-                this.Vol = (double?)value["vol"];
+                Close = (double?)value["close"];
+                Ctm = (long?)value["ctm"];
+                High = (double?)value["high"];
+                Low = (double?)value["low"];
+                Open = (double?)value["open"];
+                Vol = (double?)value["vol"];
             }
         }
     }

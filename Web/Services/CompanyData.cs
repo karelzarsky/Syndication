@@ -1,7 +1,7 @@
-﻿using SyndicateLogic;
+﻿using System.Linq;
+using SyndicateLogic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
-using System.Linq;
 
 namespace SyndicationWeb.Services
 {

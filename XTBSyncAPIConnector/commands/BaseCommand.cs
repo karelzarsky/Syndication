@@ -3,7 +3,7 @@ using xAPI.Errors;
 
 namespace xAPI.Commands
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public abstract class BaseCommand
     {
@@ -17,12 +17,12 @@ namespace xAPI.Commands
 
         public BaseCommand(JSONObject arguments, bool? prettyPrint, string customTag = "")
         {
-            this.commandName = CommandName;
+            commandName = CommandName;
             this.arguments = arguments;
             this.prettyPrint = prettyPrint;
 
             if (customTag == "")
-                customTag = xAPI.Utils.CustomTag.Next();
+                customTag = Utils.CustomTag.Next();
 
             CustomTag = customTag;
 
@@ -41,7 +41,7 @@ namespace xAPI.Commands
             foreach (string argName in RequiredArguments)
             {
                 JToken tok;
-                if (!this.arguments.TryGetValue(argName, out tok))
+                if (!arguments.TryGetValue(argName, out tok))
                 {
                     throw new APICommandConstructionException("Arguments of [" + commandName + "] Command must contain \"" + argName + "\" field!");
                 }

@@ -1,9 +1,10 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
+using xAPI.Codes;
 
 namespace xAPI.Records
 {
-    using xAPI.Codes;
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class IbRecord : BaseResponseRecord
     {
@@ -58,20 +59,20 @@ namespace xAPI.Records
 
         public IbRecord(JSONObject value)
         {
-            this.FieldsFromJSONObject(value);
+            FieldsFromJSONObject(value);
         }
 
         public void FieldsFromJSONObject(JSONObject value)
         {
-            this.ClosePrice = (double)value["closePrice"];
-            this.Login = (string)value["login"];
-            this.Nominal = (double)value["nominal"];
-            this.OpenPrice = (double)value["openPrice"];
-            this.Side = Side.FromCode((Int32)value["side"]);
-            this.Surname = (string)value["surname"];
-            this.Symbol = (string)value["symbol"];
-            this.Timestamp = (Int64)value["timestamp"];
-            this.Volume = (double)value["volume"];
+            ClosePrice = (double)value["closePrice"];
+            Login = (string)value["login"];
+            Nominal = (double)value["nominal"];
+            OpenPrice = (double)value["openPrice"];
+            Side = Side.FromCode((Int32)value["side"]);
+            Surname = (string)value["surname"];
+            Symbol = (string)value["symbol"];
+            Timestamp = (Int64)value["timestamp"];
+            Volume = (double)value["volume"];
         }
     }
 }

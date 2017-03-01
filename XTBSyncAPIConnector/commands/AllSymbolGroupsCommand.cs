@@ -1,7 +1,9 @@
+using System;
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Commands
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
-    using System;
+    using JSONObject = JObject;
 
     public class AllSymbolGroupsCommand : BaseCommand
     {

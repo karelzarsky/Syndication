@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Responses
 {
-	using JSONObject = Newtonsoft.Json.Linq.JObject;
+	using JSONObject = JObject;
 
 	public class MarginTradeResponse : BaseResponse
 	{
@@ -8,8 +10,8 @@ namespace xAPI.Responses
 
 		public MarginTradeResponse(string body) : base(body)
 		{
-			JSONObject ob = (JSONObject) this.ReturnData;
-			this.margin = (double?) ob["margin"];
+			JSONObject ob = (JSONObject) ReturnData;
+			margin = (double?) ob["margin"];
 		}
 
 		public virtual double? Margin

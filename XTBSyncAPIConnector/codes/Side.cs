@@ -16,10 +16,9 @@
         {
             if (code == 0)
                 return BUY;
-            else if (code == 1)
+            if (code == 1)
                 return SELL;
-            else
-                return null;
+            return null;
         }
 
         private Side(int code) 

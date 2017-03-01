@@ -24,7 +24,7 @@ namespace xAPI.Codes
         public long Code
         {
             get { return code; }
-            set { this.code = value; }
+            set { code = value; }
         }
 
         public static bool operator ==(BaseCode baseCode1, BaseCode baseCode2)
@@ -52,7 +52,7 @@ namespace xAPI.Codes
             if ((object)baseCode == null)
                 return false;
 
-            return (this.Code == baseCode.Code);
+            return (Code == baseCode.Code);
         }
 
         public override int GetHashCode()
@@ -64,7 +64,7 @@ namespace xAPI.Codes
         public long LongValue
         {
             get { return code; }
-            set { this.code = value; }
+            set { code = value; }
         }
 
         [Obsolete("Use Code instead")]

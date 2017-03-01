@@ -52,11 +52,11 @@
         economyIndex = 5
     }
 
-    public enum DirectionType : int
+    public enum DirectionType
     {
         Sell = -1,
         Nothing = 0,
-        Buy = 1,
+        Buy = 1
     }
 
     public enum ExitReason : byte

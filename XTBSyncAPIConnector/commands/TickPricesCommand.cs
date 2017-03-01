@@ -1,6 +1,8 @@
+using Newtonsoft.Json.Linq;
+
 namespace xAPI.Commands
 {
-    using JSONObject = Newtonsoft.Json.Linq.JObject;
+    using JSONObject = JObject;
 
     public class TickPricesCommand : BaseCommand
     {
@@ -21,7 +23,7 @@ namespace xAPI.Commands
         {
             get
             {
-                return new string[] { "symbols", "timestamp" };
+                return new[] { "symbols", "timestamp" };
             }
         }
     }
