@@ -13,8 +13,9 @@
 
     <form asp-action="FeedList" method="get">
         <div class="btn-group" role="group">
-            <a asp-action="Companies"
+            <a asp-action="FeedList"
                asp-route-page="@(Model.PageIndex - 1)"
+               asp-route-lang="@ViewData["lang"]"
                class="btn btn-sm btn-info @prevDisabled"
                role="group">
                 Prev<div><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" /></div>
@@ -22,29 +23,43 @@
             <a class="btn btn-sm btn-info disabled" role="group"><div>Page</div>@Model.PageIndex / @Model.TotalPages</a>
             <a asp-action="FeedList"
                asp-route-page="@(Model.PageIndex + 1)"
+               asp-route-lang="@ViewData["lang"]"
                class="btn btn-sm btn-info @nextDisabled"
                role="group">
                 Next
                 <div><span class="glyphicon glyphicon-chevron-right" aria-hidden="true" /></div>
             </a>
         </div>
-        Filter: <input type="text" name="nameFilter" value="@ViewData["nameFilter"]" placeholder="name…" />
+        Filter: <input type="text" name="lang" value="@ViewData["lang"]" placeholder="lang…" />
         <input type="submit" value="Filter" class="btn btn-info" />
+
+        Add new RSS feed: <input type="text" name="newFeed" value="@ViewData["newFeed"]" placeholder="URL…" />
+        <input type="submit" value="NewURL" class="btn btn-info" />
+
     </form>
+
+    <div class="row">
+        <div class="col-md-1"><strong>Active</strong></div>
+        <div class="col-md-1"><strong>ID, language</strong></div>
+        <div class="col-md-3"><strong>Title</strong></div>
+        <div class="col-md-4"><strong>URL</strong></div>
+        <div class="col-md-1"><strong>Articles</strong></div>
+        <div class="col-md-2"><strong>Last Article</strong></div>
+    </div>
 
     @foreach (var f in Model.Feeds)
     {
         <div class="row">
-            <div class="col-md-1">@f.FeedEntity.ID</div>
+            <div class="col-md-1"><span class="showopacity glyphicon @(f.FeedEntity.Active?"glyphicon-ok text-success": "glyphicon-remove text-danger")" /></div>
+            <div class="col-md-1">@f.FeedEntity.ID @f.FeedEntity.Language</div>
             <div class="col-md-3"><strong>@f.FeedEntity.Title</strong></div>
             <div class="col-md-4"><a href="@f.FeedEntity.Url">@f.FeedEntity.Url</a></div>
-            <div class="col-md-1"><span class="showopacity glyphicon @(f.FeedEntity.Active?"glyphicon-ok success": "glyphicon-remove danger")" /></div>
-            <div class="col-md-1">@f.articles</div>
-            <div class="col-md-1">@f.articlesWithTicker</div>
-            <div class="col-md-12">@f.FeedEntity.ErrorMessage</div>
-            <div class="col-md-1">@f.FeedEntity.Language</div>
-            <div class="col-md-4">@f.FeedEntity.LastArticleReceived</div>
+            <div class="col-md-1">@f.articlesWithTicker / @f.articles</div>
+            <div class="col-md-2">@f.FeedEntity.LastArticleReceived?.ToString("dd.MM.yyyy HH:mm")</div>
         </div>
-        <hr/>
+        <div class="row">
+            <div class="col-md-12">@f.FeedEntity.ErrorMessage</div>
+        </div>
+        <hr />
     }
 </div>

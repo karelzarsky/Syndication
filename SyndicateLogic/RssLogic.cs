@@ -73,10 +73,19 @@ namespace SyndicateLogic
                 DataLayer.LogMessage(LogLevel.Feed, $"R restarting feed {feed.ID} {feed.Url}");
             }
             ctx.SaveChanges();
-            return ctx.Feeds.Include("RSSServer")
+            var nextfeed = ctx.Feeds.Include("RSSServer")
                 .Where(x => x.Active && (x.RSSServer.NextRun == null || x.RSSServer.NextRun < DateTime.Now))
                 .OrderBy(x => x.LastCheck)
                 .FirstOrDefault();
+            if (nextfeed.RSSServer == null)
+            {
+                UpdateServerConnection();
+                nextfeed = ctx.Feeds.Include("RSSServer")
+                .Where(x => x.Active && (x.RSSServer.NextRun == null || x.RSSServer.NextRun < DateTime.Now))
+                .OrderBy(x => x.LastCheck)
+                .FirstOrDefault();
+            }
+            return nextfeed;
         }
 
         public static void UpdateServerConnection()
