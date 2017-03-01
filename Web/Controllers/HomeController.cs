@@ -70,16 +70,18 @@ namespace SyndicationWeb.Controllers
             return View(PaginatedList <CompanyDetail>.Create(_companyData.GetCompaniesByName(nameFilter).OrderBy(c => c.ticker), page, 100));
         }
 
-        public IActionResult FeedList(int page = 1, int pageSize = 50, string lang = "", string newFeed = "")
+        public IActionResult FeedList(int page = 1, int pageSize = 50, string lang = "", string newFeed = "", string active = "Active shown", string inactive = "Inactive shown")
         {
             ViewData["page"] = page;
             ViewData["pageSize"] = pageSize;
             ViewData["lang"] = lang;
+            ViewData["active"] = active;
+            ViewData["inactive"] = inactive;
 
             if (!string.IsNullOrEmpty(newFeed))
                 _feedData.AddFeed(newFeed);
 
-            return View(_feedData.GetFeeds(page: page, pageSize:pageSize, lang:lang));
+            return View(_feedData.GetFeeds(page: page, pageSize:pageSize, lang:lang, showActive:(active == "Active shown"), showInactive:(inactive=="Inactive shown")));
         }
     }
 }

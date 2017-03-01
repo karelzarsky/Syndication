@@ -33,6 +33,23 @@
         Filter: <input type="text" name="lang" value="@ViewData["lang"]" placeholder="lang…" />
         <input type="submit" value="Filter" class="btn btn-info" />
 
+        <div class="btn-group" role="group">
+            <a asp-action="FeedList"
+               asp-route-page=1
+               asp-route-active="@(ViewData["active"].ToString()=="Active shown"?"Active hidden": "Active shown")"
+               asp-route-inactive="@ViewData["inactive"]"
+               asp-route-lang="@ViewData["lang"]"
+               class="btn btn-sm btn-success"
+               role="group">@ViewData["active"]</a>
+            <a asp-action="FeedList"
+               asp-route-page=1
+               asp-route-active="@ViewData["active"]"
+               asp-route-inactive="@(ViewData["inactive"].ToString()=="Inactive shown"?"Inactive hidden": "Inactive shown")"
+               asp-route-lang="@ViewData["lang"]"
+               class="btn btn-sm btn-success"
+               role="group">@ViewData["inactive"]</a>
+        </div>
+
         Add new RSS feed: <input type="text" name="newFeed" value="@ViewData["newFeed"]" placeholder="URL…" />
         <input type="submit" value="NewURL" class="btn btn-info" />
 

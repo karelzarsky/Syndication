@@ -9,7 +9,7 @@ namespace SyndicationWeb.Services
 {
     public interface IFeedData
     {
-        FeedListViewModel GetFeeds(int page = 1, int pageSize = 50, string sortOrder = "", string lang = "");
+        FeedListViewModel GetFeeds(int page, int pageSize, string lang, bool showActive, bool showInactive, string sortOrder = "");
         string AddFeed(string newFeed);
     }
 
@@ -32,16 +32,13 @@ namespace SyndicationWeb.Services
             return "Success !";
         }
 
-        public FeedListViewModel GetFeeds(int page = 1, int pageSize = 50, string sortOrder = "", string lang = "")
+        public FeedListViewModel GetFeeds(int page, int pageSize, string lang, bool showActive, bool showInactive, string sortOrder = "")
         {
             if (pageSize <= 0) pageSize = 50;
             var res = new FeedListViewModel();
             res.PageIndex = (page > 0) ? page : 1;
             IQueryable<Feed> query = _ctx.Feeds.Include("AffectedInstrument");
-            if (!string.IsNullOrEmpty(lang))
-            {
-                query = query.Where(a => a.Language.Contains(lang));
-            }
+            query = query.Where(f => f.Language.Contains(lang) && ((f.Active && showActive) || (!f.Active && showInactive)));
             res.Feeds = new List<FeedViewModel>();
             res.TotalPages = query.Count() / pageSize + 1;
             foreach (var item in query.OrderBy(f => f.ID).Skip(pageSize * (page - 1)).Take(pageSize).ToArray())

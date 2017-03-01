@@ -24,7 +24,7 @@ namespace SyndicateLogic
         public static readonly Regex _urlRegex = new Regex("\\w+:\\/{2}[\\d\\w-]+(\\.[\\d\\w-]+)*(?:(?:\\/[^\\s/]*))*", RegexOptions.Compiled);
         private static int minSamples = 30;
         private static int minTickers = 10;
-        private static decimal minPositiveScoreAlert = 4m;
+        private static decimal minPositiveScoreAlert = 3m;
         private static decimal minNegativeScoreAlert = -0.2m;
 
         public static void FindInstruments(int ArticleID)
