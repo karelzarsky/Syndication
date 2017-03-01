@@ -77,7 +77,7 @@ namespace SyndicateLogic
                 .Where(x => x.Active && (x.RSSServer.NextRun == null || x.RSSServer.NextRun < DateTime.Now))
                 .OrderBy(x => x.LastCheck)
                 .FirstOrDefault();
-            if (nextfeed.RSSServer == null)
+            if (nextfeed != null && nextfeed.RSSServer == null)
             {
                 UpdateServerConnection();
                 nextfeed = ctx.Feeds.Include("RSSServer")
@@ -298,55 +298,60 @@ namespace SyndicateLogic
             DeleteOlderVersions(ea);
             FindInstruments(ea.ID);
             ShingleLogic.ProcessArticleNew(ea.ID);
-            ScoreArticle(ea, context);
+            ScoreArticle(ea.ID);
             sw.Stop();
             string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";
             DataLayer.LogMessage(LogLevel.Article, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
             return true;
         }
 
-        public static void ScoreArticle(Article ea, Db context)
+        public static void ScoreArticle(int ArticleID)
         {
-            var score = new decimal[ShingleLogic.maxInterval + 1];
-            var scoreUp = new decimal[ShingleLogic.maxInterval + 1];
-            var scoreDown = new decimal[ShingleLogic.maxInterval+1];
-            List<decimal>[] scoreDownLists = new List<decimal>[ShingleLogic.maxInterval + 1];
-            List<decimal>[] scoreUpLists = new List<decimal>[ShingleLogic.maxInterval + 1];
-            for (int i = 0; i <= ShingleLogic.maxInterval; i++)
+            using (var context = new Db())
             {
-                scoreDownLists[i] = new List<decimal>();
-                scoreUpLists[i] = new List<decimal>();
-            }
-            var shingles = context.ShingleUses.Where(x => x.ArticleID == ea.ID).ToArray();
-            foreach (var shingle in shingles)
-            {
-                ShingleAction[] actions = context.ShingleActions.Where(x => x.shingleID == shingle.ShingleID && x.samples > minSamples && x.tickers > minTickers && x.up != null && x.down != null).ToArray();
-                foreach (var a in actions)
+                var sw = Stopwatch.StartNew();
+                var ea = context.Articles.Include("Feed").Single(x => x.ID == ArticleID);
+                var score = new decimal[ShingleLogic.maxInterval + 1];
+                var scoreUp = new decimal[ShingleLogic.maxInterval + 1];
+                var scoreDown = new decimal[ShingleLogic.maxInterval + 1];
+                List<decimal>[] scoreDownLists = new List<decimal>[ShingleLogic.maxInterval + 1];
+                List<decimal>[] scoreUpLists = new List<decimal>[ShingleLogic.maxInterval + 1];
+                for (int i = 0; i <= ShingleLogic.maxInterval; i++)
                 {
-                    score[a.interval] += (decimal)a.down + (decimal)a.up - 2;
-                    if (a.down != null) scoreDownLists[a.interval].Add(a.down.Value);
-                    if (a.up != null) scoreUpLists[a.interval].Add(a.up.Value);
+                    scoreDownLists[i] = new List<decimal>();
+                    scoreUpLists[i] = new List<decimal>();
                 }
-            }
-            ea.ScoreMin = score.Min();
-            ea.ScoreMax = score.Max();
-            for (int i = 0; i <= ShingleLogic.maxInterval; i++)
-            {
-                if (scoreDownLists[i].Count > 0) scoreDown[i] = scoreDownLists[i].Average();
-                if (scoreUpLists[i].Count > 0) scoreUp[i] = scoreUpLists[i].Average();
-            }
-            if ((scoreDown.Where(x => x != 0)).Count() > 0) ea.ScoreDownMin = (1 - scoreDown.Where(x => x!=0).Min())*100;
-            if (scoreUp.Max() != 0) ea.ScoreUpMax = (scoreUp.Max()-1)*100;
-            Alert(ea, score);
-            for (byte i = 0; i < ShingleLogic.maxInterval; i++)
-            {
-                // if (score[i] > highScore || score[i] < lowScore)
+                var shingles = context.ShingleUses.Where(x => x.ArticleID == ea.ID).ToArray();
+                foreach (var shingle in shingles)
                 {
-                    context.ArticleScores.AddOrUpdate(new ArticleScore { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
+                    ShingleAction[] actions = context.ShingleActions.Where(x => x.shingleID == shingle.ShingleID && x.samples > minSamples && x.tickers > minTickers && x.up != null && x.down != null).ToArray();
+                    foreach (var a in actions)
+                    {
+                        score[a.interval] += (decimal)a.down + (decimal)a.up - 2;
+                        if (a.down != null) scoreDownLists[a.interval].Add(a.down.Value);
+                        if (a.up != null) scoreUpLists[a.interval].Add(a.up.Value);
+                    }
                 }
+                ea.ScoreMin = score.Min();
+                ea.ScoreMax = score.Max();
+                for (int i = 0; i <= ShingleLogic.maxInterval; i++)
+                {
+                    if (scoreDownLists[i].Count > 0) scoreDown[i] = scoreDownLists[i].Average();
+                    if (scoreUpLists[i].Count > 0) scoreUp[i] = scoreUpLists[i].Average();
+                }
+                if ((scoreDown.Where(x => x != 0)).Count() > 0) ea.ScoreDownMin = (1 - scoreDown.Where(x => x != 0).Min()) * 100;
+                if (scoreUp.Max() != 0) ea.ScoreUpMax = (scoreUp.Max() - 1) * 100;
+                Alert(ea, score);
+                for (byte i = 0; i < ShingleLogic.maxInterval; i++)
+                {
+                    // if (score[i] > highScore || score[i] < lowScore)
+                    {
+                        context.ArticleScores.AddOrUpdate(new ArticleScore { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
+                    }
+                }
+                context.SaveChanges();
+                //DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}/{score.Max()}");
             }
-            context.SaveChanges();
-            //DataLayer.LogMessage(LogLevel.Analysis, $"O Article:{ea.ID} {score.Min()}/{score.Max()}");
         }
 
         private static void Alert(Article ea, decimal[] score)
