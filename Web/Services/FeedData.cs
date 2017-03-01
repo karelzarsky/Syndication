@@ -22,14 +22,17 @@ namespace SyndicationWeb.Services
 
         public FeedListViewModel GetFeeds(int page = 1, int pageSize = 100, string sortOrder = "", string lang = "")
         {
+            if (pageSize <= 0) pageSize = 100;
             var res = new FeedListViewModel();
-            IQueryable<Feed> query = _ctx.Feeds;
+            res.PageIndex = (page > 0) ? page : 1;
+            IQueryable<Feed> query = _ctx.Feeds.Include("AffectedInstrument");
             if (!string.IsNullOrEmpty(lang))
             {
                 query = query.Where(a => a.Language == lang);
             }
             res.Feeds = new List<FeedViewModel>();
-            foreach (var item in query.ToArray())
+            res.TotalPages = query.Count() / pageSize + 1;
+            foreach (var item in query.OrderBy(f => f.ID).Skip(pageSize * page).Take(pageSize).ToArray())
             {
                 res.Feeds.Add(new FeedViewModel
                 {

@@ -8,17 +8,19 @@ namespace SyndicationWeb.Controllers
 {
     public class HomeController : Controller
     {
-        private ILogData _logData;
-        private ITipsData _tipsData;
-        private IArticlesData _articlesData;
-        private ICompanyData _companyData;
+        private readonly ILogData _logData;
+        private readonly ITipsData _tipsData;
+        private readonly IArticlesData _articlesData;
+        private readonly ICompanyData _companyData;
+        private readonly IFeedData _feedData;
 
-        public HomeController(ILogData logData, ITipsData tipsData, IArticlesData articlesData, ICompanyData companyData)
+        public HomeController(ILogData logData, ITipsData tipsData, IArticlesData articlesData, ICompanyData companyData, IFeedData FeedData)
         {
             _logData = logData;
             _tipsData = tipsData;
             _articlesData = articlesData;
             _companyData = companyData;
+             _feedData = FeedData;
         }
 
         public IActionResult Index()
@@ -34,8 +36,7 @@ namespace SyndicationWeb.Controllers
 
         public IActionResult Tips()
         {
-            var model = new TipsViewModel();
-            model.Tips = _tipsData.GetTips();
+            var model = new TipsViewModel {Tips = _tipsData.GetTips()};
             return View(model);
         }
 
@@ -67,6 +68,13 @@ namespace SyndicationWeb.Controllers
         {
             ViewData["nameFilter"] = nameFilter;
             return View(PaginatedList <CompanyDetail>.Create(_companyData.GetCompaniesByName(nameFilter).OrderBy(c => c.ticker), page, 100));
+        }
+
+        public IActionResult FeedList(int page = 1, int pageSize = 100)
+        {
+            ViewData["page"] = page;
+            ViewData["pageSize"] = pageSize;
+            return View(_feedData.GetFeeds(page: page, pageSize:pageSize));
         }
     }
 }

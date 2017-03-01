@@ -13,8 +13,8 @@ namespace SyndicationWeb.ViewModels
     public class FeedListViewModel
     {
         public List<FeedViewModel> Feeds;
-        public int PageIndex { get; private set; }
-        public int TotalPages { get; private set; }
+        public int PageIndex { get; set; }
+        public int TotalPages { get; set; }
 
         public bool HasPreviousPage
         { get { return (PageIndex > 1); } }
