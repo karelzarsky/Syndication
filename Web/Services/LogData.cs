@@ -26,14 +26,20 @@ namespace SyndicationWeb.Services
         {
             var res = new LogViewModel
             {
-                TotalRecords = _ctx.Logs.Count(),
                 LogLevels = new List<LogLevel>()
             };
             Array values = Enum.GetValues(typeof(SyndicateLogic.LogLevel));
-            res.LogLevels.Add(new LogLevel { Number = 0, DisplayName = "All" });
+            res.LogLevels.Add(new LogLevel { Number = 0, DisplayName = "All", Records = _ctx.Logs.Count() });
             foreach (var val in values)
             {
-                res.LogLevels.Add(new LogLevel { Number = (byte)val, DisplayName = Enum.GetName(typeof(SyndicateLogic.LogLevel), val) });
+                int records = _ctx.Logs.Count(l => l.Severity == (byte) val);
+                if (records > 0)
+                    res.LogLevels.Add(new LogLevel
+                    {
+                        Number = (byte)val,
+                        DisplayName = Enum.GetName(typeof(SyndicateLogic.LogLevel), val),
+                        Records = records
+                    });
             }
             IQueryable<Log> LogList = _ctx.Logs;
             if (level != 0)

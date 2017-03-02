@@ -1,0 +1,16 @@
+﻿@model Article
+
+<div class="row">
+    <div class="col-lg-1 small" >@Model.ReceivedUTC.ToLocalTime().ToString("dd.MM.yy HH:mm")</div>
+    <div class="col-lg-1 small">@Model.PublishedUTC.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
+    <div class="col-lg-1">@(100.00m * (Model.ScoreMin + Model.ScoreMax))</div>
+    <div class="col-lg-1">@Model.language</div>
+    <a class="col-lg-1 info text-success" asp-controller="Home" asp-action="Company" asp-route-id="@Model.Ticker">
+        <strong>@Model.Ticker</strong></a>
+    <div class="col-lg-7"><a asp-action="ArticleDetail" asp-route-ArticleID="@Model.ID">@Model.Title</a></div>
+    <a class="col-lg-12 text-small" href="@Model.URI_links">@Model.URI_links</a>
+</div>
+<div class="row">
+    <div class="col-lg-12 small">@Model.Summary</div>
+</div>
+<hr margin="3" />

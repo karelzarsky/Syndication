@@ -2,6 +2,7 @@
 using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
+using SyndicationWeb.ViewModels;
 
 namespace SyndicationWeb.Services
 {
@@ -10,6 +11,7 @@ namespace SyndicationWeb.Services
         IQueryable<Article> GetArticles();
         IQueryable<Article> GetArticlesByTicker(string ticker);
         IEnumerable<Article> GetArticles(string ticker, string lang, string sortOrder, int page = 1, int pageSize = 100);
+        ArticleDetail GetDetail(int ArticleID);
     }
 
     public class ArticlesData : IArticlesData
@@ -49,6 +51,16 @@ namespace SyndicationWeb.Services
         public IQueryable<Article> GetArticlesByTicker(string ticker)
         {
             return _ctx.Articles.Where(a => a.Ticker == ticker);
+        }
+
+        public ArticleDetail GetDetail(int ArticleID)
+        {
+            var res = new ArticleDetail
+            {
+                ArticleEntity = _ctx.Articles.Find(ArticleID)
+            };
+            res.ColoredText = res.ArticleEntity.Summary;
+            return res;
         }
     }
 }

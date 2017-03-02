@@ -1,0 +1,30 @@
+﻿@model ArticleDetail
+@{
+    ViewData["Title"] = Model.ArticleEntity.Title;
+}
+<div class="container-fluid">
+    <div class="well well-sm">
+        <h1 class="text-center"><strong>@Model.ArticleEntity.Title</strong></h1>
+    </div>
+    <div class="well well-lg">
+        <div class="row">
+            <div class="col-xs-6 col-lg-2 text-warning text-right">ID:</div>
+            <div class="col-xs-6 col-lg-2">@Model.ArticleEntity.ID</div>
+            <div class="col-xs-6 col-lg-1 text-warning text-right">Language:</div>
+            <div class="col-xs-6 col-lg-2"><strong>@Model.ArticleEntity.language</strong></div>
+            <div class="col-xs-6 col-lg-2 text-warning text-right">Published:</div>
+            <div class="col-xs-6 col-lg-3">@Model.ArticleEntity.PublishedUTC.ToLocalTime().ToString("dd.MM.yy HH:mm")</div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6 col-lg-2 text-warning text-right">Received:</div>
+            <div class="col-xs-6 col-lg-2">@Model.ArticleEntity.ReceivedUTC.ToLocalTime().ToString("dd.MM.yy HH:mm")</div>
+            <div class="col-xs-6 col-lg-1 text-warning text-right">Ticker:</div>
+            <a asp-action="Company" asp-route-id="@Model.ArticleEntity.Ticker"><strong>@Model.ArticleEntity.Ticker</strong></a>
+        </div>
+        <div class="col-xs-6 col-lg-2 text-warning text-right">URL:</div>
+        <a asp-action="Company" asp-route-id="@Model.ArticleEntity.URI_links"><strong>@Model.ArticleEntity.URI_links</strong></a>
+    </div>
+    <div>
+        @Model.ColoredText
+    </div>
+</div>

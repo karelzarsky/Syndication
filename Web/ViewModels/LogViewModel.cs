@@ -8,13 +8,13 @@ namespace SyndicationWeb.ViewModels
     {
         public byte Number;
         public string DisplayName;
+        public int Records;
     }
 
     public class LogViewModel
     {
         public PaginatedList<Log> Logs { get; set; }
         public List<LogLevel> LogLevels { get; set; }
-        public int TotalRecords { get; set; }
         public int TotalPages { get; set; }
     }
 }

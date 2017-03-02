@@ -31,6 +31,7 @@ namespace SyndicationWeb.Controllers
 
         public IActionResult Logs(byte level = 0, bool descending = true, int page = 1, int pageSize = 100 )
         {
+            ViewData["level"] = level;
             return View(_logData.GetAll(level, descending, page, pageSize));
         }
 
@@ -40,7 +41,7 @@ namespace SyndicationWeb.Controllers
             return View(model);
         }
 
-        public IActionResult Articles(string ticker = "", string sortOrder = "", string lang = "", int? page = 1)
+        public IActionResult ArticleList(string ticker = "", string sortOrder = "", string lang = "", int? page = 1)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["PublishedSortParm"] = string.IsNullOrEmpty(sortOrder) ? "published_desc" : "";
@@ -82,6 +83,11 @@ namespace SyndicationWeb.Controllers
                 _feedData.AddFeed(newFeed);
 
             return View(_feedData.GetFeeds(page: page, pageSize:pageSize, lang:lang, showActive:(active == "Active shown"), showInactive:(inactive=="Inactive shown")));
+        }
+
+        public IActionResult ArticleDetail(int ArticleID)
+        {
+            return View(_articlesData.GetDetail(ArticleID));
         }
     }
 }

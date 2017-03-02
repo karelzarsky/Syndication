@@ -9,9 +9,9 @@
     <div class="row ">
         <h1 class="text-center">Latest articles <span class="showopacity glyphicon glyphicon-file" /></h1>
     </div>
-    <form asp-action="Articles" method="get">
+    <form asp-action="ArticleList" method="get">
         <div class="btn-group" role="group">
-            <a asp-action="Articles"
+            <a asp-action="ArticleList"
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-page="@(Model.PageIndex - 1)"
                asp-route-lang="@ViewData["lang"]"
@@ -21,7 +21,7 @@
                 Prev<div><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" /></div>
             </a>
             <a class="btn btn-sm btn-info disabled" role="group"><div>Page</div>@Model.PageIndex</a>
-            <a asp-action="Articles"
+            <a asp-action="ArticleList"
                asp-route-sortOrder="@ViewData["CurrentSort"]"
                asp-route-page="@(Model.PageIndex + 1)"
                asp-route-lang="@ViewData["lang"]"
@@ -35,7 +35,7 @@
         Filter: <input type="text" name="ticker" value="@ViewData["ticker"]" placeholder="ticker…" />
         <input type="text" name="lang" value="@ViewData["lang"]" placeholder="language…" />
         <input type="submit" value="Filter" class="btn btn-info" />
-        <a asp-action="Articles" class="btn btn-info">Clear</a>
+        <a asp-action="ArticleList" class="btn btn-info">Clear</a>
         <div class="row">
             <div class="col-lg-1">
                 <a asp-route-sortOrder="@ViewBag.ReceivedSortParm">
@@ -55,6 +55,6 @@
     </form>
     @foreach (var a in Model)
     {
-        @Html.Partial("_Article", a)
+        @Html.Partial("_ArticleLine", a)
     }
 </div>
