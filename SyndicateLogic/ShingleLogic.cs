@@ -36,7 +36,7 @@ namespace SyndicateLogic
         private static readonly Stopwatch sPair = new Stopwatch();
         private static readonly Stopwatch sUpper = new Stopwatch();
 
-        public static void ProcessArticleNew(int ArticleID)
+        public static void ProcessArticle(int ArticleID)
         {
             using (var ctx = new Db())
             {
@@ -90,7 +90,7 @@ namespace SyndicateLogic
                 }
                 foreach (var shingle in Shingles.ToArray())
                 {
-                    SaveShingleUseNew(ctx, shingle, ArticleID);
+                    SaveShingleUse(ctx, shingle, ArticleID);
                 }
                 a.Processed = ProcessState.Done;
                 try
@@ -153,11 +153,11 @@ namespace SyndicateLogic
             return text != text.ToUpper() ? text.ToLowerInvariant() : text;
         }
 
-        public static void SaveShingleUseNew(Db ctx, Shingle s, int ArticleID)
+        public static void SaveShingleUse(Db ctx, Shingle s, int ArticleID)
         {
             if (ctx.ShingleUses.Count(x => x.ShingleID == s.ID) > tooCommonShingleLimit)
             {
-                SetShingleTooCommon2(s, ctx);
+                SetShingleTooCommon(s, ctx);
                 return;
             }
             var su = ctx.ShingleUses.Find(s.ID, ArticleID);
@@ -170,127 +170,27 @@ namespace SyndicateLogic
             //    Console.Write(s.text + "| ");
         }
 
-        public static void SaveShingleUse(string text, string lang, Db ctx, int ArticleID)
-        {
-            var s = GetShingle(text, lang, ctx);
-            if (s == null) return;
-            if (ctx.ShingleUses.Count(x => x.ShingleID == s.ID) > tooCommonShingleLimit)
-            {
-                SetShingleTooCommon2(s, ctx);
-                return;
-            }
-            var su = ctx.ShingleUses.Find(s.ID, ArticleID);
-            if (su == null)
-            {
-                ctx.ShingleUses.AddOrUpdate(new ShingleUse { ShingleID = s.ID, ArticleID = ArticleID });
-                try
-                {
-                    ctx.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    DataLayer.LogException(e);
-                }
-            }
-            if (Environment.UserInteractive)
-                Console.Write(text + "| ");
-        }
-
         private static Shingle PrepareShingle(string text, string lang, Db ctx)
         {
             var shFromDb = ctx.Shingles.FirstOrDefault(x => x.language == lang && x.text == text);
             if (shFromDb != null) return shFromDb;
             byte tokens = Convert.ToByte(text.Split(' ').Length);
             var s = new Shingle { text = text, tokens = tokens, language = lang };
-            SetShingleKindNew(s, ctx);
-            return s;
-        }
-
-        private static Shingle GetShingle(string text, string lang, Db ctx)
-        {
-            var shFromDb = ctx.Shingles.FirstOrDefault(x => x.text == text);
-            if (shFromDb != null) return shFromDb;
-            byte tokens = Convert.ToByte(text.Split(' ').Length);
-            var s = new Shingle { text = text, tokens = tokens, language = lang };
             SetShingleKind(s, ctx);
-            if (s.kind == ShingleKind.containCommon || s.kind == ShingleKind.containTicker)
-                return null;
-            ctx.Shingles.AddOrUpdate(s);
-            try
-            {
-                ctx.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                DataLayer.LogException(e);
-            }
             return s;
         }
 
-        public static void SetShingleKindNew(Shingle s, Db ctx)
+        public static void SetShingleKind(Shingle s, Db ctx)
         {
             if (IsCompanyName(s, ctx)) { s.kind = ShingleKind.companyName; return; }
             if (IsCEO(s, ctx)) { s.kind = ShingleKind.CEO; return; }
             if (IsCurrencyPair(s, ctx)) { s.kind = ShingleKind.currencyPair; return; }
             if (IsTooCommon(s, ctx)) { s.kind = ShingleKind.common; return; }
             if (IsTicker(s, ctx)) { s.kind = ShingleKind.ticker; return; }
-            if (ContainsCommon(s, ctx))
-            { s.kind = ShingleKind.containCommon; return; }
+            if (ContainsCommon(s, ctx)) { s.kind = ShingleKind.containCommon; return; }
             if (ContainsTicker(s, ctx)) { s.kind = ShingleKind.containTicker; return; }
             if (IsUpperCase(s)) { s.kind = ShingleKind.upperCase; return; }
             if (s.kind == ShingleKind.newShingle) { s.kind = ShingleKind.interesting; }
-        }
-
-        public static void SetShingleKind(Shingle s, Db ctx)
-        {
-            if (IsCompanyName(s, ctx))
-            {
-                SetShingleIsCompanyName(s, ctx);
-                return;
-            }
-            if (IsCEO(s, ctx))
-            {
-                SetShingleIsCEO(s, ctx);
-                return;
-            }
-            if (IsCurrencyPair(s, ctx))
-            {
-                SetShingleIsCurrency(s, ctx);
-                return;
-            }
-            if (IsCurrency(s, ctx))
-            {
-                SetShingleIsCurrencyPair(s, ctx);
-                return;
-            }
-            if (IsTooCommon(s, ctx))
-            {
-                SetShingleTooCommon2(s, ctx);
-                return;
-            }
-            if (IsTicker(s, ctx))
-            {
-                SetShingleIsTicker2(s, ctx);
-                return;
-            }
-            if (ContainsCommon(s, ctx))
-            {
-                SetShingleContainCommon(s, ctx);
-                return;
-            }
-            if (ContainsTicker(s, ctx))
-            {
-                SetShingleContainTicker(s, ctx);
-                return;
-            }
-            if (IsUpperCase(s))
-            {
-                SetShingleIsUpperCase(s, ctx);
-                return;
-            }
-            if (s.kind == ShingleKind.newShingle)
-                s.kind = ShingleKind.interesting;
-            ctx.SaveChanges();
         }
 
         private static void SetShingleIsCurrency(Shingle shingle, Db ctx)
@@ -437,7 +337,7 @@ drop table #selShingles", new SqlParameter("@shingleID", s.ID), new SqlParameter
             s.kind = ShingleKind.ticker;
         }
 
-        private static void SetShingleTooCommon2(Shingle s, Db ctx)
+        private static void SetShingleTooCommon(Shingle s, Db ctx)
         {
             if (!ctx.CommonWords.Any(x => x.language == s.language && x.text == s.text))
                 ctx.CommonWords.Add(new CommonWord { language = s.language, text = s.text });
@@ -540,4 +440,3 @@ having count(1)>10 and count (distinct(ticker)) > 3";
         }
     }
 }
-

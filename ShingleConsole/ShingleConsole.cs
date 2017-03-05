@@ -23,7 +23,7 @@ namespace ShingleConsole
                         Article a;
                         if ((a = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting)) != null)
                         {
-                            ShingleLogic.ProcessArticleNew(a.ID);
+                            ShingleLogic.ProcessArticle(a.ID);
                             haveWork = true;
                         }
                         if (haveWork) continue;

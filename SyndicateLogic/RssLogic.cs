@@ -297,7 +297,7 @@ namespace SyndicateLogic
             context.SaveChanges();
             DeleteOlderVersions(ea);
             FindInstruments(ea.ID);
-            ShingleLogic.ProcessArticleNew(ea.ID);
+            ShingleLogic.ProcessArticle(ea.ID);
             ScoreArticle(ea.ID);
             sw.Stop();
             string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";

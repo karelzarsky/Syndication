@@ -3,6 +3,7 @@ using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
+using System;
 
 namespace SyndicationWeb.Services
 {
@@ -17,6 +18,7 @@ namespace SyndicationWeb.Services
     public class ArticlesData : IArticlesData
     {
         private readonly Db _ctx;
+        static readonly char[] delimiters = { '.', '?', '!', ',', ';', ' ' };
 
         public ArticlesData(Db ctx)
         {
@@ -59,7 +61,20 @@ namespace SyndicationWeb.Services
             {
                 ArticleEntity = _ctx.Articles.Find(ArticleID)
             };
-            res.ColoredText = res.ArticleEntity.Summary;
+            if (res.ArticleEntity == null) return null;
+            var words = res.ArticleEntity.Text().Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Distinct();
+            res.ColoredText = res.ArticleEntity.Text();
+            foreach (var word in words)
+            {
+                var sh = _ctx.Shingles.FirstOrDefault(s => s.tokens == 1 && s.text == word);
+                if (sh == null) continue;
+                var sa = _ctx.ShingleActions.FirstOrDefault(x => x.shingleID == sh.ID && x.interval == 15);
+                if (sa == null) continue;
+                if (sa.up.Value + sa.down.Value > 2.008m)
+                {
+                    res.ColoredText = res.ColoredText.Replace(word, "<font color=\"#44FF44\">" + word + "</font>");
+                }
+            }
             return res;
         }
     }

@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - Invest Seer</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/spacelab-bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -24,10 +25,10 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="nav"><a asp-action="Tips">Daily Tips<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-thumbs-up" /></a></li>
-                    <li class="nav"><a asp-action="ArticleList">Articles<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-file" /></a></li>
-                    <li class="nav"><a asp-action="Companies">Companies<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-apple" /></a></li>
-                    <li class="nav"><a asp-action="FeedList">Feed list<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-volume-up" /></a></li>
+                    <li class="nav"><a asp-action="Tips">Daily Tips<span style="font-size:16px;" class="fa fa-thumbs-up pull-right hidden-xs showopacity" /></a></li>
+                    <li class="nav"><a asp-action="ArticleList">Articles<span style="font-size:16px;" class="fa fa-newspaper-o pull-right hidden-xs showopacity" /></a></li>
+                    <li class="nav"><a asp-action="Companies">Companies<span style="font-size:16px;" class="fa fa-industry pull-right hidden-xs showopacity" /></a></li>
+                    <li class="nav"><a asp-action="FeedList">Feed list<i class="fa fa-rss hidden-xs showopacity pull-right"></i></a></li>
                     <li class="nav">
                         <form asp-action="Company" asp-controller="Home" method="GET">
                             <input type="text" name="ticker" class="form-control" placeholder="ticker…" />
@@ -44,7 +45,7 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Logs">Logs<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-list" /></a></li>
+                    <li class="nav"><a asp-area="" asp-controller="Home" asp-action="Logs">Logs<span style="font-size:16px;" class="fa fa-bug pull-right hidden-xs showopacity" /></a></li>
                 </ul>
                 <br />
             </div>

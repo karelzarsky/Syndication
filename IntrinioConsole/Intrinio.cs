@@ -267,6 +267,11 @@ namespace IntrinioConsole
                 last = firstDate.date;
             }
             var resp = download_serialized_json_data<PricesResponse>("https://api.intrinio.com/prices?ticker=" + ticker + "&start_date=2015-01-01");
+            if (resp == null)
+            {
+                DataLayer.LogMessage(LogLevel.IntrinioError, $"I No response. Ticker: {ticker}");
+                return;
+            }
             try
             {
                 foreach (Price p in resp.data)

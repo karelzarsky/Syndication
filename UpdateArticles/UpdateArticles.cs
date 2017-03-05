@@ -67,7 +67,7 @@ namespace UpdateArticles
             while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting)) != null)
             {
                 //var sw = Stopwatch.StartNew();
-                ShingleLogic.ProcessArticleNew(ea.ID);
+                ShingleLogic.ProcessArticle(ea.ID);
                 //sw.Stop();
                 //DataLayer.LogMessage(LogLevel.NewArticle, $"{sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
 
