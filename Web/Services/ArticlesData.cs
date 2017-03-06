@@ -56,12 +56,6 @@ namespace SyndicationWeb.Services
             return _ctx.Articles.Where(a => a.Ticker == ticker);
         }
 
-        public struct coloredText
-        {
-            public string Color;
-            public string Text;
-        }
-
         public ArticleDetail GetDetail(int ArticleID)
         {
             var res = new ArticleDetail
@@ -84,16 +78,18 @@ namespace SyndicationWeb.Services
                     res.ColoredText = res.ColoredText.Replace(word, "<font color=\"#44FF44\">" + word + "</font>");
                 }
             }
-            var resList = new List<coloredText>();
+
+            res.colored = new List<coloredText>();
             var remainingText = res.ArticleEntity.Text();
             while (shingles.Any(s => remainingText.Contains(s.text)))
             {
-                var firstShingle = shingles.OrderBy(s => remainingText.IndexOf(s.text, StringComparison.Ordinal)).First();
+                var firstShingle = shingles.Where(s => remainingText.IndexOf(s.text, StringComparison.Ordinal) != -1).OrderBy(s => remainingText.IndexOf(s.text, StringComparison.Ordinal)).First();
                 var index = remainingText.IndexOf(firstShingle.text, StringComparison.Ordinal);
-                resList.Add(new coloredText { Color = "#000", Text = remainingText.Substring(0, index - 1) });
-                resList.Add(new coloredText { Color = "#080", Text = firstShingle.text });
+                res.colored.Add(new coloredText { Color = "#BBB", Text = remainingText.Substring(0, index - 1) });
+                res.colored.Add(new coloredText { Color = "#4F4", Text = firstShingle.text });
                 remainingText = remainingText.Substring(index + firstShingle.text.Length);
             }
+            res.colored.Add(new coloredText { Color = "#BBB", Text = remainingText });
             return res;
         }
     }

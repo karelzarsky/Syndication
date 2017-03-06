@@ -1,8 +1,10 @@
 ﻿@model TradeTip
-<div class="col-lg-1 col-md-6">@Model.ArticleID</div>
-<div class="col-lg-1 col-md-6">@Model.Score</div>
-<div class="col-lg-1 col-md-6">@Model.Received.ToLocalTime().ToString("dd.MM. HH:mm")</div>
-<div class="col-lg-1 col-md-6">@Model.Published.ToLocalTime().ToString("dd.MM. HH:mm")</div>
-<div class="col-lg-1 col-md-6"><b class="text-success">BUY</b></div>
-<div class="col-lg-1 col-md-6"><a asp-controller="Home" asp-action="Company" asp-route-ticker="@Model.Ticker"><strong>@Model.Ticker</strong></a></div>
-<div class="col-lg-6 col-md-12"><a href="@Model.Link">@Model.Title</a></div>
+<div class="row">
+    <a class="col-lg-1 col-sm-6" asp-action="ArticleDetail" asp-route-ArticleID="@Model.ArticleID">@Model.ArticleID</a>
+    <div class="col-lg-1 col-sm-6">@Model.Score</div>
+    <div class="col-lg-1 col-sm-6">@Model.Received.ToLocalTime().ToString("dd.MM. HH:mm")</div>
+    <div class="col-lg-1 col-sm-6">@Model.Published.ToLocalTime().ToString("dd.MM. HH:mm")</div>
+    <div class="col-lg-1 col-sm-6"><b class="text-success">BUY</b></div>
+    <div class="col-lg-1 col-sm-6"><a asp-controller="Home" asp-action="Company" asp-route-ticker="@Model.Ticker"><strong>@Model.Ticker</strong></a></div>
+    <div class="col-lg-6 col-sm-12"><a href="@Model.Link">@Model.Title</a></div>
+</div>
