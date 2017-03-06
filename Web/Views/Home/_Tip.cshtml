@@ -1,7 +1,8 @@
 ﻿@model TradeTip
-<div class="col-lg-1">@Model.ArticleID</div>
-<div class="col-lg-1">@Model.Published.ToLocalTime().ToString("dd.MM. HH:mm")</div>
-<div class="col-lg-1">@Model.Score</div>
-<div class="col-lg-1"><b class="text-success">BUY</b></div>
-<div class="col-lg-1"><a asp-controller="Home" asp-action="Company" asp-route-ticker="@Model.Ticker"><strong>@Model.Ticker</strong></a></div>
-<div class="col-lg-7"><a href="@Model.Link">@Model.Title</a></div>
+<div class="col-lg-1 col-md-6">@Model.ArticleID</div>
+<div class="col-lg-1 col-md-6">@Model.Score</div>
+<div class="col-lg-1 col-md-6">@Model.Received.ToLocalTime().ToString("dd.MM. HH:mm")</div>
+<div class="col-lg-1 col-md-6">@Model.Published.ToLocalTime().ToString("dd.MM. HH:mm")</div>
+<div class="col-lg-1 col-md-6"><b class="text-success">BUY</b></div>
+<div class="col-lg-1 col-md-6"><a asp-controller="Home" asp-action="Company" asp-route-ticker="@Model.Ticker"><strong>@Model.Ticker</strong></a></div>
+<div class="col-lg-6 col-md-12"><a href="@Model.Link">@Model.Title</a></div>

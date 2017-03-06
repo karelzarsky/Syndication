@@ -4,6 +4,7 @@ using SyndicateLogic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
 using System;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace SyndicationWeb.Services
 {
@@ -55,6 +56,12 @@ namespace SyndicationWeb.Services
             return _ctx.Articles.Where(a => a.Ticker == ticker);
         }
 
+        public struct coloredText
+        {
+            public string Color;
+            public string Text;
+        }
+
         public ArticleDetail GetDetail(int ArticleID)
         {
             var res = new ArticleDetail
@@ -64,16 +71,28 @@ namespace SyndicationWeb.Services
             if (res.ArticleEntity == null) return null;
             var words = res.ArticleEntity.Text().Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Distinct();
             res.ColoredText = res.ArticleEntity.Text();
+            var shingles = new List<Shingle>();
             foreach (var word in words)
             {
                 var sh = _ctx.Shingles.FirstOrDefault(s => s.tokens == 1 && s.text == word);
                 if (sh == null) continue;
                 var sa = _ctx.ShingleActions.FirstOrDefault(x => x.shingleID == sh.ID && x.interval == 15);
                 if (sa == null) continue;
-                if (sa.up.Value + sa.down.Value > 2.008m)
+                if (sa.down != null && sa.up != null && sa.up.Value + sa.down.Value > 2.002m)
                 {
+                    shingles.Add(sh);
                     res.ColoredText = res.ColoredText.Replace(word, "<font color=\"#44FF44\">" + word + "</font>");
                 }
+            }
+            var resList = new List<coloredText>();
+            var remainingText = res.ArticleEntity.Text();
+            while (shingles.Any(s => remainingText.Contains(s.text)))
+            {
+                var firstShingle = shingles.OrderBy(s => remainingText.IndexOf(s.text, StringComparison.Ordinal)).First();
+                var index = remainingText.IndexOf(firstShingle.text, StringComparison.Ordinal);
+                resList.Add(new coloredText { Color = "#000", Text = remainingText.Substring(0, index - 1) });
+                resList.Add(new coloredText { Color = "#080", Text = firstShingle.text });
+                remainingText = remainingText.Substring(index + firstShingle.text.Length);
             }
             return res;
         }
