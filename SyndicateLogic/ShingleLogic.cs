@@ -53,17 +53,7 @@ namespace SyndicateLogic
                 if (a.Feed.Language != null && a.Feed.Language.Contains("cs")) a.language = "cs";
                 else if (a.Feed.Language != null && a.Feed.Language.Contains("de")) a.language = "de";
                 else a.language = "en";
-
-                string text = Regex.Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽ/' &:]", " ")
-                    .Replace(": ", " ").Replace(" & ", " ");
-                var newPhrasesArray = text.Split(wordDelimiters, StringSplitOptions.RemoveEmptyEntries);
-                var newPhrases = newPhrasesArray.Select(ToLowerABBR).ToList();
-                newPhrases.RemoveAll(x => x.Length <= 2);
-                text = Regex.Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽ/,\.?!' &:]", " ")
-                    .Replace(": ", " ")
-                    .Replace(" & ", " ");
-                ProcessSentences(text, newPhrases);
-
+                List<string> newPhrases = FindPhrases(a);
                 var Shingles = newPhrases.Distinct().Select(newPhrase => PrepareShingle(newPhrase, a.language, ctx)).ToList();
                 Shingles.RemoveAll(x => x.kind == ShingleKind.containCommon || x.kind == ShingleKind.containTicker);
                 foreach (var shingle in Shingles.ToArray())
@@ -73,7 +63,6 @@ namespace SyndicateLogic
                         Shingles.RemoveAll(x => x != shingle && shingle.text.Contains(x.text));
                     }
                 }
-
                 foreach (var shingle in Shingles.Where(x => x.ID == 0))
                 {
                     ctx.Shingles.AddOrUpdate(shingle);
@@ -116,6 +105,20 @@ namespace SyndicateLogic
                     //Console.WriteLine($"common:{sCommon.ElapsedMilliseconds / 1000} ticker:{sTicker.ElapsedMilliseconds / 1000} Name:{sName.ElapsedMilliseconds / 1000} CEO:{sCEO.ElapsedMilliseconds / 1000} ConC:{sContainC.ElapsedMilliseconds / 1000} ConT:{sContainT.ElapsedMilliseconds / 1000} Up:{sUpper.ElapsedMilliseconds / 1000} Pair:{sPair.ElapsedMilliseconds / 1000}");
                 }
             }
+        }
+
+        public static List<string> FindPhrases(Article a)
+        {
+            string text = Regex.Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽ/' &:]", " ")
+                                .Replace(": ", " ").Replace(" & ", " ");
+            var newPhrasesArray = text.Split(wordDelimiters, StringSplitOptions.RemoveEmptyEntries);
+            var newPhrases = newPhrasesArray.Select(ToLowerABBR).ToList();
+            newPhrases.RemoveAll(x => x.Length <= 2);
+            text = Regex.Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽ/,\.?!' &:]", " ")
+                .Replace(": ", " ")
+                .Replace(" & ", " ");
+            ProcessSentences(text, newPhrases);
+            return newPhrases;
         }
 
         private static void ProcessSentences(string text, List<string> newPhrases)

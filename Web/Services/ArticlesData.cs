@@ -4,7 +4,6 @@ using SyndicateLogic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
 using System;
-using System.Runtime.Remoting.Metadata.W3cXsd2001;
 
 namespace SyndicationWeb.Services
 {
@@ -19,7 +18,6 @@ namespace SyndicationWeb.Services
     public class ArticlesData : IArticlesData
     {
         private readonly Db _ctx;
-        static readonly char[] delimiters = { '.', '?', '!', ',', ';', ' ' };
 
         public ArticlesData(Db ctx)
         {
@@ -34,12 +32,8 @@ namespace SyndicationWeb.Services
         public IEnumerable<Article> GetArticles(string ticker, string lang, string sortOrder, int page = 1, int pageSize = 100)
         {
             var articleQuery = string.IsNullOrEmpty(ticker) ? _ctx.Articles : _ctx.Articles.Where(a => a.Ticker == ticker);
-
             if (!string.IsNullOrEmpty(lang))
-            {
                 articleQuery = articleQuery.Where(a => a.language == lang);
-            }
-
             switch (sortOrder)
             {
                 case "published": articleQuery = articleQuery.OrderBy(a => a.PublishedUTC); break;
@@ -63,17 +57,17 @@ namespace SyndicationWeb.Services
                 ArticleEntity = _ctx.Articles.Find(ArticleID)
             };
             if (res.ArticleEntity == null) return null;
-            var words = res.ArticleEntity.Text().Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Distinct();
+            var phrases = ShingleLogic.FindPhrases(res.ArticleEntity);
             string text = res.ArticleEntity.Text();
             var scores = new double[text.Length];
-            foreach (string word in words)
+            foreach (string phrase in phrases)
             {
-                var sh = _ctx.Shingles.FirstOrDefault(s => s.text == word);
+                var sh = _ctx.Shingles.FirstOrDefault(s => s.text == phrase);
                 if (sh == null) continue;
                 var sa = _ctx.ShingleActions.FirstOrDefault(x => x.shingleID == sh.ID && x.interval == 15);
                 if (sa == null) continue;
                 if (sa.down == null || sa.up == null) continue;
-                int wordIndex = text.IndexOf(word, StringComparison.Ordinal);
+                int wordIndex = text.IndexOf(phrase, StringComparison.OrdinalIgnoreCase);
                 for (int i = wordIndex; i < wordIndex + sh.text.Length; i++)
                     scores[i] += ((double)sa.up.Value + (double)sa.down.Value - 2) * 100;
             }
@@ -81,10 +75,21 @@ namespace SyndicationWeb.Services
             res.colored = new List<coloredText>();
             for (int i = 0; i < text.Length; i++)
             {
-                double blueValue = scores[i] * 4;
-                if (blueValue < 0) blueValue = 0;
-                if (blueValue > 15) blueValue = 15;
-                string newColor = "#BB" + ((byte)blueValue).ToString("X");
+                string newColor;
+                if (scores[i] == 0.0) // black #000
+                    newColor = "#000";
+                else if (scores[i] > 0) // blue #0FF
+                {
+                    double blueValue = (scores[i] * 4);
+                    if (blueValue > 15) blueValue = 15;
+                    newColor = "#0" + ((byte)blueValue).ToString("X") + ((byte)blueValue).ToString("X");
+                }
+                else // red #F00
+                {
+                    double redValue = -scores[i] * 8;
+                    if (redValue > 15) redValue = 15;
+                    newColor = "#" + ((byte)redValue).ToString("X") + "00";
+                }
                 if (res.colored.Count == 0 || res.colored.Last().Color != newColor)
                 {
                     res.colored.Add(new coloredText { Color = newColor, Text = text.Substring(i, 1) });
