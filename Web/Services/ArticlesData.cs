@@ -64,32 +64,40 @@ namespace SyndicationWeb.Services
             };
             if (res.ArticleEntity == null) return null;
             var words = res.ArticleEntity.Text().Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Distinct();
-            res.ColoredText = res.ArticleEntity.Text();
-            var shingles = new List<Shingle>();
-            foreach (var word in words)
+            string text = res.ArticleEntity.Text();
+            var scores = new double[text.Length];
+            foreach (string word in words)
             {
-                var sh = _ctx.Shingles.FirstOrDefault(s => s.tokens == 1 && s.text == word);
+                var sh = _ctx.Shingles.FirstOrDefault(s => s.text == word);
                 if (sh == null) continue;
                 var sa = _ctx.ShingleActions.FirstOrDefault(x => x.shingleID == sh.ID && x.interval == 15);
                 if (sa == null) continue;
-                if (sa.down != null && sa.up != null && sa.up.Value + sa.down.Value > 2.002m)
-                {
-                    shingles.Add(sh);
-                    res.ColoredText = res.ColoredText.Replace(word, "<font color=\"#44FF44\">" + word + "</font>");
-                }
+                if (sa.down == null || sa.up == null) continue;
+                int wordIndex = text.IndexOf(word, StringComparison.Ordinal);
+                for (int i = wordIndex; i < wordIndex + sh.text.Length; i++)
+                    scores[i] += ((double)sa.up.Value + (double)sa.down.Value - 2) * 100;
             }
 
             res.colored = new List<coloredText>();
-            var remainingText = res.ArticleEntity.Text();
-            while (shingles.Any(s => remainingText.Contains(s.text)))
+            for (int i = 0; i < text.Length; i++)
             {
-                var firstShingle = shingles.Where(s => remainingText.IndexOf(s.text, StringComparison.Ordinal) != -1).OrderBy(s => remainingText.IndexOf(s.text, StringComparison.Ordinal)).First();
-                var index = remainingText.IndexOf(firstShingle.text, StringComparison.Ordinal);
-                res.colored.Add(new coloredText { Color = "#BBB", Text = remainingText.Substring(0, index - 1) });
-                res.colored.Add(new coloredText { Color = "#4F4", Text = firstShingle.text });
-                remainingText = remainingText.Substring(index + firstShingle.text.Length);
+                double blueValue = scores[i] * 4;
+                if (blueValue < 0) blueValue = 0;
+                if (blueValue > 15) blueValue = 15;
+                string newColor = "#BB" + ((byte)blueValue).ToString("X");
+                if (res.colored.Count == 0 || res.colored.Last().Color != newColor)
+                {
+                    res.colored.Add(new coloredText { Color = newColor, Text = text.Substring(i, 1) });
+                }
+                else
+                {
+                    res.colored[res.colored.Count - 1] = new coloredText
+                    {
+                        Color = newColor,
+                        Text = res.colored[res.colored.Count - 1].Text + text.Substring(i, 1)
+                    };
+                }
             }
-            res.colored.Add(new coloredText { Color = "#BBB", Text = remainingText });
             return res;
         }
     }
