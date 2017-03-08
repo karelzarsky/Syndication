@@ -8,37 +8,44 @@
     </div>
     <div class="well well-lg">
         <div class="row">
-            <div class="col-xs-6 col-lg-2 text-warning text-right">Ticker:</div>
-            <div class="col-xs-6 col-lg-2"><strong>@Model.Detail.ticker</strong></div>
-            <div class="col-xs-6 col-lg-1 text-warning text-right">Name:</div>
-            <div class="col-xs-6 col-lg-2"><strong>@Model.Detail.legal_name</strong></div>
-            <div class="col-xs-6 col-lg-2 text-warning text-right">Sector:</div>
-            <div class="col-xs-6 col-lg-3">@Model.Detail.sector</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">Ticker:</div>
+            <div class="col-xs-9 col-lg-2"><strong>@Model.Detail.ticker</strong></div>
+            <div class="col-xs-3 col-lg-1 text-warning text-right">HQ Country:</div>
+            <div class="col-xs-9 col-lg-2">@Model.Detail.hq_country</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">Sector:</div>
+            <div class="col-xs-9 col-lg-3">@Model.Detail.sector</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-lg-2 text-warning text-right">Stock exchange:</div>
-            <div class="col-xs-6 col-lg-2"><strong>@Model.Detail.stock_exchange</strong></div>
-            <div class="col-xs-6 col-lg-1 text-warning text-right">URL:</div>
-            <div class="col-xs-6 col-lg-2"><a href="@Model.Detail.company_url">@Model.Detail.company_url</a></div>
-            <div class="col-xs-6 col-lg-2 text-warning text-right">Industry category:</div>
-            <div class="col-xs-6 col-lg-3">@Model.Detail.industry_category</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">Stock exchange:</div>
+            <div class="col-xs-9 col-lg-2">@Model.Detail.stock_exchange</div>
+            <div class="col-xs-3 col-lg-1 text-warning text-right">HQ State:</div>
+            <div class="col-xs-9 col-lg-2">@Model.Detail.hq_state</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">Industry category:</div>
+            <div class="col-xs-9 col-lg-3">@Model.Detail.industry_category</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-lg-2 text-warning text-right">CEO:</div>
-            <div class="col-xs-6 col-lg-2">@Model.Detail.ceo</div>
-            <div class="col-xs-6 col-lg-1 text-warning text-right">Country:</div>
-            <div class="col-xs-6 col-lg-2">@Model.Detail.hq_country</div>
-            <div class="col-xs-6 col-lg-2 text-warning text-right">Industry group:</div>
-            <div class="col-xs-6 col-lg-3">@Model.Detail.industry_group</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">CEO:</div>
+            <div class="col-xs-9 col-lg-2">@Model.Detail.ceo</div>
+            <div class="col-xs-3 col-lg-1 text-warning text-right">INC Country:</div>
+            <div class="col-xs-9 col-lg-2">@Model.Detail.inc_country</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">Industry group:</div>
+            <div class="col-xs-9 col-lg-3">@Model.Detail.industry_group</div>
         </div>
         <div class="row">
-            <div class="col-xs-6 col-lg-2 text-warning text-right">Employees:</div>
-            <div class="col-xs-6 col-lg-2">@Model.Detail.employees</div>
-            <div class="col-xs-6 col-lg-1 text-warning text-right">State:</div>
-            <div class="col-xs-6 col-lg-2">@Model.Detail.hq_state</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">Employees:</div>
+            <div class="col-xs-9 col-lg-2">@Model.Detail.employees</div>
+            <div class="col-xs-3 col-lg-1 text-warning text-right">INC State:</div>
+            <div class="col-xs-9 col-lg-2">@Model.Detail.inc_state</div>
+            <div class="col-xs-3 col-lg-2 text-warning text-right">URL:</div>
+            <div class="col-xs-9 col-lg-3"><a href="@Model.Detail.company_url">@Model.Detail.company_url</a></div>
         </div>
-    </div>
+        <div class="row">
+            <div class="col-xs-3 col-lg-2 text-warning text-right">Name:</div>
+            <div class="col-xs-9 col-lg-10"><strong>@Model.Detail.legal_name</strong></div>
+        </div>
     <div>
         @Model.Detail.long_description
     </div>
 </div>
+
+
