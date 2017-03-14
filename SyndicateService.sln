@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyndicateService", "SyndicateService\SyndicateService.csproj", "{A157B468-ECFC-4D49-AF36-899FBA764B4F}"
 EndProject
@@ -29,7 +29,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UpdateArticles2", "UpdateAr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyTester", "StrategyTester\StrategyTester.csproj", "{2EC13BC8-E357-4F93-89A9-C937954959C7}"
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SyndicationWeb", "Web\SyndicationWeb.xproj", "{924600E8-B9B9-477F-A61A-D76CCA0AC882}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{924600E8-B9B9-477F-A61A-D76CCA0AC882}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
