@@ -10,6 +10,7 @@
         Feed = 6,
         Analysis = 7,
         Duplicate = 8,
+        AnalyzedArticle = 9,
         IntrinioError = 253,
         FeedError = 254,
         Error = 255
@@ -29,13 +30,13 @@
     public enum ShingleKind : byte
     {
         newShingle = 0,
-        common = 1,
-        ticker = 2,
-        currency = 3,
-        currencyPair = 4,
-        future = 5,
-        upperCase = 6,
-        interesting = 7,
+        interesting = 1,
+        upperCase = 2,
+        common = 3,
+        ticker = 4,
+        currency = 5,
+        currencyPair = 6,
+        future = 7,
         CEO = 8,
         companyName = 9,
         containCommon = 10,

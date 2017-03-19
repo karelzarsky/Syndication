@@ -23,6 +23,7 @@ namespace SyndicateLogic
     {
         public static readonly char[] wordDelimiters = { ' ' };
         public static readonly char[] sentenceDelimiters = { '.', '?', '!', ',', ';' };
+        public static readonly char[] allDelimiters = { ' ', '.', '?', '!', ',', ';' };
         public static readonly int tooCommonShingleLimit = 1000;
         public static readonly Regex currPairRegex = new Regex("^[A-Z][A-Z][A-Z]/?[A-Z][A-Z][A-Z]$", RegexOptions.Compiled);
         public const byte maxInterval = 30;
@@ -47,6 +48,22 @@ namespace SyndicateLogic
                     DataLayer.LogMessage(LogLevel.ShingleProcessing, "X processing Article " + ArticleID);
                     return;
                 }
+                IEnumerable<string> cnw = new List<string>();
+                if (!string.IsNullOrEmpty(a.Ticker))
+                {
+                    var companyNameWords = new List<string>();
+                    var company = ctx.CompanyDetails.Where(c => c.ticker == a.Ticker).FirstOrDefault();
+                    if (company != null)
+                    {
+                        companyNameWords.AddRange(company.name.Split(allDelimiters));
+                        companyNameWords.AddRange(company.legal_name.Split(allDelimiters));
+                    }
+                    foreach (var cn in ctx.CompanyNames.Where(cn => cn.ticker == a.Ticker).ToArray())
+                    {
+                        companyNameWords.AddRange(cn.name.Split(allDelimiters));
+                    }
+                    cnw = companyNameWords.Distinct();
+                }
                 a.Processed = ProcessState.Running;
                 ctx.SaveChanges();
                 //LogMessage(LogLevel.ShingleProcessing, "SHINGLE1 " + ArticleID);
@@ -55,7 +72,10 @@ namespace SyndicateLogic
                 else a.language = "en";
                 List<string> newPhrases = FindPhrases(a);
                 var Shingles = newPhrases.Distinct().Select(newPhrase => PrepareShingle(newPhrase, a.language, ctx)).ToList();
+                var problematic = ctx.ProblematicShortcuts.Where(x => x.language == a.language);
                 Shingles.RemoveAll(x => x.kind == ShingleKind.containCommon || x.kind == ShingleKind.containTicker);
+                Shingles.RemoveAll(x => cnw.Any(w => w == x.text));
+                Shingles.RemoveAll(x => problematic.Any(w => w.text == x.text));
                 foreach (var shingle in Shingles.ToArray())
                 {
                     if (shingle.kind == ShingleKind.CEO || shingle.kind == ShingleKind.companyName || shingle.kind == ShingleKind.ticker || shingle.kind == ShingleKind.common)
@@ -325,7 +345,7 @@ delete from fact.shingleAction where shingleID = @shingleID",
             return res;
         }
 
-        private static void SetShingleIsTicker2(Shingle s, Db ctx)
+        private static void SetShingleIsTicker(Shingle s, Db ctx)
         {
             if (!ctx.StockTickers.Any(x => x.ticker == s.text))
                 ctx.StockTickers.Add(new StockTicker { ticker = s.text });

@@ -66,10 +66,10 @@ namespace UpdateArticles
             Article ea;
             while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting)) != null)
             {
-                //var sw = Stopwatch.StartNew();
+                var sw = Stopwatch.StartNew();
                 ShingleLogic.ProcessArticle(ea.ID);
-                //sw.Stop();
-                //DataLayer.LogMessage(LogLevel.NewArticle, $"{sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
+                sw.Stop();
+                DataLayer.LogMessage(LogLevel.AnalyzedArticle, $"{sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
 
                 //RssLogic.ScoreArticle(ea, ctx);
                 //ea.ProcessedScore = ProcessState.Done;

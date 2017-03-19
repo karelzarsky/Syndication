@@ -279,20 +279,8 @@ namespace SyndicateLogic
             ea.ReceivedUTC = DateTime.Now.ToUniversalTime();
             ea.FeedID = f.ID;
             ea.PublishedUTC = item.PublishDate.UtcDateTime == DateTime.MinValue ? DateTime.Now : item.PublishDate.UtcDateTime;
-            foreach (var c in item.Categories)
-            {
-                if (ea.Categories == null)
-                    ea.Categories = c.Name;
-                else
-                    ea.Categories += ", " + c.Name;
-            }
-            foreach (var c in item.Links)
-            {
-                if (ea.URI_links == null)
-                    ea.URI_links = c.Uri.AbsoluteUri;
-                else
-                    ea.URI_links += ", " + c.Uri.AbsoluteUri;
-            }
+            ea.Categories = string.Join(", ", item.Categories);
+            ea.URI_links = string.Join(", ", item.Links);
             context.Articles.AddOrUpdate(ea);
             context.SaveChanges();
             DeleteOlderVersions(ea);
