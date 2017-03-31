@@ -21,10 +21,10 @@
             <div class="col-xs-6 col-lg-1 text-warning text-right">Ticker:</div>
             <a class="col-xs-6 col-lg-2" asp-action="Company" asp-route-id="@Model.ArticleEntity.Ticker"><strong>@Model.ArticleEntity.Ticker</strong></a>
             <div class="col-xs-6 col-lg-2 text-warning text-right">Score:</div>
-            <div class="col-xs-6 col-lg-3">@((Model.ArticleEntity.ScoreMin + Model.ArticleEntity.ScoreMax)*100)</div>
+            <div class="col-xs-6 col-lg-3">@((Model.ArticleEntity.ScoreMin + Model.ArticleEntity.ScoreMax)*100m)</div>
         </div>
         <div class="col-xs-6 col-lg-2 text-warning text-right">URL:</div>
-        <a asp-action="Company" asp-route-id="@Model.ArticleEntity.URI_links"><strong>@Model.ArticleEntity.URI_links</strong></a>
+        <a href="@Model.ArticleEntity.URI_links">@Model.ArticleEntity.URI_links</a>
     </div>
     <div class="well">
         <strong>@Model.ArticleEntity.Text()</strong>
