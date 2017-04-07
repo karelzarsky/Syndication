@@ -379,7 +379,7 @@ update rss.Shingles set kind = 1, LastRecomputeDate = NULL where ID = @shingleID
         {
             return ctx.Database.SqlQuery<int>(
 @"SELECT TOP 100 s.ID FROM rss.shingles s WITH (NOLOCK) JOIN rss.shingleuse su WITH (NOLOCK) ON su.ShingleID = s.ID
-WHERE s.kind in (6,7) AND (s.LastRecomputeDate IS NULL OR s.LastRecomputeDate > DATEADD(day, 1, getdate())) GROUP BY s.ID, s.LastRecomputeDate HAVING COUNT(1)>10 ORDER BY s.LastRecomputeDate").ToArray();
+WHERE s.kind in (1,2) AND (s.LastRecomputeDate IS NULL OR s.LastRecomputeDate > DATEADD(day, 1, getdate())) GROUP BY s.ID, s.LastRecomputeDate HAVING COUNT(1)>10 ORDER BY s.LastRecomputeDate").ToArray();
         }
 
         public static List<int> GetNextShingleList(Db ctx)
