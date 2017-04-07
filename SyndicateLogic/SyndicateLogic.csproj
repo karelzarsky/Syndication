@@ -462,6 +462,10 @@
     <Compile Include="Migrations\201702181527440_backtestKey.Designer.cs">
       <DependentUpon>201702181527440_backtestKey.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201704070839253_float.cs" />
+    <Compile Include="Migrations\201704070839253_float.Designer.cs">
+      <DependentUpon>201704070839253_float.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\ProblematicShortcut.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -481,6 +485,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201702181527440_backtestKey.resx">
       <DependentUpon>201702181527440_backtestKey.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201704070839253_float.resx">
+      <DependentUpon>201704070839253_float.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <EmbeddedResource Include="InvestorRSS.csv" />

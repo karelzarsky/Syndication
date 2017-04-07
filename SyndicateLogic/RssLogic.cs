@@ -24,8 +24,8 @@ namespace SyndicateLogic
         public static readonly Regex _urlRegex = new Regex("\\w+:\\/{2}[\\d\\w-]+(\\.[\\d\\w-]+)*(?:(?:\\/[^\\s/]*))*", RegexOptions.Compiled);
         private static int minSamples = 30;
         private static int minTickers = 10;
-        private static decimal minPositiveScoreAlert = 3m;
-        private static decimal minNegativeScoreAlert = -0.2m;
+        private static float minPositiveScoreAlert = 3.0F;
+        private static float minNegativeScoreAlert = -0.2F;
 
         public static void FindInstruments(int ArticleID)
         {
@@ -279,7 +279,11 @@ namespace SyndicateLogic
             ea.ReceivedUTC = DateTime.Now.ToUniversalTime();
             ea.FeedID = f.ID;
             ea.PublishedUTC = item.PublishDate.UtcDateTime == DateTime.MinValue ? DateTime.Now : item.PublishDate.UtcDateTime;
-            ea.Categories = string.Join(", ", item.Categories);
+            ea.Categories = "";
+            foreach (var cat in item.Categories)
+            {
+                ea.Categories += cat.Name;
+            }
             ea.URI_links = string.Join(", ", item.Links);
             context.Articles.AddOrUpdate(ea);
             context.SaveChanges();
@@ -299,15 +303,15 @@ namespace SyndicateLogic
             {
                 var sw = Stopwatch.StartNew();
                 var ea = context.Articles.Include("Feed").Single(x => x.ID == ArticleID);
-                var score = new decimal[ShingleLogic.maxInterval + 1];
-                var scoreUp = new decimal[ShingleLogic.maxInterval + 1];
-                var scoreDown = new decimal[ShingleLogic.maxInterval + 1];
-                List<decimal>[] scoreDownLists = new List<decimal>[ShingleLogic.maxInterval + 1];
-                List<decimal>[] scoreUpLists = new List<decimal>[ShingleLogic.maxInterval + 1];
+                var score = new float[ShingleLogic.maxInterval + 1];
+                var scoreUp = new float[ShingleLogic.maxInterval + 1];
+                var scoreDown = new float[ShingleLogic.maxInterval + 1];
+                List<float>[] scoreDownLists = new List<float>[ShingleLogic.maxInterval + 1];
+                List<float>[] scoreUpLists = new List<float>[ShingleLogic.maxInterval + 1];
                 for (int i = 0; i <= ShingleLogic.maxInterval; i++)
                 {
-                    scoreDownLists[i] = new List<decimal>();
-                    scoreUpLists[i] = new List<decimal>();
+                    scoreDownLists[i] = new List<float>();
+                    scoreUpLists[i] = new List<float>();
                 }
                 var shingles = context.ShingleUses.Where(x => x.ArticleID == ea.ID).ToArray();
                 foreach (var shingle in shingles)
@@ -315,7 +319,7 @@ namespace SyndicateLogic
                     ShingleAction[] actions = context.ShingleActions.Where(x => x.shingleID == shingle.ShingleID && x.samples > minSamples && x.tickers > minTickers && x.up != null && x.down != null).ToArray();
                     foreach (var a in actions)
                     {
-                        score[a.interval] += (decimal)a.down + (decimal)a.up - 2;
+                        score[a.interval] += (float)a.down + (float)a.up - 2;
                         if (a.down != null) scoreDownLists[a.interval].Add(a.down.Value);
                         if (a.up != null) scoreUpLists[a.interval].Add(a.up.Value);
                     }
@@ -342,7 +346,7 @@ namespace SyndicateLogic
             }
         }
 
-        private static void Alert(Article ea, decimal[] score)
+        private static void Alert(Article ea, float[] score)
         {
             if (ea.Ticker == null || ea.ReceivedUTC < DateTime.Now.AddDays(-7)) return;
             var ctx = new Db();

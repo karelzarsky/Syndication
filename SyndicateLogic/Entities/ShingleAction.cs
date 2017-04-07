@@ -11,10 +11,8 @@ namespace SyndicateLogic.Entities
         public int shingleID { get; set; }
         [Key, Column(Order = 1), Required, DatabaseGenerated(DatabaseGeneratedOption.None)]
         public byte interval { get; set; }
-        [Column(TypeName = "smallmoney")]
-        public decimal? down { get; set; }
-        [Column(TypeName = "smallmoney")]
-        public decimal? up { get; set; }
+        public float? down { get; set; }
+        public float? up { get; set; }
         public DateTime dateComputed { get; set; }
         public int samples { get; set; }
         public int tickers { get; set; }
@@ -40,8 +38,8 @@ namespace SyndicateLogic.Entities
         public Int32 up08 { get; set; }
         public Int32 up09 { get; set; }
         public Int32 up10 { get; set; }
-        public double stddev { get; set; }
-        public double mean { get; set; }
-        public double variance { get; set; }
+        public float stddev { get; set; }
+        public float mean { get; set; }
+        public float variance { get; set; }
     }
 }

@@ -29,12 +29,12 @@ namespace SyndicateLogic.Entities
         public string URI_links { get; set; }
         [Index, Column(TypeName = "varchar"), MaxLength(10)]
         public string Ticker { get; set; } // Stock market ticker symbol associated with the companies common ticker securities
-        public decimal ScoreMin { get; set; }
-        public decimal ScoreMax { get; set; }
-        [Index, Column(TypeName = "smallmoney")]
-        public decimal ScoreDownMin { get; set; }
-        [Index, Column(TypeName = "smallmoney")]
-        public decimal ScoreUpMax { get; set; }
+        public float ScoreMin { get; set; }
+        public float ScoreMax { get; set; }
+        [Index]
+        public float ScoreDownMin { get; set; }
+        [Index]
+        public float ScoreUpMax { get; set; }
         [Index, MaxLength(2), Column(TypeName = "varchar")]
         public string language { get; set; }
 

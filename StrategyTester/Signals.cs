@@ -11,8 +11,8 @@ namespace StrategyTester
         public static DirectionType Signal001(int ArticleID)
         {
             var ctx = new Db();
-            if (ctx.ArticleScores.Any(x => x.articleID == ArticleID && x.score != null && x.score.Value > 0.5m)) return DirectionType.Buy;
-            if (ctx.ArticleScores.Any(x => x.articleID == ArticleID && x.score != null && x.score.Value < -0.2m)) return DirectionType.Sell;
+            if (ctx.ArticleScores.Any(x => x.articleID == ArticleID && x.score != null && x.score.Value > 0.5)) return DirectionType.Buy;
+            if (ctx.ArticleScores.Any(x => x.articleID == ArticleID && x.score != null && x.score.Value < -0.2)) return DirectionType.Sell;
             return DirectionType.Nothing;
         }
     }
