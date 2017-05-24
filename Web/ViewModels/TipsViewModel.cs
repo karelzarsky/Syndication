@@ -8,7 +8,7 @@ namespace SyndicationWeb.ViewModels
         public DateTime Published { get; set; }
         public DateTime Received { get; set; }
         public int ArticleID { get; set; }
-        public decimal Score { get; set; }
+        public double Score { get; set; }
         public string ScoreColor { get; set; }
         public string Ticker { get; set; }
         public string Title { get; set; }

@@ -68,8 +68,9 @@ namespace SyndicationWeb.Services
                 if (sa == null) continue;
                 if (sa.down == null || sa.up == null) continue;
                 int wordIndex = text.IndexOf(phrase, StringComparison.OrdinalIgnoreCase);
-                for (int i = wordIndex; i < wordIndex + sh.text.Length; i++)
-                    scores[i] += ((double)sa.up.Value + (double)sa.down.Value - 2) * 100;
+                if (wordIndex >= 0)
+                    for (int i = wordIndex; i < wordIndex + sh.text.Length; i++)
+                        scores[i] += ((double)sa.up.Value + (double)sa.down.Value - 2) * 100;
             }
 
             res.colored = new List<coloredText>();

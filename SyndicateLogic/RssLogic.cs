@@ -282,9 +282,13 @@ namespace SyndicateLogic
             ea.Categories = "";
             foreach (var cat in item.Categories)
             {
-                ea.Categories += cat.Name;
+                ea.Categories += cat.Name + " ";
             }
-            ea.URI_links = string.Join(", ", item.Links);
+            ea.URI_links = "";
+            foreach (var link in item.Links)
+            {
+                ea.URI_links += link.Uri + " ";
+            }
             context.Articles.AddOrUpdate(ea);
             context.SaveChanges();
             DeleteOlderVersions(ea);

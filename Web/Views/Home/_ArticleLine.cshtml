@@ -3,7 +3,7 @@
 <div class="row">
     <div class="col-lg-1 small" >@Model.ReceivedUTC.ToLocalTime().ToString("dd.MM.yy HH:mm")</div>
     <div class="col-lg-1 small">@Model.PublishedUTC.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</div>
-    <div class="col-lg-1">@(100.00m * (Model.ScoreMin + Model.ScoreMax))</div>
+    <div class="col-lg-1">@(100.00 * (Model.ScoreMin + Model.ScoreMax))</div>
     <div class="col-lg-1">@Model.language</div>
     <a class="col-lg-1 info text-success" asp-controller="Home" asp-action="Company" asp-route-ticker="@Model.Ticker">
         <strong>@Model.Ticker</strong></a>
