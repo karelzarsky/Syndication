@@ -57,7 +57,7 @@ namespace IntrinioService
                     }
                 }
             })
-            { IsBackground = true };
+            { IsBackground = true, Name = "Intrinio" };
             _thread.Start();
         }
 
