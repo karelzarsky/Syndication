@@ -1,7 +1,7 @@
 ﻿@model TradeTip
 <div class="row">
     <a class="col-lg-1 col-sm-6" asp-action="ArticleDetail" asp-route-ArticleID="@Model.ArticleID">@Model.ArticleID</a>
-    <div class="col-lg-1 col-sm-6">@Model.Score</div>
+    <div class="col-lg-1 col-sm-6">@Model.Score.ToString("N3")</div>
     <div class="col-lg-1 col-sm-6">@Model.Received.ToLocalTime().ToString("dd.MM. HH:mm")</div>
     <div class="col-lg-1 col-sm-6">@Model.Published.ToLocalTime().ToString("dd.MM. HH:mm")</div>
     <div class="col-lg-1 col-sm-6"><b class="text-success">BUY</b></div>

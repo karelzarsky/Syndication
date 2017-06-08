@@ -54,7 +54,8 @@ namespace SyndicationWeb.Services
         {
             var res = new ArticleDetail
             {
-                ArticleEntity = _ctx.Articles.Find(ArticleID)
+                ArticleEntity = _ctx.Articles.Find(ArticleID),
+                ScoredPhrases = new List<ScoredPhrase>()
             };
             if (res.ArticleEntity == null) return null;
             var phrases = ShingleLogic.FindPhrases(res.ArticleEntity);
@@ -67,44 +68,48 @@ namespace SyndicationWeb.Services
                 var sa = _ctx.ShingleActions.FirstOrDefault(x => x.shingleID == sh.ID && x.interval == 15);
                 if (sa == null) continue;
                 if (sa.down == null || sa.up == null) continue;
+                float score = (sa.up.Value + sa.down.Value - 2) * 100;
+                res.ScoredPhrases.Add(new ScoredPhrase { Score = score, Phrase = phrase, Color = GetColor(score) });
                 int wordIndex = text.IndexOf(phrase, StringComparison.OrdinalIgnoreCase);
                 if (wordIndex >= 0)
                     for (int i = wordIndex; i < wordIndex + sh.text.Length; i++)
-                        scores[i] += ((double)sa.up.Value + (double)sa.down.Value - 2) * 100;
+                        scores[i] += score;
             }
 
-            res.colored = new List<coloredText>();
+            res.Colored = new List<ColoredText>();
             for (int i = 0; i < text.Length; i++)
             {
-                string newColor;
-                if (scores[i] == 0.0) // black #000
-                    newColor = "#000";
-                else if (scores[i] > 0) // blue #0FF
+                string newColor = GetColor(scores[i]);
+                if (res.Colored.Count == 0 || res.Colored.Last().Color != newColor)
                 {
-                    double blueValue = (scores[i] * 4);
-                    if (blueValue > 15) blueValue = 15;
-                    newColor = "#0" + ((byte)blueValue).ToString("X") + ((byte)blueValue).ToString("X");
-                }
-                else // red #F00
-                {
-                    double redValue = -scores[i] * 8;
-                    if (redValue > 15) redValue = 15;
-                    newColor = "#" + ((byte)redValue).ToString("X") + "00";
-                }
-                if (res.colored.Count == 0 || res.colored.Last().Color != newColor)
-                {
-                    res.colored.Add(new coloredText { Color = newColor, Text = text.Substring(i, 1) });
+                    res.Colored.Add(new ColoredText { Color = newColor, Text = text.Substring(i, 1) });
                 }
                 else
                 {
-                    res.colored[res.colored.Count - 1] = new coloredText
+                    res.Colored[res.Colored.Count - 1] = new ColoredText
                     {
                         Color = newColor,
-                        Text = res.colored[res.colored.Count - 1].Text + text.Substring(i, 1)
+                        Text = res.Colored[res.Colored.Count - 1].Text + text.Substring(i, 1)
                     };
                 }
             }
             return res;
+        }
+
+        private static string GetColor(double score)
+        {
+            if (score == 0.0) // black #000
+                return "#000";
+            else if (score > 0) // blue #0FF
+            {
+                double blueValue = (score * 4);
+                if (blueValue > 15) blueValue = 15;
+                return "#0" + ((byte)blueValue).ToString("X") + ((byte)blueValue).ToString("X");
+            }
+            // red #F00
+            double redValue = -score * 8;
+            if (redValue > 15) redValue = 15;
+            return "#" + ((byte)redValue).ToString("X") + "00";
         }
     }
 }
