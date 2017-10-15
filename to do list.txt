@@ -1,3 +1,4 @@
+
 gather links to investor news releases for each company
 subscribe investor emails
 html emails
@@ -11,3 +12,6 @@ shingle action futures
 update only used prices
 new rss parser
 parse datetime according to server setting
+view for shingles
+fix tips selection
+separate download and processing

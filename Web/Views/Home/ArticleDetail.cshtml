@@ -21,7 +21,7 @@
             <div class="col-xs-6 col-lg-1 text-warning text-right">Ticker:</div>
             <a class="col-xs-6 col-lg-2" asp-controller="Home" asp-action="Company" asp-route-ticker="@Model.ArticleEntity.Ticker"><strong>@Model.ArticleEntity.Ticker</strong></a>
             <div class="col-xs-6 col-lg-2 text-warning text-right">Score MM, AVG:</div>
-            <div class="col-xs-6 col-lg-3">@((Model.ArticleEntity.ScoreMin + Model.ArticleEntity.ScoreMax) * 100).ToString("N3"), @Model.ScoredPhrases.Select(x => x.Score).Average().ToString("N3")</div>
+            <div class="col-xs-6 col-lg-3">@(((Model.ArticleEntity.ScoreMin + Model.ArticleEntity.ScoreMax) * 100).ToString("N3")), @Model.ScoredPhrases.Select(x => x.Score).Average().ToString("N3")</div>
         </div>
         <div class="col-xs-6 col-lg-2 text-warning text-right">URL:</div>
         <a href="@Model.ArticleEntity.URI_links">@Model.ArticleEntity.URI_links</a>
@@ -38,9 +38,14 @@
         </strong>
     </div>
     <div class="well">
-        @foreach (var ph in Model.ScoredPhrases.Distinct())
-        {
-            @ph.Score.ToString("N3") @ph.Phrase<br />
-        }
+        <div class="row">
+            @foreach (var ph in Model.ScoredPhrases.Distinct())
+            {
+                <div class="col-xs-12">
+                    @(ph.Score.ToString("N3"))
+                    @ph.Phrase<br />
+                </div>
+            }
+        </div>
     </div>
 </div>

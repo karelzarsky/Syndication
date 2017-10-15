@@ -29,7 +29,7 @@ namespace IntrinioService
             // DataLayer.LogMessage(LogLevel.Service, $"On start.");
             // Configure the timer.
             _scheduleTimer.AutoReset = false;
-            _scheduleTimer.Interval = 24000 * 3600 / 450; // in milliseconds
+            _scheduleTimer.Interval = 24000 * 3600 / 400; // in milliseconds
             _scheduleTimer.Elapsed += delegate { _scheduleEvent.Set(); };
             PerformScheduledWork(null);
             // Create the thread using anonymous method.
