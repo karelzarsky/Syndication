@@ -32,6 +32,7 @@ namespace SyndicationWeb
             services.AddScoped<IArticlesData, ArticlesData>();
             services.AddScoped<ICompanyData, CompanyData>();
             services.AddScoped<IFeedData, FeedData>();
+            services.AddScoped<IShingleData, ShingleData>();
             services.AddScoped(_ => new Db(Configuration.GetConnectionString("SyndicationDb")));
         }
 

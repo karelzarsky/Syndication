@@ -1,0 +1,62 @@
+﻿@model SyndicationWeb.ViewModels.ShingleViewModel
+@{
+    ViewData["Title"] = "Shingles";
+    var prevDisabled = !Model.Shingles.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.Shingles.HasNextPage ? "disabled" : "";
+}
+<div class="container-fluid">
+    <h1 class="text-center">Shingles <span class="showopacity fa fa-bug" /></h1>
+
+    <form asp-action="ShinglesList" method="get">
+        <div class="btn-group" role="group">
+            <a asp-action="Shingles"
+               asp-route-page="@(Model.Shingles.PageIndex - 1)"
+               asp-route-descending="@ViewData["descending"]"
+               asp-route-kind="@ViewData["kind"]"
+               class="btn btn-sm btn-info @prevDisabled"
+               role="group">
+                Prev<div><span class="glyphicon glyphicon-chevron-left" aria-hidden="true" /></div>
+            </a>
+            <a class="btn btn-sm btn-info disabled" role="group"><div>Page</div>@Model.Shingles.PageIndex / @Model.TotalPages</a>
+            <a asp-action="Shingles"
+               asp-route-page="@(Model.Shingles.PageIndex + 1)"
+               asp-route-descending="@ViewData["descending"]"
+               class="btn btn-sm btn-info @nextDisabled"
+               role="group">
+                Next
+                <div><span class="glyphicon glyphicon-chevron-right" aria-hidden="true" /></div>
+            </a>
+        </div>
+        <div class="btn-group" role="group">
+            @foreach (var l in Model.ShingleKinds)
+            {
+            <a asp-action="Shingles"
+               asp-route-page="1"
+               asp-route-descending="@ViewData["descending"]"
+               asp-route-kind="@l.Number"
+               class="btn @((l.Number.ToString() == ViewData["kind"].ToString()) ? "btn-warning" : "btn-success")"
+               role="group">
+                @l.DisplayName: @l.Records
+            </a>
+            }
+        </div>
+    </form>
+
+    <table class="table table-condensed table-striped">
+        <thead>
+            <tr>
+                <td>ID</td>
+                <td>Kind</td>
+                <td>Tokens</td>
+                <td>Text</td>
+                <td>lang</td>
+            </tr>
+        </thead>
+        @foreach (var shingle in Model.Shingles.ToArray())
+            {
+            <tr>
+                @Html.Partial("_Shingle", shingle)
+            </tr>
+        }
+    </table>
+</div>

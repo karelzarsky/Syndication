@@ -13,14 +13,16 @@ namespace SyndicationWeb.Controllers
         private readonly IArticlesData _articlesData;
         private readonly ICompanyData _companyData;
         private readonly IFeedData _feedData;
+        private readonly IShingleData _shingleData;
 
-        public HomeController(ILogData logData, ITipsData tipsData, IArticlesData articlesData, ICompanyData companyData, IFeedData FeedData)
+        public HomeController(ILogData logData, ITipsData tipsData, IArticlesData articlesData, ICompanyData companyData, IFeedData FeedData, IShingleData ShingleData)
         {
             _logData = logData;
             _tipsData = tipsData;
             _articlesData = articlesData;
             _companyData = companyData;
-             _feedData = FeedData;
+            _feedData = FeedData;
+            _shingleData = ShingleData;
         }
 
         public IActionResult Index()
@@ -88,6 +90,12 @@ namespace SyndicationWeb.Controllers
         public IActionResult ArticleDetail(int ArticleID)
         {
             return View(_articlesData.GetDetail(ArticleID));
+        }
+
+        public IActionResult Shingles(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100)
+        {
+            ViewData["kind"] = kind;
+            return View(_shingleData.GetAll(kind, descending, page, pageSize));
         }
     }
 }
