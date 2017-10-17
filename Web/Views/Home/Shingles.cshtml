@@ -5,12 +5,15 @@
     var nextDisabled = !Model.Shingles.HasNextPage ? "disabled" : "";
 }
 <div class="container-fluid">
-    <h1 class="text-center">Shingles <span class="showopacity fa fa-bug" /></h1>
+    <h1 class="text-center">Shingles <span class="showopacity fa fa-comment" /></h1>
 
-    <form asp-action="ShinglesList" method="get">
+    <form asp-action="Shingles" method="get">
         <div class="btn-group" role="group">
             <a asp-action="Shingles"
                asp-route-page="@(Model.Shingles.PageIndex - 1)"
+               asp-route-filter="@ViewData["filter"]"
+               asp-route-tokens="@ViewData["tokens"]"
+               asp-route-lang="@ViewData["lang"]"
                asp-route-descending="@ViewData["descending"]"
                asp-route-kind="@ViewData["kind"]"
                class="btn btn-sm btn-info @prevDisabled"
@@ -20,6 +23,9 @@
             <a class="btn btn-sm btn-info disabled" role="group"><div>Page</div>@Model.Shingles.PageIndex / @Model.TotalPages</a>
             <a asp-action="Shingles"
                asp-route-page="@(Model.Shingles.PageIndex + 1)"
+               asp-route-filter="@ViewData["filter"]"
+               asp-route-tokens="@ViewData["tokens"]"
+               asp-route-lang="@ViewData["lang"]"
                asp-route-descending="@ViewData["descending"]"
                class="btn btn-sm btn-info @nextDisabled"
                role="group">
@@ -32,6 +38,9 @@
             {
             <a asp-action="Shingles"
                asp-route-page="1"
+               asp-route-filter="@ViewData["filter"]"
+               asp-route-tokens="@ViewData["tokens"]"
+               asp-route-lang="@ViewData["lang"]"
                asp-route-descending="@ViewData["descending"]"
                asp-route-kind="@l.Number"
                class="btn @((l.Number.ToString() == ViewData["kind"].ToString()) ? "btn-warning" : "btn-success")"
@@ -40,6 +49,10 @@
             </a>
             }
         </div>
+        Filter: <input type="text" name="filter" value="@ViewData["filter"]" placeholder="text…" />
+        Tokens: <input type="text" name="tokens" value="@ViewData["tokens"]" placeholder="1-3" />
+        Lang: <input type="text" name="lang" value="@ViewData["lang"]" placeholder="en,cs,de" />
+        <input type="submit" value="Filter" class="btn btn-info" />
     </form>
 
     <table class="table table-condensed table-striped">

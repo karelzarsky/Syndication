@@ -92,10 +92,11 @@ namespace SyndicationWeb.Controllers
             return View(_articlesData.GetDetail(ArticleID));
         }
 
-        public IActionResult Shingles(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100)
+        public IActionResult Shingles(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = "", byte tokens = 0, string lang = "")
         {
+            ViewData["filter"] = filter;
             ViewData["kind"] = kind;
-            return View(_shingleData.GetAll(kind, descending, page, pageSize));
+            return View(_shingleData.GetAll(kind, descending, page, pageSize, filter, tokens, lang));
         }
     }
 }

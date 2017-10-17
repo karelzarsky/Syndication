@@ -9,7 +9,7 @@ namespace SyndicationWeb.Services
 {
     public interface IShingleData
     {
-        ShingleViewModel GetAll(byte level = 0, bool descending = true, int page = 1, int pageSize = 100);
+        ShingleViewModel GetAll(byte level = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = null, byte tokens = 0, string lang = "");
     }
 
     public class ShingleData : IShingleData
@@ -21,7 +21,7 @@ namespace SyndicationWeb.Services
             _ctx = ctx;
         }
 
-        public ShingleViewModel GetAll(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100)
+        public ShingleViewModel GetAll(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = null, byte tokens = 0, string lang = "")
         {
             var res = new ShingleViewModel
             {
@@ -43,6 +43,12 @@ namespace SyndicationWeb.Services
             IQueryable<Shingle> ShingleList = _ctx.Shingles;
             if (kind != 0)
                 ShingleList = ShingleList.Where(l => (byte) l.kind == kind);
+            if (!string.IsNullOrWhiteSpace(filter))
+                ShingleList = ShingleList.Where(l => l.text.Contains(filter));
+            if (!string.IsNullOrWhiteSpace(lang))
+                ShingleList = ShingleList.Where(l => l.language == lang);
+            if (tokens > 0)
+                ShingleList = ShingleList.Where(l => l.tokens == tokens);
             ShingleList = descending ? ShingleList.OrderByDescending(l => l.ID) : ShingleList.OrderBy(l => l.ID);
             res.TotalPages = 1 + ShingleList.Count() / pageSize;
             res.Shingles = PaginatedList<Shingle>.Create(ShingleList, page, pageSize);
