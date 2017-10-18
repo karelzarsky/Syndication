@@ -73,7 +73,7 @@ namespace SyndicateLogic
                 List<string> newPhrases = FindPhrases(a);
                 var Shingles = newPhrases.Distinct().Select(newPhrase => PrepareShingle(newPhrase, a.language, ctx)).ToList();
                 var problematic = ctx.ProblematicShortcuts.Where(x => x.language == a.language);
-                Shingles.RemoveAll(x => x.kind == ShingleKind.containCommon || x.kind == ShingleKind.containTicker);
+                Shingles.RemoveAll(x => x.kind == ShingleKind.containCommon || x.kind == ShingleKind.containTicker || x.kind == ShingleKind.containCompany);
                 Shingles.RemoveAll(x => cnw.Any(w => w == x.text));
                 Shingles.RemoveAll(x => problematic.Any(w => w.text == x.text));
                 foreach (var shingle in Shingles.ToArray())
@@ -236,6 +236,16 @@ new SqlParameter("@kind", ShingleKind.containTicker));
             ctx.SaveChanges();
         }
 
+        public static void SetShingleContainCompany(Shingle s, Db ctx)
+        {
+            ctx.Database.ExecuteSqlCommand(@"delete from rss.ShingleUse where shingleID = @shingleID
+delete from rss.Shingles where Id = @shingleID
+delete from fact.shingleAction where shingleID = @shingleID",
+new SqlParameter("@shingleID", s.ID),
+new SqlParameter("@kind", ShingleKind.containCompany));
+            ctx.SaveChanges();
+        }
+
         private static bool ContainsTicker(Shingle s, Db ctx)
         {
             if (s.tokens == 1) return false;
@@ -246,6 +256,19 @@ new SqlParameter("@kind", ShingleKind.containTicker));
                 || s.text.EndsWith(" " + x.ticker));
             sContainT.Stop();
             return res;
+        }
+
+        public static bool ContainsCompanyName(Shingle s, Db ctx)
+        {
+            if (s.tokens == 1) return false;
+            return ctx.CompanyNames.Any(x =>
+                s.text.StartsWith(x.name + " ")
+                || s.text.StartsWith(x.name + "'")
+                || s.text.Contains(" " + x.name + " ")
+                || s.text.Contains("'" + x.name + " ")
+                || s.text.Contains(" " + x.name + "'")
+                || s.text.Contains("'" + x.name + "'")
+                || s.text.EndsWith(" " + x.name));
         }
 
         private static void SetShingleContainCommon(Shingle s, Db ctx)

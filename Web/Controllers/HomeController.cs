@@ -80,10 +80,8 @@ namespace SyndicationWeb.Controllers
             ViewData["lang"] = lang;
             ViewData["active"] = active;
             ViewData["inactive"] = inactive;
-
             if (!string.IsNullOrEmpty(newFeed))
                 _feedData.AddFeed(newFeed);
-
             return View(_feedData.GetFeeds(page: page, pageSize:pageSize, lang:lang, showActive:(active == "Active shown"), showInactive:(inactive=="Inactive shown")));
         }
 
@@ -94,8 +92,12 @@ namespace SyndicationWeb.Controllers
 
         public IActionResult Shingles(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = "", byte tokens = 0, string lang = "")
         {
+            ViewData["page"] = page;
+            ViewData["pageSize"] = pageSize;
             ViewData["filter"] = filter;
             ViewData["kind"] = kind;
+            ViewData["tokens"] = tokens;
+            ViewData["lang"] = lang;
             return View(_shingleData.GetAll(kind, descending, page, pageSize, filter, tokens, lang));
         }
     }

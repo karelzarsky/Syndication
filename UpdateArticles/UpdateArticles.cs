@@ -2,6 +2,7 @@
 using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
+using System;
 
 namespace UpdateArticles
 {
@@ -9,8 +10,8 @@ namespace UpdateArticles
     {
         static void Main(string[] args)
         {
-            using (Process p = Process.GetCurrentProcess())
-                p.PriorityClass = ProcessPriorityClass.Idle;
+            //using (Process p = Process.GetCurrentProcess())
+            //    p.PriorityClass = ProcessPriorityClass.Idle;
             var ctx = new Db();
 
             //Shingle s;
@@ -63,21 +64,40 @@ namespace UpdateArticles
             //    ctx = new Db();
             //}
 
-            Article ea;
-            while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting)) != null)
-            {
-                var sw = Stopwatch.StartNew();
-                ShingleLogic.ProcessArticle(ea.ID);
-                sw.Stop();
-                DataLayer.LogMessage(LogLevel.AnalyzedArticle, $"{sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
+            //Article ea;
+            //while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting)) != null)
+            //{
+            //    var sw = Stopwatch.StartNew();
+            //    ShingleLogic.ProcessArticle(ea.ID);
+            //    sw.Stop();
+            //    DataLayer.LogMessage(LogLevel.AnalyzedArticle, $"{sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
 
-                //RssLogic.ScoreArticle(ea, ctx);
-                //ea.ProcessedScore = ProcessState.Done;
+            //    //RssLogic.ScoreArticle(ea, ctx);
+            //    //ea.ProcessedScore = ProcessState.Done;
+            //    ctx.SaveChanges();
+            //    ctx.Dispose();
+            //    ctx = new Db();
+            //}
+
+            Shingle s;
+            while ((s = ctx.Shingles.FirstOrDefault(x => x.kind == ShingleKind.newShingle)) != null)
+            {
+                if (ShingleLogic.ContainsCompanyName(s, ctx))
+                {
+                    ShingleLogic.SetShingleContainCompany(s, ctx);
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.Write(s.ID);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(" " + s.text);
+                }
+                else
+                {
+                    s.kind = ShingleKind.interesting;
+                }
                 ctx.SaveChanges();
                 ctx.Dispose();
                 ctx = new Db();
             }
-
         }
     }
 }

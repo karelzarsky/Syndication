@@ -40,7 +40,8 @@
         CEO = 8,
         companyName = 9,
         containCommon = 10,
-        containTicker = 11
+        containTicker = 11,
+        containCompany = 12,
     }
 
     public enum InstrumentType : byte
