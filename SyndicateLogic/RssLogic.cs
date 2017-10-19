@@ -173,7 +173,7 @@ namespace SyndicateLogic
                             }
                         }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 DataLayer.LogMessage(LogLevel.FeedError, "ERROR: Cannot load investor feeds resource file.");
             }
@@ -293,11 +293,11 @@ namespace SyndicateLogic
             context.SaveChanges();
             DeleteOlderVersions(ea);
             FindInstruments(ea.ID);
-            ShingleLogic.ProcessArticle(ea.ID);
-            ScoreArticle(ea.ID);
             sw.Stop();
-            string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";
-            DataLayer.LogMessage(LogLevel.Article, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
+            //ShingleLogic.ProcessArticle(ea.ID);
+            //ScoreArticle(ea.ID);
+            //string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";
+            //DataLayer.LogMessage(LogLevel.Article, $"A {sw.ElapsedMilliseconds}ms ID:{ea.ID} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
             return true;
         }
 

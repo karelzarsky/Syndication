@@ -14,11 +14,11 @@ namespace StrategyTester
 
         static void Main(string[] args)
         {
-            const double sellLimit = -0.1;
-            const double buyLimit = 0.7;
-            const decimal TPPercent = 5m;
-            const decimal SLPercent = 2m;
-            const int longestTrade = 30;
+            //const double sellLimit = -0.1;
+            //const double buyLimit = 0.7;
+            //const decimal TPPercent = 5m;
+            //const decimal SLPercent = 2m;
+            //const int longestTrade = 30;
 
             using (Process p = Process.GetCurrentProcess())
                 p.PriorityClass = ProcessPriorityClass.Idle;

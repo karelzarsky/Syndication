@@ -79,24 +79,33 @@ namespace UpdateArticles
             //    ctx = new Db();
             //}
 
-            Shingle s;
-            while ((s = ctx.Shingles.FirstOrDefault(x => x.kind == ShingleKind.newShingle)) != null)
+            var arr = ctx.Shingles.Where(x => x.kind == ShingleKind.newShingle).Take(1000).ToList();
+            while (arr.Count > 0)
             {
-                if (ShingleLogic.ContainsCompanyName(s, ctx))
+                foreach (var sh in arr)
                 {
-                    ShingleLogic.SetShingleContainCompany(s, ctx);
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.Write(s.ID);
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.WriteLine(" " + s.text);
+                    if (ShingleLogic.ContainsCompanyName(sh, ctx))
+                    {
+                        ShingleLogic.SetShingleContainCompany(sh, ctx);
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.Write(sh.ID);
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.WriteLine(" " + sh.text);
+                    }
+                    else
+                    {
+                        var sh2 = ctx.Shingles.Find(sh.ID);
+                        if (sh2 == null) continue;
+                        if (sh2.ID < 2000000)
+                            sh2.kind = ShingleKind.interesting;
+                        else
+                            ShingleLogic.SetShingleKind(sh2, ctx);
+                    }
+                    ctx.SaveChanges();
+                    ctx.Dispose();
+                    ctx = new Db();
                 }
-                else
-                {
-                    s.kind = ShingleKind.interesting;
-                }
-                ctx.SaveChanges();
-                ctx.Dispose();
-                ctx = new Db();
+                arr = ctx.Shingles.Where(x => x.kind == ShingleKind.newShingle).Take(1000).ToList();
             }
         }
     }

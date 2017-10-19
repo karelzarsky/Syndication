@@ -65,11 +65,12 @@ namespace SyndicationWeb.Services
             {
                 var sh = _ctx.Shingles.FirstOrDefault(s => s.text == phrase);
                 if (sh == null) continue;
-                var sa = _ctx.ShingleActions.FirstOrDefault(x => x.shingleID == sh.ID && x.interval == 15);
+                var sa = _ctx.ShingleActions.FirstOrDefault(x => x.shingleID == sh.ID && x.interval == 30);
                 if (sa == null) continue;
                 if (sa.down == null || sa.up == null) continue;
                 float score = (sa.up.Value + sa.down.Value - 2) * 100;
-                res.ScoredPhrases.Add(new ScoredPhrase { Score = score, Phrase = phrase, Color = GetColor(score) });
+                if (!res.ScoredPhrases.Any(p => p.Phrase == phrase))
+                    res.ScoredPhrases.Add(new ScoredPhrase { Score = score, Phrase = phrase, Color = GetColor(score) });
                 int wordIndex = text.IndexOf(phrase, StringComparison.OrdinalIgnoreCase);
                 if (wordIndex >= 0)
                     for (int i = wordIndex; i < wordIndex + sh.text.Length; i++)
@@ -102,12 +103,12 @@ namespace SyndicationWeb.Services
                 return "#000";
             else if (score > 0) // blue #0FF
             {
-                double blueValue = (score * 4);
+                double blueValue = 8 + (score * 2);
                 if (blueValue > 15) blueValue = 15;
                 return "#0" + ((byte)blueValue).ToString("X") + ((byte)blueValue).ToString("X");
             }
             // red #F00
-            double redValue = -score * 8;
+            double redValue = 8 + (score * 2);
             if (redValue > 15) redValue = 15;
             return "#" + ((byte)redValue).ToString("X") + "00";
         }

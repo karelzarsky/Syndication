@@ -2,6 +2,7 @@
 using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
+using System;
 
 namespace UpdateArticles
 {
@@ -63,21 +64,43 @@ namespace UpdateArticles
             //    ctx = new Db();
             //}
 
-            Article ea;
-            while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting && x.Ticker != null )) != null)
+            //Article ea;
+            //while ((ea = ctx.Articles.FirstOrDefault(x => x.Processed == ProcessState.Waiting && x.Ticker != null )) != null)
+            //{
+            //    //var sw = Stopwatch.StartNew();
+            //    ShingleLogic.ProcessArticle(ea.ID);
+            //    //sw.Stop();
+            //    //DataLayer.LogMessage(LogLevel.NewArticle, $"{sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
+
+            //    //RssLogic.ScoreArticle(ea, ctx);
+            //    //ea.ProcessedScore = ProcessState.Done;
+            //    ctx.SaveChanges();
+            //    ctx.Dispose();
+            //    ctx = new Db();
+            //}
+
+            var names = ctx.CompanyNames.Select(c => c.name).ToArray();
+            foreach (var name in names)
             {
-                //var sw = Stopwatch.StartNew();
-                ShingleLogic.ProcessArticle(ea.ID);
-                //sw.Stop();
-                //DataLayer.LogMessage(LogLevel.NewArticle, $"{sw.ElapsedMilliseconds}ms {ea.ID} {ea.Title}");
-
-                //RssLogic.ScoreArticle(ea, ctx);
-                //ea.ProcessedScore = ProcessState.Done;
-                ctx.SaveChanges();
-                ctx.Dispose();
-                ctx = new Db();
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine(name);
+                var badShingles = ctx.Shingles.Where(s =>
+                s.text.StartsWith(name + " ")
+                || s.text.StartsWith(name + "'")
+                || s.text.Contains(" " + name + " ")
+                || s.text.Contains("'" + name + " ")
+                || s.text.Contains(" " + name + "'")
+                || s.text.Contains("'" + name + "'")
+                || s.text.EndsWith(" " + name));
+                foreach (var bad in badShingles)
+                {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write(bad.ID);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.WriteLine(" " + bad.text);
+                    ShingleLogic.SetShingleContainCompany(bad, ctx);
+                }
             }
-
         }
     }
 }

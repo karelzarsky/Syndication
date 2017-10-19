@@ -25,7 +25,8 @@ namespace SyndicateService
         }
 
         private SynThread thDownload;
-        private SynThread thProcess;
+        private SynThread thProcessArticles;
+        //private SynThread thProcessShingles;
         private SynThread thIntrinio;
 
         private readonly ManualResetEvent shutdownEvent = new ManualResetEvent(false);
@@ -33,7 +34,8 @@ namespace SyndicateService
         protected override void OnStart(string[] args)
         {
             thDownload = new SynThread("Download", 5000, PerformDownload);
-            thProcess = new SynThread("Processing", 1001, PerformProcessing);
+            thProcessArticles = new SynThread("ProcessingArticles", 1001, PerformArticleProcessing);
+            //thProcessShingles = new SynThread("ProcessingShingles", 1111, PerformShingleProcessing);
             thIntrinio = new SynThread("Intrinio", 24000 * 3600 / 450, PerformIntrinio);
 
             RssLogic.UpdateServerConnection();
@@ -42,7 +44,8 @@ namespace SyndicateService
                 RssLogic.AddNewFeedsFromResource(ctx);
             }
             StartThread(thDownload);
-            StartThread(thProcess);
+            //StartThread(thProcessShingles);
+            StartThread(thProcessArticles);
             StartThread(thIntrinio);
         }
 
@@ -87,10 +90,10 @@ namespace SyndicateService
             {
                 thIntrinio.thread.Abort(); // not perferred, but the service is closing anyway
             }
-            if (!thProcess.thread.Join(2000))
-            {
-                thProcess.thread.Abort();
-            }
+            //if (!thProcessShingles.thread.Join(2000))
+            //{
+            //    thProcessShingles.thread.Abort();
+            //}
             if (!thIntrinio.thread.Join(2000))
             {
                 thIntrinio.thread.Abort();
@@ -105,9 +108,9 @@ namespace SyndicateService
                 Feed f = RssLogic.GetNextFeed(context);
                 if (f != null)
                 {
-                    DataLayer.LogMessage(LogLevel.Info, $"N Next feed {f.ID} {f.Url}");
+                    //DataLayer.LogMessage(LogLevel.Feed, $"N Next feed {f.ID} {f.Url}");
                     RssLogic.ProcessFeed(f, context);
-                    DataLayer.LogMessage(LogLevel.Info, $"Completed feed {f.ID} {f.Url}");
+                    //DataLayer.LogMessage(LogLevel.Feed, $"Completed feed {f.ID} {f.Url}");
                     context.SaveChanges();
                 }
             }
@@ -116,7 +119,7 @@ namespace SyndicateService
 
         private static List<int> ShinglesToProcess;
 
-        private void PerformProcessing(object state)
+        private void PerformShingleProcessing(object state)
         {
             //DataLayer.LogMessage(LogLevel.Service, "Processing Invoked");
             try
@@ -143,7 +146,43 @@ namespace SyndicateService
             }
             finally
             {
-                thProcess.timer.Start();
+            //    thProcessShingles.timer.Start();
+            }
+        }
+
+        private static List<int> ArticlesToProcess;
+
+        private void PerformArticleProcessing(object state)
+        {
+            try
+            {
+                using (var ctx = new Db())
+                {
+                    ctx.Database.CommandTimeout = 120;
+                    ArticlesToProcess = ShingleLogic.GetNextArticles(ctx);
+                    if (ArticlesToProcess == null || ArticlesToProcess.Count == 0)
+                        Thread.Sleep(20000);
+                    else
+                    {
+                        foreach (var a in ArticlesToProcess)
+                        {
+                            var sw = Stopwatch.StartNew();
+                            ShingleLogic.ProcessArticle(a);
+                            RssLogic.ScoreArticle(a);
+                            var ea = ctx.Articles.Include("Feed").Single(x => x.ID == a);
+                            string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";
+                            DataLayer.LogMessage(LogLevel.Article, $"A {sw.ElapsedMilliseconds}ms ID:{a} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                DataLayer.LogException(e);
+            }
+            finally
+            {
+                thProcessArticles.timer.Start();
             }
         }
 
