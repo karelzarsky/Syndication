@@ -12,7 +12,7 @@ namespace SyndicationWeb.ViewModels
         public int Records;
     }
 
-    public class ShingleViewModel
+    public class ShinglesViewModel
     {
         public PaginatedList<Shingle> Shingles { get; set; }
         public List<Kind> ShingleKinds { get; set; }

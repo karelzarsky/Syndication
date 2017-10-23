@@ -26,7 +26,7 @@ namespace SyndicateService
 
         private SynThread thDownload;
         private SynThread thProcessArticles;
-        //private SynThread thProcessShingles;
+        private SynThread thProcessShingles;
         private SynThread thIntrinio;
 
         private readonly ManualResetEvent shutdownEvent = new ManualResetEvent(false);
@@ -35,7 +35,7 @@ namespace SyndicateService
         {
             thDownload = new SynThread("Download", 5000, PerformDownload);
             thProcessArticles = new SynThread("ProcessingArticles", 1001, PerformArticleProcessing);
-            //thProcessShingles = new SynThread("ProcessingShingles", 1111, PerformShingleProcessing);
+            thProcessShingles = new SynThread("ProcessingShingles", 1111, PerformShingleProcessing);
             thIntrinio = new SynThread("Intrinio", 24000 * 3600 / 450, PerformIntrinio);
 
             RssLogic.UpdateServerConnection();
@@ -44,7 +44,7 @@ namespace SyndicateService
                 RssLogic.AddNewFeedsFromResource(ctx);
             }
             StartThread(thDownload);
-            //StartThread(thProcessShingles);
+            StartThread(thProcessShingles);
             StartThread(thProcessArticles);
             StartThread(thIntrinio);
         }
@@ -90,10 +90,10 @@ namespace SyndicateService
             {
                 thIntrinio.thread.Abort(); // not perferred, but the service is closing anyway
             }
-            //if (!thProcessShingles.thread.Join(2000))
-            //{
-            //    thProcessShingles.thread.Abort();
-            //}
+            if (!thProcessShingles.thread.Join(2000))
+            {
+                thProcessShingles.thread.Abort();
+            }
             if (!thIntrinio.thread.Join(2000))
             {
                 thIntrinio.thread.Abort();
@@ -146,7 +146,7 @@ namespace SyndicateService
             }
             finally
             {
-            //    thProcessShingles.timer.Start();
+            thProcessShingles.timer.Start();
             }
         }
 

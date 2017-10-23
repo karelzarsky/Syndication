@@ -96,7 +96,7 @@ namespace UpdateArticles
                     {
                         var sh2 = ctx.Shingles.Find(sh.ID);
                         if (sh2 == null) continue;
-                        if (sh2.ID < 2000000)
+                        if (sh2.ID < 2667191)
                             sh2.kind = ShingleKind.interesting;
                         else
                             ShingleLogic.SetShingleKind(sh2, ctx);

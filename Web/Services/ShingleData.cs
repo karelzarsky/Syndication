@@ -9,7 +9,8 @@ namespace SyndicationWeb.Services
 {
     public interface IShingleData
     {
-        ShingleViewModel GetAll(byte level = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = null, byte tokens = 0, string lang = "");
+        ShinglesViewModel GetAll(byte level = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = null, byte tokens = 0, string lang = "");
+        ShingleDetailViewModel GetDetail(int shingleID);
     }
 
     public class ShingleData : IShingleData
@@ -21,9 +22,9 @@ namespace SyndicationWeb.Services
             _ctx = ctx;
         }
 
-        public ShingleViewModel GetAll(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = null, byte tokens = 0, string lang = "")
+        public ShinglesViewModel GetAll(byte kind = 0, bool descending = true, int page = 1, int pageSize = 100, string filter = null, byte tokens = 0, string lang = "")
         {
-            var res = new ShingleViewModel
+            var res = new ShinglesViewModel
             {
                 ShingleKinds = new List<Kind>()
             };
@@ -52,6 +53,15 @@ namespace SyndicationWeb.Services
             ShingleList = descending ? ShingleList.OrderByDescending(l => l.ID) : ShingleList.OrderBy(l => l.ID);
             res.TotalPages = 1 + ShingleList.Count() / pageSize;
             res.Shingles = PaginatedList<Shingle>.Create(ShingleList, page, pageSize);
+            return res;
+        }
+
+        public ShingleDetailViewModel GetDetail(int shingleID)
+        {
+            ShingleDetailViewModel res = new ShingleDetailViewModel();
+            res.ShingleEntity = _ctx.Shingles.FirstOrDefault(s => s.ID == shingleID);
+            if (res.ShingleEntity == null)
+                res.ShingleEntity = new Shingle();
             return res;
         }
     }

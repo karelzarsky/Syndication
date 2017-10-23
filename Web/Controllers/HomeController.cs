@@ -100,5 +100,10 @@ namespace SyndicationWeb.Controllers
             ViewData["lang"] = lang;
             return View(_shingleData.GetAll(kind, descending, page, pageSize, filter, tokens, lang));
         }
+
+        public IActionResult ShingleDetail(int ShingleID)
+        {
+            return View(_shingleData.GetDetail(ShingleID));
+        }
     }
 }
