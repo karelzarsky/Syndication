@@ -4,6 +4,7 @@ using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
+using System.Text.RegularExpressions;
 
 namespace SyndicationWeb.Services
 {
@@ -62,6 +63,16 @@ namespace SyndicationWeb.Services
             res.ShingleEntity = _ctx.Shingles.FirstOrDefault(s => s.ID == shingleID);
             if (res.ShingleEntity == null)
                 res.ShingleEntity = new Shingle();
+            res.Articles =
+                (from a in _ctx.Articles
+                 join su in _ctx.ShingleUses on a.ID equals su.ArticleID
+                 where su.ShingleID == shingleID
+                 select a
+                ).Take(10).ToList();
+            //foreach (var a in res.Articles)
+            //{
+            //    a.Summary = Regex.Replace(a.Summary, res.ShingleEntity.text, "<B>" + res.ShingleEntity.text + "</B>", RegexOptions.IgnoreCase);
+            //}
             return res;
         }
     }

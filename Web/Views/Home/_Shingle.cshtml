@@ -2,5 +2,5 @@
 <td>@Model.ID</td>
 <td align="center">@Enum.GetName(typeof(SyndicateLogic.ShingleKind), Model.kind)</td>
 <td>@Model.tokens</td>
-<td>@Model.text</td>
+<td><a asp-action="ShingleDetail" asp-route-ShingleID="@Model.ID">@Model.text</a></td>
 <td>@Model.language</td>

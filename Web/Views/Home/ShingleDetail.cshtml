@@ -16,4 +16,16 @@
             <div class="col-xs-6 col-lg-3">@(Model.ShingleEntity.LastRecomputeDate == null ? "" : Model.ShingleEntity.LastRecomputeDate.Value.ToString("dd.MM.yy HH:mm"))</div>
         </div>
     </div>
+    <div class="well">
+        <table border="1">
+            @foreach (var article in Model.Articles)
+            {
+                <tr>
+                    <td>
+                        @(article.Summary)
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
 </div>

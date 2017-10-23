@@ -42,8 +42,8 @@
             @foreach (var ph in Model.ScoredPhrases.Distinct())
             {
                 <div class="col-xs-12">
-                    @(ph.Score.ToString("N3"))
-                    @ph.Phrase<br />
+                    @(ph.Score.ToString("N3"))&nbsp;
+                    <a asp-action="ShingleDetail" asp-route-ShingleID="@ph.ShingleID">@ph.Phrase</a><br/>
                 </div>
             }
         </div>

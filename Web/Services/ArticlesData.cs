@@ -70,7 +70,7 @@ namespace SyndicationWeb.Services
                 if (sa.down == null || sa.up == null) continue;
                 float score = (sa.up.Value + sa.down.Value - 2) * 100;
                 if (!res.ScoredPhrases.Any(p => p.Phrase == phrase))
-                    res.ScoredPhrases.Add(new ScoredPhrase { Score = score, Phrase = phrase, Color = GetColor(score) });
+                    res.ScoredPhrases.Add(new ScoredPhrase { Score = score, Phrase = phrase, Color = GetColor(score), ShingleID = sh.ID });
                 int wordIndex = text.IndexOf(phrase, StringComparison.OrdinalIgnoreCase);
                 if (wordIndex >= 0)
                     for (int i = wordIndex; i < wordIndex + sh.text.Length; i++)
