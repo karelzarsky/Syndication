@@ -417,7 +417,7 @@ WHERE s.kind in (1,2) AND (s.LastRecomputeDate IS NULL OR s.LastRecomputeDate < 
             var ctx = new Db();
             ctx.Database.CommandTimeout = 120;
             const string getActions =
-@"SELECT @shingleID shingleID, cast (interval as tinyint) interval, avg(minDownAvg / op) down, avg(maxUpAvg / op) up, GETDATE() datecomputed, count(1) samples, count(distinct(ticker)) tickers,
+@"SELECT @shingleID shingleID, cast (interval as tinyint) interval, cast (avg(minDownAvg / op) as real) down, cast (avg(maxUpAvg / op) as real) up, GETDATE() datecomputed, count(1) samples, count(distinct(ticker)) tickers,
 COUNT(CASE WHEN cl / op < 0.90 THEN 1 ELSE NULL END) AS down10,
 COUNT(CASE WHEN cl / op >= 0.90 AND cl / op < 0.91 THEN 1 ELSE NULL END) AS down09,
 COUNT(CASE WHEN cl / op >= 0.91 AND cl / op < 0.92 THEN 1 ELSE NULL END) AS down08,
@@ -440,7 +440,7 @@ COUNT(CASE WHEN cl / op >= 1.07 AND cl / op < 1.08 THEN 1 ELSE NULL END) AS up07
 COUNT(CASE WHEN cl / op >= 1.08 AND cl / op < 1.09 THEN 1 ELSE NULL END) AS up08,
 COUNT(CASE WHEN cl / op >= 1.09 AND cl / op < 1.10 THEN 1 ELSE NULL END) AS up09,
 COUNT(CASE WHEN cl / op >= 1.10 THEN 1 ELSE NULL END) AS up10,
-STDEV(cl / op) stddev, AVG(cast(cl as float) / op) mean, VAR(cl / op) variance
+cast (STDEV(cl / op) as real) stddev, cast (AVG(cast(cl as float) / op) as real) mean, cast (VAR(cl / op) as real) variance
 FROM
 (SELECT i interval, a.ID, a.Ticker ticker,
 (SELECT TOP 1 adj_open FROM int.prices WITH(NOLOCK) WHERE ticker = a.Ticker AND date >= a.PublishedUTC ORDER BY date) op,
