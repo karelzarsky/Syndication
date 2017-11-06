@@ -15,8 +15,6 @@ namespace UpdateArticles
 
             var ctx = new Db();
 
-            var qqq = ctx.Shingles.Where(s => s.text.Contains())
-
             foreach (var item in from s in ctx.Shingles
                                  join n in ctx.CompanyNames on s.text equals n.name
                                  where s.kind == ShingleKind.interesting
