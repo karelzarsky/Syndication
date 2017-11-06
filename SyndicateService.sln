@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.4
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SyndicateService", "SyndicateService\SyndicateService.csproj", "{A157B468-ECFC-4D49-AF36-899FBA764B4F}"
 EndProject
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StrategyTester", "StrategyTester\StrategyTester.csproj", "{2EC13BC8-E357-4F93-89A9-C937954959C7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{924600E8-B9B9-477F-A61A-D76CCA0AC882}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wabbit", "wabbit\Wabbit.csproj", "{477C10FD-8CF2-477F-9B15-B474DF647E95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -151,8 +153,19 @@ Global
 		{924600E8-B9B9-477F-A61A-D76CCA0AC882}.Release|Any CPU.Build.0 = Release|Any CPU
 		{924600E8-B9B9-477F-A61A-D76CCA0AC882}.Release|x64.ActiveCfg = Release|Any CPU
 		{924600E8-B9B9-477F-A61A-D76CCA0AC882}.Release|x64.Build.0 = Release|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Debug|x64.Build.0 = Debug|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Release|x64.ActiveCfg = Release|Any CPU
+		{477C10FD-8CF2-477F-9B15-B474DF647E95}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5DB87574-6484-4208-B71C-C25D153194BD}
 	EndGlobalSection
 EndGlobal

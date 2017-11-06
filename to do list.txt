@@ -12,6 +12,6 @@ shingle action futures
 update only used prices
 new rss parser
 parse datetime according to server setting
-view for shingles
 fix tips selection
-separate download and processing
+button for changing shingle type
+shingle detail display actions
