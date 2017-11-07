@@ -12,6 +12,6 @@
         public string Name;
         public double Value = 1.0;
 
-        public override string ToString() => Name + (Value == 1.0 ? "" : ":" + Value.ToString());
+        public override string ToString() => Name + (Value == 1.0 ? string.Empty : ":" + Value.ToString());
     }
 }

@@ -15,6 +15,6 @@ namespace Wabbit
         public double Value = 1.0;
         public List<Feature> Features = new List<Feature>();
 
-        public override string ToString() => "|" + Name + (Value == 1.0 ? "" : ":" + Value.ToString()) + " " + string.Join(" ", Features);
+        public override string ToString() => "|" + Name + (Value == 1.0 ? string.Empty : ":" + Value.ToString()) + " " + string.Join(" ", Features);
     }
 }

@@ -12,6 +12,7 @@ namespace Wabbit
     {
         static void Main(string[] args)
         {
+            using (var file = new System.IO.StreamWriter("VW" + DateTime.Now.ToString("yyyyMMddHHmm") + ".txt"))
             using (var ctx = new Db())
                 foreach (var article in ctx.Articles.Where(a => a.Ticker != null && a.language == "en"))
                 {
@@ -21,9 +22,11 @@ namespace Wabbit
                         ArticleID = article.ID,
                         Ticker = article.Ticker
                     };
-                    FillPreviousPrices(myExa);
-                    FillAfterPrices(myExa);
+                    FillPrices(myExa);
                     FillShingles(myExa);
+                    var str = myExa.ToVW();
+                    Console.WriteLine(str);
+                    file.WriteLine(str);
                 }
         }
 
@@ -31,21 +34,35 @@ namespace Wabbit
         {
             using (var ctx = new Db())
             {
-                myExa.Shingles.AddRange(ctx.Shingles
-                    .Where(s => ctx.ShingleUses
-                    .Any(su => s.kind == ShingleKind.interesting && su.ArticleID == myExa.ArticleID && su.ShingleID == s.ID))
-                    .Select(x => x.text));
+                List<string> shingles = (from s in ctx.Shingles
+                                         join su in ctx.ShingleUses on s.ID equals su.ShingleID
+                                         where su.ArticleID == myExa.ArticleID && s.kind == ShingleKind.interesting
+                                         select s.text).ToList();
+                foreach (var s in shingles)
+                {
+                    myExa.Shingles.Add(s.Replace(" ", "_"));
+                }
             }
         }
 
-        private static void FillAfterPrices(MyExample myExa)
+        private static void FillPrices(MyExample myExa)
         {
-            throw new NotImplementedException();
-        }
-
-        private static void FillPreviousPrices(MyExample myExa)
-        {
-            throw new NotImplementedException();
+            using (var ctx = new Db())
+            {
+                var p = ctx.Prices.Where(x => x.ticker == myExa.Ticker && x.date < myExa.Date.Date).OrderByDescending(x => x.date).FirstOrDefault();
+                if (p == null) return;
+                myExa.PrevO = (double)p.adj_open;
+                myExa.PrevH = (double)p.adj_high;
+                myExa.PrevL = (double)p.adj_low;
+                myExa.PrevC = (double)p.adj_close;
+                var n = ctx.Prices.Where(x => x.ticker == myExa.Ticker && x.date > myExa.Date.Date).OrderBy(x => x.date).FirstOrDefault();
+                if (n == null) return;
+                myExa.AfterO = (double)n.adj_open;
+                myExa.AfterH = (double)n.adj_high;
+                myExa.AfterL = (double)n.adj_low;
+                myExa.AfterC = (double)n.adj_close;
+                myExa.PriceChangePercent = 100 * (myExa.AfterC - myExa.PrevC) / myExa.AfterC;
+            }
         }
     }
 }

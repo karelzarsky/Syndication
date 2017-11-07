@@ -50,7 +50,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Feature.cs" />
-    <Compile Include="Microsoft\VisualStudio.cs" />
     <Compile Include="MyExample.cs" />
     <Compile Include="Namespace.cs" />
     <Compile Include="Program.cs" />

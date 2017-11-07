@@ -46,9 +46,9 @@ namespace Wabbit
 
         public override string ToString() =>
             Label.ToString()
-                + (Importance == 1.0 && Importance == 1.0 ? "" : " " + Importance.ToString())
-                + (Base == 0.0 ? "" : " " + Base.ToString())
-                + (string.IsNullOrWhiteSpace(Tag) ? "" : " '" + Tag)
+                + (Importance == 1.0 && Base == 0.0 ? string.Empty : " " + Importance.ToString())
+                + (Base == 0.0 ? string.Empty : " " + Base.ToString())
+                + (string.IsNullOrWhiteSpace(Tag) ? string.Empty : " '" + Tag)
                 + string.Join(" ", Namespaces);
     }
 
