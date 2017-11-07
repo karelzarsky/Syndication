@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace wabbit
+namespace Wabbit
 {
     public class MyExample
     {
-        double PriceChangePercent;
-        string Tag;
-        double PrevO, PrevH, PrevL, PrevC;
-        List<string> shingles;
-        DateTime Date;
-        string Ticker;
-        int ArticleID;
+        public double PriceChangePercent;
+        public double PrevO, PrevH, PrevL, PrevC;
+        public double AfterO, AfterH, AfterL, AfterC;
+        public string Tag;
+        public List<string> Shingles;
+        public DateTime Date;
+        public string Ticker;
+        public int ArticleID;
     }
 }
