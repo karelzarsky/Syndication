@@ -11,7 +11,7 @@ namespace Wabbit
     /// The raw (plain text) input data for VW should have one example per line. Each example should be formatted as follows.
     /// [Label] [Importance] [Base] [Tag]|Namespace Features |Namespace Features... |Namespace Features
     /// </summary>
-    public class Example
+    public class VWExample
     {
         /// <summary>
         /// Label is the real number that we are trying to predict for this example. If the label is omitted, then no training will be performed
@@ -46,9 +46,9 @@ namespace Wabbit
 
         public override string ToString() =>
             Label.ToString()
-                + (Importance == 1.0 ? "" : " " + Importance.ToString())
+                + (Importance == 1.0 && Importance == 1.0 ? "" : " " + Importance.ToString())
                 + (Base == 0.0 ? "" : " " + Base.ToString())
-                + (string.IsNullOrWhiteSpace(Tag) ? "" : "'" + Tag)
+                + (string.IsNullOrWhiteSpace(Tag) ? "" : " '" + Tag)
                 + string.Join(" ", Namespaces);
     }
 
