@@ -38,7 +38,7 @@ namespace Wabbit
             var vw = new VWExample
             {
                 Label = PriceChangePercent,
-                Tag = Ticker + ArticleID,
+                Tag = ArticleID.ToString() + "X" + Math.Round(PriceChangePercent, 3),
                 Namespaces = new List<Namespace>
                 { PriceNamespace, ShinglesNamespace }
             };

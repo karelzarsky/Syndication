@@ -24,6 +24,7 @@ namespace Wabbit
                     };
                     FillPrices(myExa);
                     FillShingles(myExa);
+                    if (myExa.PriceChangePercent == 0.0) continue;
                     var str = myExa.ToVW();
                     Console.WriteLine(str);
                     file.WriteLine(str);
@@ -36,11 +37,11 @@ namespace Wabbit
             {
                 List<string> shingles = (from s in ctx.Shingles
                                          join su in ctx.ShingleUses on s.ID equals su.ShingleID
-                                         where su.ArticleID == myExa.ArticleID && s.kind == ShingleKind.interesting
+                                         where su.ArticleID == myExa.ArticleID && (s.kind == ShingleKind.interesting || s.kind == ShingleKind.upperCase)
                                          select s.text).ToList();
                 foreach (var s in shingles)
                 {
-                    myExa.Shingles.Add(s.Replace(" ", "_"));
+                    myExa.Shingles.Add(s.Replace(" ", "_").Replace(":", "_").Replace("|", "_"));
                 }
             }
         }
