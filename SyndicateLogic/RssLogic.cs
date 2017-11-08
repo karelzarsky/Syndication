@@ -342,7 +342,7 @@ namespace SyndicateLogic
                 {
                     // if (score[i] > highScore || score[i] < lowScore)
                     {
-                        context.ArticleScores.AddOrUpdate(new ArticleScore { articleID = ea.ID, dateComputed = DateTime.Now, interval = i, score = score[i] });
+                        context.ArticleScores.AddOrUpdate(new ArticleScore { ArticleID = ea.ID, DateComputed = DateTime.Now, Interval = i, Score = score[i] });
                     }
                 }
                 context.SaveChanges();
