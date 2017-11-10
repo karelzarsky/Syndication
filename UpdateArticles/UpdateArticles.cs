@@ -3,22 +3,70 @@ using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 
 namespace UpdateArticles
 {
     class UpdateArticles
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            using (Process p = Process.GetCurrentProcess())
+            using (var p = Process.GetCurrentProcess())
                 p.PriorityClass = ProcessPriorityClass.Idle;
 
             var ctx = new Db();
+            var arr = ctx.ArticleScores.Where(x => x.ModelNr == 1 && x.Score == null).Select(x => x.ArticleID).Take(1000).ToList();
+            ProcessVWScores(AskVW(arr));
+            //while (arr.Count > 0)
+            //{
+            //    ProcessVWScores(AskVW(arr));
+            //    arr = ctx.ArticleScores.Where(x => x.ModelNr == 1 && x.Score == null).Select(x => x.ArticleID).Take(1000).ToList();
+            //}
+        }
 
+        private static void ProcessVWScores(string output)
+        {
+            foreach (string line in output.Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries))
+            {
+                string scoreString = line.Substring(0, line.IndexOf(" ", StringComparison.Ordinal) - 1);
+                float score;
+                float.TryParse(scoreString, NumberStyles.Any, null, out score);
+                string tagString = line.Substring(line.IndexOf(" ", StringComparison.Ordinal));
+
+            }
+        }
+
+        private static string AskVW(List<int> arr)
+        {
+            const string modelFile = "1110.model";
+            const string examplesFileName = "VW201711072153.txt";
+            var pProcess =
+                new Process
+                {
+                    StartInfo =
+                    {
+                        FileName = @"c:\Program Files\VowpalWabbit\vw.exe",
+                        Arguments = $"-i {modelFile} -c --quiet -p CON -t {examplesFileName}",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        WindowStyle = ProcessWindowStyle.Hidden,
+                        CreateNoWindow = true
+                    }
+                };
+            pProcess.Start();
+            string output = pProcess.StandardOutput.ReadToEnd();
+            pProcess.WaitForExit();
+            return output;
+        }
+
+        private static void ListShingles(Db ctx)
+        {
             foreach (var item in from s in ctx.Shingles
-                                 join n in ctx.CompanyNames on s.text equals n.name
-                                 where s.kind == ShingleKind.interesting
-                                 select new { s, n })
+                join n in ctx.CompanyNames on s.text equals n.name
+                where s.kind == ShingleKind.interesting
+                select new {s, n})
             {
                 Console.WriteLine(item.n.name + " " + item.s.text);
             }
