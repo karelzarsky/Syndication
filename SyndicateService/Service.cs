@@ -10,6 +10,7 @@ using IntrinioConsole;
 
 // instalace:
 // c:\windows\microsoft.net\framework\v4.0.30319\installutil.exe c:\GIT\trade\SyndicateService\SyndicateService\bin\Debug\SyndicateService.exe 
+// c:\windows\microsoft.net\framework\v4.0.30319\installutil.exe C:\Users\Karel\Source\Repos\Syndication\bin\SyndicateService.exe
 //
 
 namespace SyndicateService
@@ -30,6 +31,11 @@ namespace SyndicateService
         private SynThread thIntrinio;
 
         private readonly ManualResetEvent shutdownEvent = new ManualResetEvent(false);
+
+        public void Start()
+        {
+            OnStart(new string[0]);
+        }
 
         protected override void OnStart(string[] args)
         {

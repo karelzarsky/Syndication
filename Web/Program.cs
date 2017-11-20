@@ -4,6 +4,10 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Hosting.WindowsServices;
 using System.Linq;
 
+// install:
+// first publish, then
+// sc create !WEB binPath=c:\Users\Karel\Source\Repos\Syndication\Web\bin\Debug\PublishOutput\Web.exe
+
 namespace SyndicationWeb
 {
     public class Program

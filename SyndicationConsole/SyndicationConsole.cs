@@ -3,35 +3,20 @@ using System.Linq;
 using System.Threading;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
+using System.Diagnostics;
 
 namespace SyndicationConsole
 {
     internal class SyndicationConsole
     {
-        private static void Main()
+        private static void Main(string[] args)
         {
-            DateTime started = DateTime.Now;
-            RssLogic.AddNewFeedsFromResource(new Db());
-            RssLogic.UpdateServerConnection();
-            using (var context = new Db())
-            {
-                Feed f = RssLogic.GetNextFeed(context);
-                while (context.Feeds.Where(x => x.Active).Min(x => x.LastCheck) < started)
-                {
-                    f = RssLogic.GetNextFeed(context);
-                    if (f != null)
-                    {
-                        DataLayer.LogMessage(LogLevel.Info, $"N Next feed {f.ID} {f.Url}");
-                        RssLogic.ProcessFeed(f, context);
-                    }
-                    else
-                    {
-                        Console.Write(".");
-                        Thread.Sleep(2000);
-                    }
-                    context.SaveChanges();
-                }
-            }
+            using (Process p = Process.GetCurrentProcess())
+                p.PriorityClass = ProcessPriorityClass.BelowNormal;
+            var s = new SyndicateService.Service();
+            s.Start();
+            while (true)
+                Thread.Sleep(20000);
         }
     }
 }
