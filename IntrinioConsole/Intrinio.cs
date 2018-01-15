@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Diagnostics;
 using System.IO;
@@ -29,7 +30,7 @@ namespace IntrinioConsole
             //SaveResponseToFile("https://api.intrinio.com/financials/standardized?ticker=TSLA", "financials.json");
             //GetCompanyDetail("A");
             //GetCompanies();
-            //GetAllCompanyDetailsIndex();
+            GetAllCompanyDetailsIndex();
             //GetIndices();
             //GetStockIndices();
             //foreach (string t in args)
@@ -46,7 +47,7 @@ namespace IntrinioConsole
             //GetInstrumentPrices();
             //GetInstrumentDetails();
             //GetAllCompanyDetails();
-            UpdatePrices();
+            //UpdatePrices();
         }
 
         private static void UpdatePrices()
@@ -195,6 +196,7 @@ namespace IntrinioConsole
                 DataLayer.LogMessage(LogLevel.IntrinioError, $"Detail for ticker {ticker} not found.");
                 return;
             }
+            detail.securities.RemoveAll(s => s.ticker.Length > 5);
             ctx.CompanyDetails.AddOrUpdate(detail);
             try
             {
@@ -227,8 +229,11 @@ namespace IntrinioConsole
             var ctx = new Db();
             foreach (Company company in resp.data)
             {
-                ctx.Companies.AddOrUpdate(company);
-                Console.WriteLine($"{company.name}");
+                if (company.ticker != null && company.ticker.Length <= 5)
+                {
+                    ctx.Companies.AddOrUpdate(company);
+                    Console.WriteLine($"{company.name}");
+                }
             }
             ctx.SaveChanges();
             int pages = resp.total_pages;
@@ -238,10 +243,13 @@ namespace IntrinioConsole
                 resp = download_serialized_json_data<CompaniesResponse>($"https://api.intrinio.com/companies?page_number={i}");
                 foreach (Company company in resp.data)
                 {
-                    ctx.Companies.AddOrUpdate(company);
-                    Console.WriteLine($"{company.name}");
+                    if (company.ticker != null && company.ticker.Length <= 5)
+                    {
+                        ctx.Companies.AddOrUpdate(company);
+                        ctx.SaveChanges();
+                        Console.WriteLine($"{company.name}");
+                    }
                 }
-                ctx.SaveChanges();
                 DataLayer.LogMessage(LogLevel.Intrinio, string.Format($"Intinio call credits: {resp.api_call_credits}, page: {i}"));
             }
         }

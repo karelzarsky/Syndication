@@ -64,6 +64,7 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,6 +93,10 @@
     <ProjectReference Include="..\SyndicateLogic\SyndicateLogic.csproj">
       <Project>{6c9939fc-0b11-4b0b-b244-1ec07aa4940d}</Project>
       <Name>SyndicateLogic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SyndicateService\SyndicateService.csproj">
+      <Project>{a157b468-ecfc-4d49-af36-899fba764b4f}</Project>
+      <Name>SyndicateService</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

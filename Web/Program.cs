@@ -1,7 +1,6 @@
 ﻿using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using System.Diagnostics;
-using Microsoft.AspNetCore.Hosting.WindowsServices;
 using System.Linq;
 
 // install:

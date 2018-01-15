@@ -32,7 +32,7 @@ namespace SyndicateLogic.Entities
         public object hq_address_city { get; set; }
         public object hq_address_postal_code { get; set; }
         public object entity_legal_form { get; set; }
-        public virtual ICollection<Security> securities { get; set; }
+        public virtual List<Security> securities { get; set; }
         [Column(TypeName = "varchar")]
         public string cik { get; set; } // the Central Index Key issued by the SEC
         [Column(TypeName = "varchar")]
