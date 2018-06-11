@@ -364,21 +364,21 @@ namespace SyndicateLogic
 
         private static void SendMail(string subject, string body)
         {
-            var smtp = new SmtpClient
-            {
-                Host = "smtp.gmail.com",
-                Port = 587,
-                EnableSsl = true,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(Default.smtpLogin, Default.smtpPassword)
-            };
-            using (var message = new MailMessage(Default.fromAddress, Default.toAddress)
-            {
-                Subject = subject,
-                Body = body
-            })
-            smtp.Send(message);
+            //var smtp = new SmtpClient
+            //{
+            //    Host = "smtp.gmail.com",
+            //    Port = 587,
+            //    EnableSsl = true,
+            //    DeliveryMethod = SmtpDeliveryMethod.Network,
+            //    UseDefaultCredentials = false,
+            //    Credentials = new NetworkCredential(Default.smtpLogin, Default.smtpPassword)
+            //};
+            //using (var message = new MailMessage(Default.fromAddress, Default.toAddress)
+            //{
+            //    Subject = subject,
+            //    Body = body
+            //})
+            //smtp.Send(message);
         }
 
         public static string FindDifference(string s1, string s2)
