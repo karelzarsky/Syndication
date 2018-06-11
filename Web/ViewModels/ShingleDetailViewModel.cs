@@ -1,5 +1,4 @@
 ﻿using SyndicateLogic.Entities;
-using System;
 using System.Collections.Generic;
 
 namespace SyndicationWeb.ViewModels

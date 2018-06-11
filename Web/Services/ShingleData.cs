@@ -4,7 +4,6 @@ using System.Linq;
 using SyndicateLogic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.ViewModels;
-using System.Text.RegularExpressions;
 
 namespace SyndicationWeb.Services
 {

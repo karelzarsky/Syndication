@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using SyndicateLogic.Entities;
 using SyndicationWeb.Services;
-using SyndicateLogic;
 
 namespace SyndicationWeb.ViewModels
 {

@@ -1,7 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using SyndicateLogic;
-using SyndicateLogic.Entities;
 using System;
 
 namespace UpdateArticles
