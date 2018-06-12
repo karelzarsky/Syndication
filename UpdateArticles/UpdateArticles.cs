@@ -46,18 +46,22 @@ namespace UpdateArticles
                 {
                     StartInfo =
                     {
-                        FileName = @"c:\Program Files\VowpalWabbit\vw.exe",
+                        //FileName = @"c:\Program Files\VowpalWabbit\vw.exe",
+						FileName = @"c:\vw\vw.exe",
                         Arguments = $"-i {modelFile} -c --quiet -p CON -t {examplesFileName}",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
-                        WindowStyle = ProcessWindowStyle.Hidden,
-                        CreateNoWindow = true
+						RedirectStandardError = true,
+                        WindowStyle = ProcessWindowStyle.Normal,
+                        CreateNoWindow = false
                     }
                 };
             pProcess.Start();
             string output = pProcess.StandardOutput.ReadToEnd();
-            pProcess.WaitForExit();
-            return output;
+			string err = pProcess.StandardError.ReadToEnd();
+			Console.WriteLine(err);
+			pProcess.WaitForExit();
+			return output;
         }
 
         private static void ListShingles(Db ctx)
