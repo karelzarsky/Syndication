@@ -31,13 +31,15 @@ namespace SyndicationWeb.Services
             return "Success !";
         }
 
-        public FeedListViewModel GetFeeds(int page, int pageSize, string lang, bool showActive, bool showInactive, string sortOrder = "")
-        {
-            if (pageSize <= 0) pageSize = 50;
-            var res = new FeedListViewModel();
-            res.PageIndex = (page > 0) ? page : 1;
-            IQueryable<Feed> query = _ctx.Feeds.Include("AffectedInstrument");
-            query = query.Where(f => f.Language.Contains(lang) && ((f.Active && showActive) || (!f.Active && showInactive)));
+		public FeedListViewModel GetFeeds(int page, int pageSize, string lang, bool showActive, bool showInactive, string sortOrder = "")
+		{
+			if (pageSize <= 0) pageSize = 50;
+			var res = new FeedListViewModel();
+			res.PageIndex = (page > 0) ? page : 1;
+			IQueryable<Feed> query = _ctx.Feeds.Include("AffectedInstrument");
+			query = string.IsNullOrEmpty(lang)
+				? query.Where(f => f.Active && showActive || !f.Active && showInactive)
+				: query.Where(f => f.Language.Contains(lang) && ((f.Active && showActive) || (!f.Active && showInactive)));
             res.Feeds = new List<FeedViewModel>();
             res.TotalPages = query.Count() / pageSize + 1;
             foreach (var item in query.OrderBy(f => f.ID).Skip(pageSize * (page - 1)).Take(pageSize).ToArray())

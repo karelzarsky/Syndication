@@ -14,10 +14,6 @@
         IntrinioError = 253,
         FeedError = 254,
         Error = 255
-
-        //HashCollision = 6,
-        //Summary = 3,
-        //Fatal = 255
     }
 
     public enum ProcessState : byte
