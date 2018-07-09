@@ -37,7 +37,8 @@ namespace SyndicateLogic.Entities
         public float ScoreUpMax { get; set; }
         [Index, MaxLength(2), Column(TypeName = "varchar")]
         public string language { get; set; }
-
+		[Index]
+		public bool UseForML { get; set; }
         public int ComputeHash()
         { return Text().ToLower().GetHashCode(); }
 

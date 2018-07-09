@@ -465,6 +465,10 @@
     <Compile Include="Migrations\201704070839253_float.Designer.cs">
       <DependentUpon>201704070839253_float.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807091906437_UseForML.cs" />
+    <Compile Include="Migrations\201807091906437_UseForML.Designer.cs">
+      <DependentUpon>201807091906437_UseForML.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\ProblematicShortcut.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -487,6 +491,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201704070839253_float.resx">
       <DependentUpon>201704070839253_float.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807091906437_UseForML.resx">
+      <DependentUpon>201807091906437_UseForML.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="App.config" />
     <EmbeddedResource Include="InvestorRSS.csv" />

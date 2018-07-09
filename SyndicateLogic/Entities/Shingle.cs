@@ -19,5 +19,7 @@ namespace SyndicateLogic.Entities
         public string language { get; set; }
         [Index]
         public DateTime? LastRecomputeDate { get; set; }
-    }
+		[Index]
+		public bool UseForML { get; set; }
+	}
 }
