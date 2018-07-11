@@ -35,6 +35,25 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wabbit", "wabbit\Wabbit.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{7CD392B4-ED17-4ABA-9E0A-BA45DB728FC6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E891784B-3269-4E12-9140-A149D00F8975}"
+	ProjectSection(SolutionItems) = preProject
+		curr4.csv = curr4.csv
+		currencies.csv = currencies.csv
+		currencies2.csv = currencies2.csv
+		currencies3.txt = currencies3.txt
+		DJIA30COMPONENTS.txt = DJIA30COMPONENTS.txt
+		FTSE 100 COMPONENTS.txt = FTSE 100 COMPONENTS.txt
+		indexComponents.csv = indexComponents.csv
+		Intrinio API Documentation.html = Intrinio API Documentation.html
+		investorfeed.csv = investorfeed.csv
+		InvestorRSS.xlsx = InvestorRSS.xlsx
+		NASDAQ 100 COMPONENTS.txt = NASDAQ 100 COMPONENTS.txt
+		SP 500 COMPONENTS.txt = SP 500 COMPONENTS.txt
+		to do list.txt = to do list.txt
+		UseForML_update.sql = UseForML_update.sql
+		XTB ETF stocks.txt = XTB ETF stocks.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

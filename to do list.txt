@@ -1,17 +1,14 @@
-
+parse datetime according to server setting !!!
+ENCOG framework
 gather links to investor news releases for each company
 subscribe investor emails
 html emails
-optimize strategy (SL, TP, time)
-analysis graphs
 country detection
 futures detection
 number of tickers and samples from shingle action to shingles
 shingle action forex
 shingle action futures
 update only used prices
-new rss parser
-parse datetime according to server setting
-fix tips selection
 button for changing shingle type
 shingle detail display actions
+disable feed/server
