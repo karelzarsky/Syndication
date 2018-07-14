@@ -449,7 +449,7 @@ FROM
 (SELECT TOP 1 adj_close FROM int.Prices WITH(NOLOCK) WHERE ticker = a.Ticker AND date >= DATEADD(d, i, a.PublishedUTC) ORDER BY date) cl
 FROM(SELECT DISTINCT i = number FROM master..[spt_values] WHERE number BETWEEN 1 AND @maxInterval) numbers1toN
 JOIN rss.shingleUse su on su.ShingleID = @shingleID
-JOIN rss.articles a on a.ID = su.ArticleID and a.Ticker is not null and a.PublishedUTC < '2018-01-01'
+JOIN rss.articles a on a.ID = su.ArticleID and a.Ticker is not null and a.PublishedUTC < '2018-06-01'
 JOIN rss.shingles s on s.id = @shingleID and s.language = a.language
 ) subs WHERE op <> 0 and minDownAvg <> 0 and maxUpAvg <> 0 and cl <> 0 group by interval
 having count(1)>10 and count (distinct(ticker)) > 3";

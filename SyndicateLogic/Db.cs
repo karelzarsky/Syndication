@@ -44,8 +44,10 @@ namespace SyndicateLogic
         public DbSet<InvestorRSSFeed> InvestorRSSFeeds { get; set; }
         public DbSet<ProblematicShortcut> ProblematicShortcuts { get; set; }
         public DbSet<Backtest> Backtests { get; set; }
+        public DbSet<TrainSchema> TrainSchemas { get; set; }
+        public DbSet<TrainValue> TrainValues { get; set; }
 
-        public static string ReadConnectionString(string key)
+		public static string ReadConnectionString(string key)
         {
             var res = "";
             try

@@ -7,6 +7,7 @@ using SyndicateLogic.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using IntrinioConsole;
+using System.Globalization;
 
 // instalace:
 // c:\windows\microsoft.net\framework\v4.0.30319\installutil.exe c:\GIT\trade\SyndicateService\SyndicateService\bin\Debug\SyndicateService.exe 
@@ -21,7 +22,10 @@ namespace SyndicateService
         {
             using (Process p = Process.GetCurrentProcess())
                 p.PriorityClass = ProcessPriorityClass.BelowNormal;
-            InitializeComponent();
+			var culture = new CultureInfo("en-US");
+			CultureInfo.DefaultThreadCurrentCulture = culture;
+			CultureInfo.DefaultThreadCurrentUICulture = culture;
+			InitializeComponent();
             DataLayer.LogMessage(LogLevel.Service, $"Syndication service start.");
         }
 

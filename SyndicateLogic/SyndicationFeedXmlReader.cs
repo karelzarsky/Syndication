@@ -11,7 +11,7 @@ namespace SyndicateLogic
 {
     public class SyndicationFeedXmlReader : XmlTextReader
     {
-        private static readonly DateTimeFormatInfo dtfi = CultureInfo.CurrentCulture.DateTimeFormat;
+        private static readonly DateTimeFormatInfo dtfi = CultureInfo.GetCultureInfo("en-US").DateTimeFormat;
         private readonly string[] Atom10DateTimeHints = {"updated", "published", "lastBuildDate"};
         private readonly string[] Rss20DateTimeHints = {"pubDate"};
         private bool isAtomDateTime;
@@ -40,15 +40,13 @@ namespace SyndicateLogic
                 dateVal = base.ReadString();
                 if (isRss2DateTime)
                 {
-                    var objMethod = typeof(Rss20FeedFormatter).GetMethod("DateFromString",
-                        BindingFlags.NonPublic | BindingFlags.Static);
+                    var objMethod = typeof(Rss20FeedFormatter).GetMethod("DateFromString", BindingFlags.NonPublic | BindingFlags.Static);
                     Debug.Assert(objMethod != null);
                     objMethod.Invoke(null, new object[] {dateVal, this});
                 }
                 if (isAtomDateTime)
                 {
-                    var objMethod = typeof(Atom10FeedFormatter).GetMethod("DateFromString",
-                        BindingFlags.NonPublic | BindingFlags.Instance);
+                    var objMethod = typeof(Atom10FeedFormatter).GetMethod("DateFromString", BindingFlags.NonPublic | BindingFlags.Instance);
                     Debug.Assert(objMethod != null);
                     objMethod.Invoke(new Atom10FeedFormatter(), new object[] {dateVal, this});
                 }
