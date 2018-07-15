@@ -17,7 +17,8 @@ namespace NNTraining
 {
 	class Program
 	{
-		const int networkID = 2;
+		const int networkID = 1;
+		const int minutes = 600;
 
 		static void Main(string[] args)
 		{
@@ -57,7 +58,7 @@ namespace NNTraining
 			{
 				ThreadCount = 0
 			};
-			MyTrainConsole(train, network, trainingSet, 60);
+			MyTrainConsole(train, network, trainingSet, minutes, networkFile);
 			Console.WriteLine(@"Final Error: " + network.CalculateError(trainingSet));
 			Console.WriteLine(@"Training complete, saving network.");
 			EncogDirectoryPersistence.SaveObject(networkFile, network);
@@ -70,7 +71,7 @@ namespace NNTraining
 			while (key.KeyChar != 's');
 		}
 
-		public static void MyTrainConsole(IMLTrain train, BasicNetwork network, IMLDataSet trainingSet, int minutes)
+		public static void MyTrainConsole(IMLTrain train, BasicNetwork network, IMLDataSet trainingSet, int minutes, FileInfo networkFile)
 		{
 			int epoch = 1;
 			long remaining;
@@ -84,6 +85,7 @@ namespace NNTraining
 				remaining = minutes - elapsed / 60;
 				Console.WriteLine($@"Iteration #{Format.FormatInteger(epoch)} Error:{Format.FormatPercent(train.Error)} elapsed time = {Format.FormatTimeSpan((int)elapsed)} time left = {Format.FormatTimeSpan((int)remaining * 60)}");
 				epoch++;
+				EncogDirectoryPersistence.SaveObject(networkFile, network);
 			}
 			while (remaining > 0 && !train.TrainingDone && !Console.KeyAvailable);
 			Console.WriteLine("Finishing.");
