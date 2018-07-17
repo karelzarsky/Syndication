@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{84BF81C9-89D5-4BB9-834D-449DF60BDBD0}</ProjectGuid>
+    <ProjectGuid>{04D7D91C-0836-4F94-A73F-FDC8781A8678}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>NNTraining</RootNamespace>
-    <AssemblyName>NNTraining</AssemblyName>
+    <RootNamespace>GATraining</RootNamespace>
+    <AssemblyName>GATraining</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -30,7 +30,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="encog-core-cs, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e882172b12155d4, processorArchitecture=MSIL">
@@ -53,18 +52,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NNTraining.cs" />
+    <Compile Include="GATraining.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\SyndicateLogic\SyndicateLogic.csproj">
-      <Project>{6c9939fc-0b11-4b0b-b244-1ec07aa4940d}</Project>
-      <Name>SyndicateLogic</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -8,6 +8,7 @@ using Encog.ML.Train;
 using Encog.Neural.Networks;
 using Encog.Neural.Networks.Training.Propagation;
 using Encog.Neural.Networks.Training.Propagation.Resilient;
+using Encog.Neural.Networks.Training.Propagation.SCG;
 using Encog.Persist;
 using Encog.Util;
 using Encog.Util.Simple;
@@ -15,10 +16,10 @@ using SyndicateLogic;
 
 namespace NNTraining
 {
-	class Program
+	class NNTraining
 	{
 		const int networkID = 1;
-		const int minutes = 600;
+		const int minutes = 24 * 60;
 
 		static void Main(string[] args)
 		{
@@ -54,7 +55,7 @@ namespace NNTraining
 			using (var p = Process.GetCurrentProcess())
 				Console.WriteLine($"RAM usage: {p.WorkingSet64 / 1024 / 1024} MB.");
 
-			Propagation train = new ResilientPropagation(network, trainingSet)
+			Propagation train = new ScaledConjugateGradient(network, trainingSet)
 			{
 				ThreadCount = 0
 			};
@@ -85,7 +86,14 @@ namespace NNTraining
 				remaining = minutes - elapsed / 60;
 				Console.WriteLine($@"Iteration #{Format.FormatInteger(epoch)} Error:{Format.FormatPercent(train.Error)} elapsed time = {Format.FormatTimeSpan((int)elapsed)} time left = {Format.FormatTimeSpan((int)remaining * 60)}");
 				epoch++;
-				EncogDirectoryPersistence.SaveObject(networkFile, network);
+				if (train.Error > .5)
+				{
+					network = network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(networkFile);
+				}
+				else
+				{
+					EncogDirectoryPersistence.SaveObject(networkFile, network);
+				}
 			}
 			while (remaining > 0 && !train.TrainingDone && !Console.KeyAvailable);
 			Console.WriteLine("Finishing.");

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace NNTest
 {
-	class Program
+	class NNTest
 	{
 		const string fmt = "{0:+00.00‰;-00.00‰; 00.00‰} ";
 

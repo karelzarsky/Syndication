@@ -25,7 +25,7 @@ namespace SyndicateLogic
         private static int minSamples = 30;
         private static int minTickers = 10;
         private static float minPositiveScoreAlert = 3.0F;
-        private static float minNegativeScoreAlert = -0.2F;
+        //private static float minNegativeScoreAlert = -0.2F;
 
         public static void FindInstruments(int ArticleID)
         {
