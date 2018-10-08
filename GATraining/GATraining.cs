@@ -12,10 +12,30 @@ using System.Threading.Tasks;
 
 namespace GATraining
 {
+	public class Results
+	{
+		public int articlesTraded = 0;
+		public double[] profit;
+		public int[] win;
+		public int[] loss;
+		public int[] goodDir;
+		public int[] badDir;
+
+		public Results(int outputs)
+		{
+			profit = new double[outputs];
+			win = new int[outputs];
+			loss = new int[outputs];
+			goodDir = new int[outputs];
+			badDir = new int[outputs];
+		}
+	}
+
+
 	class GATraining
 	{
 		const int networkID = 1;
-		const double moneyPerTrade = 1000;
+		const double moneyPerTrade = 10000;
 		const double transactionFee = 10;
 		
 		static void Main(string[] args)
@@ -31,93 +51,84 @@ namespace GATraining
 			using (var p = Process.GetCurrentProcess())
 				Console.WriteLine($"RAM usage: {p.WorkingSet64 / 1024 / 1024} MB.");
 
-			var score = CalculateScore(trainingSet, network);
-			Console.WriteLine("Total profit: " + score.Sum());
+			CalculateScore(trainingSet, network);
 			Console.ReadKey();
 		}
 
-		static private double[] CalculateScore(IMLDataSet trainingSet, BasicNetwork network)
+		static private void CalculateScore(IMLDataSet trainingSet, BasicNetwork network)
 		{
-			double[] profit = new double[trainingSet.IdealSize];
-			int[] win = new int[trainingSet.IdealSize];
-			int[] loss = new int[trainingSet.IdealSize];
-			int[] goodDir = new int[trainingSet.IdealSize];
-			int[] badDir = new int[trainingSet.IdealSize];
+			Results res = new Results(trainingSet.IdealSize);
+			CalculateProfit(trainingSet, network, res);
 
-			foreach (var article in trainingSet)
-			{
-				bool tradeMade = false;
-				var res = network.Compute(article.Input);
-				for (int i = 0; i < trainingSet.IdealSize; i++)
-				{
-					if (res[i] > 0.1)
-					{
-						tradeMade = true;
-						double reward = article.Ideal[i] * moneyPerTrade;
-						if (reward > transactionFee)
-							win[i]++;
-						else
-							loss[i]++;
-						if (reward > 0)
-							goodDir[i]++;
-						else
-							badDir[i]++;
-						profit[i] += reward - transactionFee;
-					}
-					if (res[i] < - 0.1)
-					{
-						tradeMade = true;
-						double reward = -article.Ideal[i] * moneyPerTrade;
-						if (reward > transactionFee)
-							win[i]++;
-						else
-							loss[i]++;
-						if (reward > 0)
-							goodDir[i]++;
-						else
-							badDir[i]++;
-						profit[i] += reward - transactionFee;
-					}
-				}
-				if (tradeMade)
-				{
-					for (int i = 0; i < trainingSet.IdealSize; i++)
-					{
-						Console.Write($"{profit[i]:F0} ");
-					}
-					Console.WriteLine();
-				}
-			}
+			for (int i = 0; i < trainingSet.IdealSize; i++)
+			{ Console.Write($"{res.profit[i]:F0} "); }
+			Console.WriteLine();
 
 			Console.Write("Win: ");
 			for (int i = 0; i < trainingSet.IdealSize; i++)
-			{
-				Console.Write($"{win[i]} ");
-			}
+			{ Console.Write($"{res.win[i]} "); }
 			Console.WriteLine();
 
 			Console.Write("Loss: ");
 			for (int i = 0; i < trainingSet.IdealSize; i++)
-			{
-				Console.Write($"{loss[i]} ");
-			}
+			{ Console.Write($"{res.loss[i]} "); }
 			Console.WriteLine();
 
 			Console.Write("Good direction: ");
 			for (int i = 0; i < trainingSet.IdealSize; i++)
-			{
-				Console.Write($"{100.0*goodDir[i]/(badDir[i]+goodDir[i]):F3} ");
-			}
+			{ Console.Write($"{100.0 * res.goodDir[i] / (res.badDir[i] + res.goodDir[i]):F3} "); }
 			Console.WriteLine();
 
 			Console.Write("Win rate: ");
 			for (int i = 0; i < trainingSet.IdealSize; i++)
-			{
-				Console.Write($"{100.0 * win[i] / (loss[i] + win[i]):F3} ");
-			}
+			{ Console.Write($"{100.0 * res.win[i] / (res.loss[i] + res.win[i]):F3} "); }
 			Console.WriteLine();
+			Console.WriteLine($"Articles traded: {res.articlesTraded}");
+			Console.WriteLine("Total profit: " + res.profit.Sum());
+		}
 
-			return profit;
+		private static void CalculateProfit(IMLDataSet trainingSet, BasicNetwork network, Results res)
+		{
+			foreach (var article in trainingSet)
+			{
+				bool tradeMade = false;
+				var computed = network.Compute(article.Input);
+				for (int i = 0; i < trainingSet.IdealSize; i++)
+				{
+					if (computed[i] > 0.2)
+					{
+						tradeMade = true;
+						double reward = article.Ideal[i] * moneyPerTrade;
+						if (reward > transactionFee)
+							res.win[i]++;
+						else
+							res.loss[i]++;
+						if (reward > 0)
+							res.goodDir[i]++;
+						else
+							res.badDir[i]++;
+						res.profit[i] += reward - transactionFee;
+					}
+					if (computed[i] < -0.2)
+					{
+						tradeMade = true;
+						double reward = -article.Ideal[i] * moneyPerTrade;
+						if (reward > transactionFee)
+							res.win[i]++;
+						else
+							res.loss[i]++;
+						if (reward > 0)
+							res.goodDir[i]++;
+						else
+							res.badDir[i]++;
+						res.profit[i] += reward - transactionFee;
+					}
+				}
+				if (tradeMade)
+				{
+					res.articlesTraded++;
+				}
+			}
 		}
 
 		static private BasicNetwork LoadNetwork(FileInfo networkFile, IMLDataSet trainingSet)

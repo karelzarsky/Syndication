@@ -8,7 +8,6 @@ using Encog.ML.Train;
 using Encog.Neural.Networks;
 using Encog.Neural.Networks.Training.Propagation;
 using Encog.Neural.Networks.Training.Propagation.Resilient;
-using Encog.Neural.Networks.Training.Propagation.SCG;
 using Encog.Persist;
 using Encog.Util;
 using Encog.Util.Simple;
@@ -18,25 +17,26 @@ namespace NNTraining
 {
 	class NNTraining
 	{
-		const int networkID = 1;
-		const int minutes = 24 * 60;
+		const int networkID = 8;
+		const int minutes = 240 * 60;
 
 		static void Main(string[] args)
 		{
 			using (var p = Process.GetCurrentProcess())
 				p.PriorityClass = ProcessPriorityClass.Idle;
 
-			FileInfo trainFile = new FileInfo("dataset.egb");
+			FileInfo dataSetFile = new FileInfo("dataset.egb");
 			FileInfo networkFile = new FileInfo($"network{networkID}.nn");
+			FileInfo trainFile = new FileInfo($"train{networkID}.tr");
 
 			Console.WriteLine("Loading dataset.");
-			if (!trainFile.Exists)
+			if (!dataSetFile.Exists)
 			{
-				ExtractTrainData(trainFile);
-				Console.WriteLine(@"Extracting dataset from database: " + trainFile);
+				ExtractTrainData(dataSetFile);
+				Console.WriteLine(@"Extracting dataset from database: " + dataSetFile);
 				return;
 			}
-			var trainingSet = EncogUtility.LoadEGB2Memory(trainFile);
+			var trainingSet = EncogUtility.LoadEGB2Memory(dataSetFile);
 			Console.WriteLine($"Loaded {trainingSet.Count} samples. Input size: {trainingSet.InputSize}, Output size: {trainingSet.IdealSize}");
 
 			BasicNetwork network;
@@ -55,12 +55,17 @@ namespace NNTraining
 			using (var p = Process.GetCurrentProcess())
 				Console.WriteLine($"RAM usage: {p.WorkingSet64 / 1024 / 1024} MB.");
 
-			Propagation train = new ScaledConjugateGradient(network, trainingSet)
+			ResilientPropagation train = new ResilientPropagation(network, trainingSet)
 			{
 				ThreadCount = 0
 			};
-			MyTrainConsole(train, network, trainingSet, minutes, networkFile);
-			Console.WriteLine(@"Final Error: " + network.CalculateError(trainingSet));
+			if (trainFile.Exists)
+			{
+				TrainingContinuation cont = (TrainingContinuation)EncogDirectoryPersistence.LoadObject(trainFile);
+				train.Resume(cont);
+			}
+			MyTrainConsole(train, network, trainingSet, minutes, networkFile, trainFile);
+			Console.WriteLine(@"Final Error: " + train.Error);
 			Console.WriteLine(@"Training complete, saving network.");
 			EncogDirectoryPersistence.SaveObject(networkFile, network);
 			Console.WriteLine(@"Network saved. Press s to stop.");
@@ -72,7 +77,7 @@ namespace NNTraining
 			while (key.KeyChar != 's');
 		}
 
-		public static void MyTrainConsole(IMLTrain train, BasicNetwork network, IMLDataSet trainingSet, int minutes, FileInfo networkFile)
+		public static void MyTrainConsole(IMLTrain train, BasicNetwork network, IMLDataSet trainingSet, int minutes, FileInfo networkFile, FileInfo trainFile)
 		{
 			int epoch = 1;
 			long remaining;
@@ -86,13 +91,13 @@ namespace NNTraining
 				remaining = minutes - elapsed / 60;
 				Console.WriteLine($@"Iteration #{Format.FormatInteger(epoch)} Error:{Format.FormatPercent(train.Error)} elapsed time = {Format.FormatTimeSpan((int)elapsed)} time left = {Format.FormatTimeSpan((int)remaining * 60)}");
 				epoch++;
-				if (train.Error > .5)
+				EncogDirectoryPersistence.SaveObject(networkFile, network);
+				TrainingContinuation cont = train.Pause();
+				EncogDirectoryPersistence.SaveObject(trainFile, cont);
+				train.Resume(cont);
+				foreach (var x in cont.Contents)
 				{
-					network = network = (BasicNetwork)EncogDirectoryPersistence.LoadObject(networkFile);
-				}
-				else
-				{
-					EncogDirectoryPersistence.SaveObject(networkFile, network);
+					Console.WriteLine($"{x.Key}: {((double[])x.Value).Average()}");
 				}
 			}
 			while (remaining > 0 && !train.TrainingDone && !Console.KeyAvailable);
