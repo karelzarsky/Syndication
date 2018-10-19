@@ -17,7 +17,7 @@ namespace NNTraining
 {
 	class NNTraining
 	{
-		const int networkID = 8;
+		const int networkID = 9;
 		const int minutes = 240 * 60;
 
 		static void Main(string[] args)

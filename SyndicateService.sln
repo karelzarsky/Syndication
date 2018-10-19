@@ -60,6 +60,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NNTest", "NNTest\NNTest.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GATraining", "GATraining\GATraining.csproj", "{04D7D91C-0836-4F94-A73F-FDC8781A8678}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NNPrepareDataSet", "NNPrepareDataSet\NNPrepareDataSet.csproj", "{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -220,6 +222,14 @@ Global
 		{04D7D91C-0836-4F94-A73F-FDC8781A8678}.Release|Any CPU.Build.0 = Release|Any CPU
 		{04D7D91C-0836-4F94-A73F-FDC8781A8678}.Release|x64.ActiveCfg = Release|Any CPU
 		{04D7D91C-0836-4F94-A73F-FDC8781A8678}.Release|x64.Build.0 = Release|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Debug|x64.Build.0 = Debug|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Release|x64.ActiveCfg = Release|Any CPU
+		{66AC813D-D9A3-4FB7-BB86-5D03EA14082F}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
