@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Signals.cs" />
+    <Compile Include="StrategyTester Old.cs" />
     <Compile Include="StrategyTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
