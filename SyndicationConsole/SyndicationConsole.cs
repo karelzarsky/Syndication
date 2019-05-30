@@ -12,7 +12,7 @@ namespace SyndicationConsole
             var s = new SyndicateService.Service();
             s.Start();
             while (true)
-                Thread.Sleep(20000);
+                System.Threading.Tasks.Task.Delay(20000);
         }
     }
 }

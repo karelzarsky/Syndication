@@ -28,7 +28,7 @@ namespace ShingleConsole
                         }
                         if (haveWork) continue;
                         Console.WriteLine("................");
-                        Thread.Sleep(60000);
+                        System.Threading.Tasks.Task.Delay(60000);
                     }
                 }
                 catch (Exception e)

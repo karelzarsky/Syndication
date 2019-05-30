@@ -52,7 +52,7 @@ namespace SyndicateLogic
                 if (!string.IsNullOrEmpty(a.Ticker))
                 {
                     var companyNameWords = new List<string>();
-                    var company = ctx.CompanyDetails.Where(c => c.ticker == a.Ticker).FirstOrDefault();
+                    var company = ctx.CompanyDetails.FirstOrDefault(c => c.ticker == a.Ticker);
                     if (company != null)
                     {
                         companyNameWords.AddRange(company.name.Split(allDelimiters));
@@ -129,12 +129,15 @@ namespace SyndicateLogic
 
         public static List<string> FindPhrases(Article a)
         {
-            string text = Regex.Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽ/' &:]", " ")
-                                .Replace(": ", " ").Replace(" & ", " ");
+            string text = Regex
+                .Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽÄäÖöÜüẞß/' &:]", " ")
+                .Replace(": ", " ")
+                .Replace(" & ", " ");
             var newPhrasesArray = text.Split(wordDelimiters, StringSplitOptions.RemoveEmptyEntries);
             var newPhrases = newPhrasesArray.Select(ToLowerABBR).ToList();
             newPhrases.RemoveAll(x => x.Length <= 2);
-            text = Regex.Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽ/,\.?!' &:]", " ")
+            text = Regex
+                .Replace(a.Text(), @"[^a-zA-ZáÁčČďĎéěÉĚíÍňŇóÓřŘšŠťŤúůÚŮýÝžŽÄäÖöÜüẞß/,\.?!' &:]", " ")
                 .Replace(": ", " ")
                 .Replace(" & ", " ");
             ProcessSentences(text, newPhrases);

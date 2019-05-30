@@ -223,7 +223,7 @@ namespace xAPI.Sync
                 // If interval between now and last command is less than minimum command time space - wait
                 if (interval < COMMAND_TIME_SPACE)
                 {
-                    Thread.Sleep((int)(COMMAND_TIME_SPACE - interval));
+                    System.Threading.Tasks.Task.Delay((int)(COMMAND_TIME_SPACE - interval));
                 }
 
                 WriteMessage(message);

@@ -14,8 +14,6 @@ namespace SyndicateLogic
                 Console.WriteLine(message);
             using (var _logContext = new Db())
             {
-                //if (_logContext.Logs.Count() > 1000000)
-                //    Environment.Exit(0);
                 _logContext.Logs.Add(
                     new Log
                     {
@@ -39,8 +37,6 @@ namespace SyndicateLogic
                 Console.WriteLine(msg);
             using (var _logContext = new Db())
             {
-                //if (_logContext.Logs.Count() > 1000000)
-                //    Environment.Exit(0);
                 _logContext.Logs.Add(
                     new Log
                     {

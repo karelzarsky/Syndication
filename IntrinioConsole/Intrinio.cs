@@ -57,7 +57,7 @@ namespace IntrinioConsole
                 instrument.LastPriceUpdate = DateTime.Now;
                 ctx.SaveChanges();
                 UpdatePricesForTicker(instrument.Ticker);
-                Thread.Sleep(864000);
+                System.Threading.Tasks.Task.Delay(864000);
             }
         }
 
@@ -135,7 +135,7 @@ namespace IntrinioConsole
             catch (Exception e)
             {
                 DataLayer.LogException(e);
-                Thread.Sleep(600000);
+                System.Threading.Tasks.Task.Delay(600000);
             }
             return !string.IsNullOrEmpty(json_data) ? JsonConvert.DeserializeObject<T>(json_data) : new T();
         }
@@ -159,7 +159,7 @@ namespace IntrinioConsole
             foreach (var company in ctx.Companies.Where(c => !ctx.CompanyDetails.Select(d => d.ticker).Contains(c.ticker)))
             {
                 GetCompanyDetail(company.ticker);
-                Thread.Sleep(1200);
+                System.Threading.Tasks.Task.Delay(1200);
             }
         }
 

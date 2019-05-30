@@ -270,7 +270,7 @@ namespace xAPI.Sync
                 while (running)
                 {
                     ReadStreamMessage();
-                    Thread.Sleep(50);
+                    System.Threading.Tasks.Task.Delay(50);
                 }
             });
             t.Start();

@@ -141,7 +141,7 @@ namespace SyndicateService
                     ctx.Database.CommandTimeout = 120;
                     ShinglesToProcess = ShingleLogic.GetNextShingleList(ctx);
                     if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
-                        Thread.Sleep(20000);
+                        System.Threading.Tasks.Task.Delay(20000);
                     else
                     {
                         foreach (var s in ShinglesToProcess)
@@ -172,7 +172,7 @@ namespace SyndicateService
                     ctx.Database.CommandTimeout = 120;
                     ArticlesToProcess = ShingleLogic.GetNextArticles(ctx);
                     if (ArticlesToProcess == null || ArticlesToProcess.Count == 0)
-                        Thread.Sleep(20000);
+                        System.Threading.Tasks.Task.Delay(20000);
                     else
                     {
                         foreach (var a in ArticlesToProcess)
