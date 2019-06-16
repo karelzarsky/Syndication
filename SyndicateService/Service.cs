@@ -47,7 +47,7 @@ namespace SyndicateService
             thProcessArticles = new SynThread("ProcessingArticles", 1001, PerformArticleProcessing);
             thProcessShingles = new SynThread("ProcessingShingles", 1111, PerformShingleProcessing);
             //thIntrinio = new SynThread("Intrinio", 24000 * 3600 / 450, PerformIntrinio);
-            thIntrinio = new SynThread("Intrinio", 24000 * 3600 / 45, PerformIntrinio);
+            //thIntrinio = new SynThread("Intrinio", 24000 * 3600 / 45, PerformIntrinio);
 
             RssLogic.UpdateServerConnection();
             using (var ctx = new Db())
@@ -57,7 +57,7 @@ namespace SyndicateService
             StartThread(thDownload);
             StartThread(thProcessShingles);
             StartThread(thProcessArticles);
-            StartThread(thIntrinio);
+            //StartThread(thIntrinio);
         }
 
         private void StartThread(SynThread th)
