@@ -12,3 +12,20 @@ update only used prices
 button for changing shingle type
 shingle detail display actions
 disable feed/server
+
+
+
+SELECT DISTINCT
+substring (summary, patindex('%NASDAQ:%', summary), 7 + patindex ('%[^A-Z]%', substring (summary, patindex('%NASDAQ:%', summary) +8 , 20)))
+FROM rss.articles
+WHERE summary like '%NASDAQ:%'
+
+SELECT DISTINCT
+substring (summary, patindex('%NYSE:%', summary), 5 + patindex ('%[^A-Z]%', substring (summary, patindex('%NYSE:%', summary) + 6 , 20)))
+FROM rss.articles
+WHERE summary like '%NYSE:%'
+
+SELECT DISTINCT
+substring (summary, patindex('%LSE:%', summary), 4 + patindex ('%[^A-Z]%', substring (summary, patindex('%LSE:%', summary) + 5 , 20)))
+FROM rss.articles
+WHERE summary like '%LSE:%'

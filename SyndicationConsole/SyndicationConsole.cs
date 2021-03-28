@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Diagnostics;
+using System;
 
 namespace SyndicationConsole
 {
@@ -12,7 +13,7 @@ namespace SyndicationConsole
             var s = new SyndicateService.Service();
             s.Start();
             while (true)
-                System.Threading.Tasks.Task.Delay(20000);
+                Thread.Sleep(500);
         }
     }
 }

@@ -55,7 +55,7 @@ namespace SyndicateService
                 RssLogic.AddNewFeedsFromResource(ctx);
             }
             StartThread(thDownload);
-            StartThread(thProcessShingles);
+            //StartThread(thProcessShingles);
             StartThread(thProcessArticles);
             //StartThread(thIntrinio);
         }
@@ -142,6 +142,7 @@ namespace SyndicateService
                     ShinglesToProcess = ShingleLogic.GetNextShingleList(ctx);
                     if (ShinglesToProcess == null || ShinglesToProcess.Count == 0)
                         System.Threading.Tasks.Task.Delay(20000);
+                    //                        Thread.Sleep(20000);
                     else
                     {
                         foreach (var s in ShinglesToProcess)
@@ -173,6 +174,7 @@ namespace SyndicateService
                     ArticlesToProcess = ShingleLogic.GetNextArticles(ctx);
                     if (ArticlesToProcess == null || ArticlesToProcess.Count == 0)
                         System.Threading.Tasks.Task.Delay(20000);
+                    //                        Thread.Sleep(20000);
                     else
                     {
                         foreach (var a in ArticlesToProcess)
@@ -182,7 +184,7 @@ namespace SyndicateService
                             RssLogic.ScoreArticle(a);
                             var ea = ctx.Articles.Include("Feed").Single(x => x.ID == a);
                             string ticker = string.IsNullOrEmpty(ea.Ticker) ? "" : "Ticker:" + ea.Ticker + " ";
-                            DataLayer.LogMessage(LogLevel.Article, $"A {sw.ElapsedMilliseconds}ms ID:{a} Score:{100*(ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
+                            DataLayer.LogMessage(LogLevel.Article, $"A {sw.ElapsedMilliseconds}ms ID:{a} Score:{100 * (ea.ScoreMin + ea.ScoreMax)} {ticker}{ea.Title}");
                         }
                     }
                 }

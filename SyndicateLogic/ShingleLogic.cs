@@ -24,7 +24,7 @@ namespace SyndicateLogic
         public static readonly char[] wordDelimiters = { ' ' };
         public static readonly char[] sentenceDelimiters = { '.', '?', '!', ',', ';' };
         public static readonly char[] allDelimiters = { ' ', '.', '?', '!', ',', ';' };
-        public static readonly int tooCommonShingleLimit = 1000;
+        public static readonly int tooCommonShingleLimit = 10000;
         public static readonly Regex currPairRegex = new Regex("^[A-Z][A-Z][A-Z]/?[A-Z][A-Z][A-Z]$", RegexOptions.Compiled);
         public const byte maxInterval = 30;
 

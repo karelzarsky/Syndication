@@ -48,6 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Solution Items\investorfeed.csv = Solution Items\investorfeed.csv
 		Solution Items\InvestorRSS.xlsx = Solution Items\InvestorRSS.xlsx
 		Solution Items\NASDAQ 100 COMPONENTS.txt = Solution Items\NASDAQ 100 COMPONENTS.txt
+		old feeds.csv = old feeds.csv
 		Solution Items\SP 500 COMPONENTS.txt = Solution Items\SP 500 COMPONENTS.txt
 		Solution Items\to do list.txt = Solution Items\to do list.txt
 		Solution Items\UseForML_update.sql = Solution Items\UseForML_update.sql

@@ -33,8 +33,8 @@ namespace SyndicateLogic
                 if (e.InnerException.InnerException != null)
                     msg += e.InnerException.InnerException.Message;
             }
-            if (Environment.UserInteractive)
-                Console.WriteLine(msg);
+//            if (Environment.UserInteractive)
+//                Console.WriteLine(msg);
             using (var _logContext = new Db())
             {
                 _logContext.Logs.Add(

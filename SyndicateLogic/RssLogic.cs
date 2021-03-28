@@ -67,7 +67,7 @@ namespace SyndicateLogic
         public static Feed GetNextFeed(Db ctx)
         {
             DateTime retryTime = DateTime.Now.AddDays(-3);
-            foreach (var feed in ctx.Feeds.Where(x => x.Active == false && x.LastCheck < retryTime))
+            foreach (var feed in ctx.Feeds.Where(x => x.Active == false && x.LastCheck < retryTime && !x.Url.StartsWith("-- ")))
             {
                 feed.Active = true;
                 DataLayer.LogMessage(LogLevel.Feed, $"R restarting feed {feed.ID} {feed.Url}");
@@ -210,7 +210,7 @@ namespace SyndicateLogic
                         f.Title += " " + e.InnerException.InnerException.Message;
                 }
                 context.SaveChanges();
-                DataLayer.LogMessage(LogLevel.FeedError, "ERROR parsing sFeed " + f.ID + " " + f.Title);
+                DataLayer.LogMessage(LogLevel.FeedError, "ERROR parsing sFeed " + f.ID + " " + f.Url);
             }
             return 0;
         }
