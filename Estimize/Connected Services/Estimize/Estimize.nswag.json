@@ -1,0 +1,2484 @@
+﻿{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Estimize API V1",
+    "description": "Version 1 of accessing Estimize data via the API. An estimate's username can change, the analyst_id should be used as the canonical identifier of an analyst. All timestamps in the API are in ISO 8601 format",
+    "contact": {
+      "email": "engineering@estimize.com.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0",
+    "x-logo": {
+      "url": "https://www.estimize.com/assets/logo/estimize-logo-360x280-b2c0472dbc6c1a1153b0bde1562e8144.png",
+      "backgroundColor": "#FFFFFF",
+      "altText": "Estimize"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://virtserver.swaggerhub.com/seburke/Estimize-V1/1.0.0",
+      "description": "SwaggerHub API Auto Mocking"
+    },
+    {
+      "url": "https://api.estimize.com",
+      "description": "Estimize API"
+    }
+  ],
+  "paths": {
+    "/companies": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "List Estimize companies",
+        "description": "Returns the company information for all companies that Estimize covers",
+        "operationId": "listCompanies",
+        "responses": {
+          "200": {
+            "description": "Companies Covered by Estimize",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Company"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Information",
+        "description": "Returns the company information for the specified ticker",
+        "operationId": "getCompanyByTicker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company Information",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Company"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}/releases": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Releases by Ticker",
+        "description": "Returns an array of the release object for the specified company (by ticker)",
+        "operationId": "getCompanyReleasesByTicker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Releases",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Release"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL/releases'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}/releases/{year}": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Releases by Ticker and Year",
+        "description": "Returns an array of the release object for the specified company (by ticker) for the specified fiscal year",
+        "operationId": "getCompanyReleasesByTickerAndYear",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Releases",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Release"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL/releases/2018'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}/releases/{year}/{quarter}": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Release by Ticker for Year and Quarter",
+        "description": "Returns the single release object for the specified company (by ticker) for the specified fiscal year and quarter",
+        "operationId": "getCompanyReleaseByTickerAndYearAndQuarter",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "quarter",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company Release",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Release"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL/releases/2018/1'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}/releases/{current_quarter_delta}": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Releases by CurrentQuarterDelta",
+        "description": "Returns the single release object for the specified company (by ticker) for the specified current quearter delta",
+        "operationId": "getCompanyReleaseByCurrentQuarterDelta",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "current_quarter_delta",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company Release",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Release"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL/releases/1'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}/estimates": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Estimates by Ticker",
+        "description": "Returns an array of the estimate object for the specified company (by ticker)",
+        "operationId": "getCompanyEstimatesByTicker",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Estimates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Estimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL/estimates'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}/estimates/{year}": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Estimates by Ticker and Year",
+        "description": "Returns an array of the estimate object for the specified company (by ticker) for the specified fiscal year",
+        "operationId": "getCompanyEstimatesByTickerAndYear",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Estimates for year",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Estimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL/estimates/2018'\n"
+          }
+        ]
+      }
+    },
+    "/companies/{ticker}/estimates/{year}/{quarter}": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Company Estimates by Ticker for Year and Quarter",
+        "description": "Returns an array of the estimate object for the specified company (by ticker) for the specified fiscal year and quarter",
+        "operationId": "getCompanyEstimatesByTickerAndYearAndQuarter",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "quarter",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Estimates for year and quarter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Estimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/companies/AAPL/estimates/2018/1'\n"
+          }
+        ]
+      }
+    },
+    "/estimates": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get all Estimates for date range",
+        "description": "Returns all estimates for all companies in the specified date range",
+        "operationId": "getEstimates",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All Estimates for specified date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Estimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/estimates?start_date=2018-04-06&end_date=2018-04-07'\n"
+          }
+        ]
+      }
+    },
+    "/releases/{release_id}/consensus": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get Consensus for Release",
+        "description": "Returns the current consensus as well as the consensus history of the specified release. Note that you can get the release_id from any of the /companies/<ticker>/releases endpoints (specified as id).",
+        "operationId": "getConsensusForRelease",
+        "parameters": [
+          {
+            "name": "release_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Specifies the consensus type, one of 'estimize', 'wallstreet', or 'estimize_weighted'",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consensus for the specified release",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConsensusReleaseResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/releases/12345/consensus'\n"
+          }
+        ]
+      }
+    },
+    "/consensuses/recently_updated": {
+      "get": {
+        "tags": [
+          "Equities"
+        ],
+        "summary": "Get recently updated Consensuses",
+        "description": "Returns all consensuses for all stocks that have been updated within the requested time range, as well as any consensus history revisions for those consensuses that were updated within the requested time range. Note that you can match each up by their release_id to a release from any of the /companies/<ticker>/releases endpoints (specified as id). One of since or within query params is required.",
+        "operationId": "getConsensusesRecentlyUpdated",
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "description": "The starting timestamp for the time range of updated consensuses to return, formatted in ISO 8601, up to 24 hours before the current time.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "within",
+            "in": "query",
+            "description": "The number of minutes before the current time for the time range of updated consensuses to return, up to 1440 (24 hours before the current time)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recently updated Consensuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ConsensusResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/consensuses/recently_updated?within=100'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "List Estimize companies that have metrics",
+        "description": "Returns the company information for all companies that Estimize covers with metrics",
+        "operationId": "listCompaniesWithMetrics",
+        "responses": {
+          "200": {
+            "description": "Companies Covered by Estimize with Metrics",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Company"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Metrics Information for specified Company",
+        "description": "Returns the metric information for the specified company",
+        "operationId": "getMetricsForCompany",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metrics For Company",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Metric"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}/releases/{metric_name}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Company Releases by Ticker for Metric",
+        "description": "Returns an array of the release object for the specified company (by ticker) and metric (by metric_name)",
+        "operationId": "getCompanyReleasesByTickerForMetric",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Releases for Metric",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetricRelease"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL/releases/ipad_unit_sales'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}/releases/{metric_name}/{year}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Company Releases by Ticker and Year for Metric",
+        "description": "Returns an array of the release object for the specified company (by ticker) and metric (by metric_name) for the specified fiscal year",
+        "operationId": "getCompanyReleasesByTickerAndYearForMetric",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Releases for Metric",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetricRelease"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL/releases/ipad_unit_sales/2018'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}/releases/{metric_name}/{year}/{quarter}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Company Release by Ticker for Year and Quarter for Metric",
+        "description": "Returns the single release object for the specified company (by ticker) and metric (by metric_name) for the specified fiscal year and quarter",
+        "operationId": "getCompanyReleaseByTickerAndYearAndQuarterForMetric",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "quarter",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company Release for Metric",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricRelease"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL/releases/ipad_unit_sales/2018/1'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}/releases/{metric_name}/{current_quarter_delta}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Company Releases by CurrentQuarterDelta for Metric",
+        "description": "Returns the single release object for the specified company (by ticker) and metric (by metric_name) for the specified current quearter delta",
+        "operationId": "getCompanyReleaseByCurrentQuarterDeltaForMetric",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "current_quarter_delta",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company Release for Metric",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricRelease"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL/releases/ipad_unit_sales/1'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}/estimates/{metric_name}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Company Estimates by Ticker for Metric",
+        "description": "Returns an array of the estimate object for the specified company (by ticker) and metric (by metric_name)",
+        "operationId": "getCompanyEstimatesByTickerForMetric",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Estimates for Metric",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetricEstimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL/estimates/ipad_unit_sales'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}/estimates/{metric_name}/{year}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Company Estimates by Ticker and Year for Metric",
+        "description": "Returns an array of the estimate object for the specified company (by ticker) and metric (by metric) for the specified fiscal year",
+        "operationId": "getCompanyEstimatesByTickerAndYearForMetric",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Estimates for Metric for year",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetricEstimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL/estimates/ipad_unit_sales/2018'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/companies/{ticker}/estimates/{metric_name}/{year}/{quarter}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Company Estimates by Ticker for Year and Quarter for Metric",
+        "description": "Returns an array of the estimate object for the specified company (by ticker) and metric (by metric_name) for the specified fiscal year and quarter",
+        "operationId": "getCompanyEstimatesByTickerAndYearAndQuarterForMetric",
+        "parameters": [
+          {
+            "name": "ticker",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "quarter",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Company Estimates for Metric for year and quarter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetricEstimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/companies/AAPL/estimates/ipad_unit_sales/2018/1'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/estimates/{metric_name}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get all Estimates for Metric for date range",
+        "description": "Returns all estimates for all companies for the specified metric in the specified date range",
+        "operationId": "getEstimatesForMetric",
+        "parameters": [
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All Estimates for specified date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetricEstimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/estimates/ipad_unit_sales?start_date=2018-04-06&end_date=2018-04-07'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/releases/{release_id}/consensus/{metric_name}": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get Consensus for Release for Metric",
+        "description": "Returns the current consensus as well as the consensus history of the specified release for the specified metric. Note that you can get the release_id from any of the /metrics/companies/<ticker>/releases/<metric_name> endpoints (specified as id).",
+        "operationId": "getConsensusForReleaseForMetric",
+        "parameters": [
+          {
+            "name": "release_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "metric_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Specifies the consensus type, one of 'estimize', or 'estimize_weighted'",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Consensus for the specified Release and Metric",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MetricConsensusReleaseResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/releases/12345/consensus/ipad_unit_sales'\n"
+          }
+        ]
+      }
+    },
+    "/metrics/consensuses/recently_updated": {
+      "get": {
+        "tags": [
+          "Metrics"
+        ],
+        "summary": "Get recently updated Consensuses for Metrics",
+        "description": "Returns all metrics consensuses for all stocks that have been updated within the requested time range, as well as any consensus history revisions for those consensuses that were updated within the requested time range. Note that you can match each up by their release_id to a release from any of the /metrics/companies/<ticker>/releases/<metric_name> endpoints (specified as id). One of since or within query params is required.",
+        "operationId": "getConsensusesRecentlyUpdatedForMetrics",
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "description": "The starting timestamp for the time range of updated consensuses to return, formatted in ISO 8601, up to 24 hours before the current time.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "within",
+            "in": "query",
+            "description": "The number of minutes before the current time for the time range of updated consensuses to return, up to 1440 (24 hours before the current time)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Recently updated Metric Consensuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MetricConsensusResponse"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/metrics/consensuses/recently_updated?within=100'\n"
+          }
+        ]
+      }
+    },
+    "/economic_indicators": {
+      "get": {
+        "tags": [
+          "Economic Indicators"
+        ],
+        "summary": "Get Economic Indicators",
+        "description": "Returns the economic indicator information for all economic indicators that Estimize covers",
+        "operationId": "getEconomicIndicators",
+        "responses": {
+          "200": {
+            "description": "All Estimize Economic Indicators",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EconomicIndicator"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/economic_indicators'\n"
+          }
+        ]
+      }
+    },
+    "/economic_indicators/{id}": {
+      "get": {
+        "tags": [
+          "Economic Indicators"
+        ],
+        "summary": "Get Economic Indicator by Id",
+        "description": "Returns the economic indicator information for the economic indicator specified by id",
+        "operationId": "getEconomicIndicatorById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estimize Economic Indicator for ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EconomicIndicator"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/economic_indicators/1234'\n"
+          }
+        ]
+      }
+    },
+    "/economic_indicators/{id}/releases": {
+      "get": {
+        "tags": [
+          "Economic Indicators"
+        ],
+        "summary": "Get Economic Indicator Release by Id",
+        "description": "Returns the releases for the economic indicator specified by id",
+        "operationId": "getEconomicIndicatorReleasesById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Returns releases that occured during the specified year",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Returns releases for the specified period. Unless combined with year, will return releases from all available years",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estimize Economic Indicator Releases",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EconomicIndicatorRelease"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/economic_indicators/1234/releases'\n"
+          }
+        ]
+      }
+    },
+    "/economic_indicators/{id}/estimates": {
+      "get": {
+        "tags": [
+          "Economic Indicators"
+        ],
+        "summary": "Get Economic Indicator Estimates by Id",
+        "description": "Returns the estimates for releases of the economic indicator specified by id",
+        "operationId": "getEconomicIndicatorEstimatesById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "description": "Returns estimates that occured during the specified year",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "period",
+            "in": "query",
+            "description": "Returns estimates for the specified period. Unless combined with year, will return releases from all available years",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Estimize Economic Indicator Estimates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EconomicIndicatorEstimate"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/economic_indicators/1234/estimates'\n"
+          }
+        ]
+      }
+    },
+    "/signals": {
+      "get": {
+        "tags": [
+          "Signal Endpoints"
+        ],
+        "summary": "Get Signals for date range",
+        "description": "Returns the signals for each as-of timestamp included in the range of dates supplied to the query. This signal can be queried in periods with a maximum range of 31 days. The default query returns signals for the current day.",
+        "operationId": "getSignals",
+        "parameters": [
+          {
+            "name": "from_date",
+            "in": "query",
+            "description": "The beginning date of the date range query in YYYY-MM-DD format (defaults to current start-of-day)",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to_date",
+            "in": "query",
+            "description": "The ending date of the date range query in YYYY-MM-DD format (defaults to current-end-of day)",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "All Signals for specified date range",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Signal"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/422Response"
+                }
+              }
+            }
+          }
+        },
+        "x-code-samples": [
+          {
+            "lang": "shell",
+            "source": "curl -H \"X-Estimize-Key: API_KEY_HERE\" 'api.estimize.com/signals?from_date=2018-04-06&to_date=2018-04-07'\n"
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "422Response": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "Date range has a max of 31 days"
+            }
+          }
+        }
+      },
+      "Company": {
+        "type": "object",
+        "required": [
+          "name",
+          "ticker",
+          "cusip"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the Company",
+            "example": "Apple Inc."
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The ticker/symbol for the company",
+            "example": "AAPL"
+          },
+          "cusip": {
+            "type": "string",
+            "description": "The Cusip used to identify the security",
+            "example": "037833100"
+          }
+        }
+      },
+      "Metric": {
+        "type": "object",
+        "required": [
+          "name",
+          "unit",
+          "description"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the Metric",
+            "example": "daily_active_users"
+          },
+          "unit": {
+            "type": "string",
+            "description": "The unit the metric is measured in",
+            "example": "M"
+          },
+          "description": {
+            "type": "string",
+            "description": "The description of the metric",
+            "example": "Daily Active Users"
+          }
+        }
+      },
+      "Release": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the release",
+            "example": "126310"
+          },
+          "fiscal_year": {
+            "type": "number",
+            "description": "The fiscal year for the release",
+            "example": "2019"
+          },
+          "fiscal_quarter": {
+            "type": "number",
+            "description": "The fiscal quarter for the release",
+            "example": "1"
+          },
+          "release_date": {
+            "type": "string",
+            "description": "The date of the release",
+            "example": "2018-03-01T11:00:00+01:00"
+          },
+          "eps": {
+            "type": "number",
+            "description": "The earnings per share for the spcified fiscal quarter",
+            "example": "1.67"
+          },
+          "revenue": {
+            "type": "number",
+            "description": "The revenue for the specified fiscal quarter",
+            "example": "45408.0"
+          },
+          "wallstreet_eps_estimate": {
+            "type": "number",
+            "description": "The estimated EPS from Wall Street",
+            "example": "1.57"
+          },
+          "wallstreet_revenue_estimate": {
+            "type": "number",
+            "description": "The estimated revenue from Wall Street",
+            "example": "44567.045"
+          },
+          "consensus_eps_estimate": {
+            "type": "number",
+            "description": "The mean EPS consensus by the Estimize community",
+            "example": "1.61234636871"
+          },
+          "consensus_revenue_estimate": {
+            "type": "number",
+            "description": "The mean revenue consensus by the Estimize community",
+            "example": "45117.478938"
+          },
+          "consensus_weighted_eps_estimate": {
+            "type": "number",
+            "description": "The weighted EPS consensus by the Estimize community",
+            "example": "1.597984165"
+          },
+          "consensus_weighted_revenue_estimate": {
+            "type": "number",
+            "description": "The weighted revenue consensus by the Estimize community",
+            "example": "44842.3552697"
+          }
+        }
+      },
+      "MetricRelease": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the release",
+            "example": "126310"
+          },
+          "fiscal_year": {
+            "type": "number",
+            "description": "The fiscal year for the release",
+            "example": "2019"
+          },
+          "fiscal_quarter": {
+            "type": "number",
+            "description": "The fiscal quarter for the release",
+            "example": "1"
+          },
+          "release_date": {
+            "type": "string",
+            "description": "The date of the release",
+            "example": "2018-03-01T11:00:00+01:00"
+          },
+          "actual": {
+            "type": "number",
+            "description": "The number reported for the specified metric",
+            "example": "1.67"
+          },
+          "consensus_estimate": {
+            "type": "number",
+            "description": "The mean consensus by the Estimize community for the metric",
+            "example": "1.61234636871"
+          },
+          "consensus_weighted_estimate": {
+            "type": "number",
+            "description": "The weighted consensus by the Estimize community for the metric",
+            "example": "1.597984165"
+          }
+        }
+      },
+      "Estimate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the estimate",
+            "example": "353096"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The ticker of the company being estimated",
+            "example": "AAPL"
+          },
+          "fiscal_year": {
+            "type": "number",
+            "description": "The fiscal year of the quarter being estimated",
+            "example": "2018"
+          },
+          "fiscal_quarter": {
+            "type": "number",
+            "description": "The fiscal quarter of the quarter being estimated",
+            "example": "1"
+          },
+          "eps": {
+            "type": "number",
+            "description": "The estimated earnings per share for the company in the specified fiscal quarter",
+            "example": "3.68"
+          },
+          "revenue": {
+            "type": "number",
+            "description": "The estimated revenue for the company in the specified fiscal quarter",
+            "example": "77996.0"
+          },
+          "username": {
+            "type": "string",
+            "description": "The current username of the author of the estimate, which can change",
+            "example": "deletepls"
+          },
+          "analyst_id": {
+            "type": "string",
+            "description": "The unique identifier for the author of the estimate",
+            "example": "4ede5f36c6efa6098876000585"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The time that the estimate was created (UTC)",
+            "example": "2016-03-06T01:59:23+01:00"
+          },
+          "flagged": {
+            "type": "boolean",
+            "description": "A boolean value which indicates whether we have flagged this estimate internally as erroneous (spam, wrong accounting standard, etc)",
+            "example": "false"
+          }
+        }
+      },
+      "MetricEstimate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the estimate",
+            "example": "353096"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The ticker of the company being estimated",
+            "example": "AAPL"
+          },
+          "fiscal_year": {
+            "type": "number",
+            "description": "The fiscal year of the quarter being estimated",
+            "example": "2018"
+          },
+          "fiscal_quarter": {
+            "type": "number",
+            "description": "The fiscal quarter of the quarter being estimated",
+            "example": "1"
+          },
+          "value": {
+            "type": "number",
+            "description": "The estimated value of the metric for the company in the specified fiscal quarter",
+            "example": "3.68"
+          },
+          "username": {
+            "type": "string",
+            "description": "The current username of the author of the estimate, which can change",
+            "example": "deletepls"
+          },
+          "analyst_id": {
+            "type": "string",
+            "description": "The unique identifier for the author of the estimate",
+            "example": "4ede5f36c6efa6098876000585"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The time that the estimate was created (UTC)",
+            "example": "2016-03-06T01:59:23+01:00"
+          },
+          "flagged": {
+            "type": "boolean",
+            "description": "A boolean value which indicates whether we have flagged this estimate internally as erroneous (spam, wrong accounting standard, etc)",
+            "example": "false"
+          }
+        }
+      },
+      "Consensus": {
+        "type": "object",
+        "properties": {
+          "mean": {
+            "type": "number",
+            "description": "The mean of the distribution of estimates (the \"consensus\")",
+            "example": "12.281"
+          },
+          "high": {
+            "type": "number",
+            "description": "The highest estimate in the distribution",
+            "example": "13.67"
+          },
+          "low": {
+            "type": "number",
+            "description": "The lowest estimate in the distribution",
+            "example": "11.23"
+          },
+          "standard_deviation": {
+            "type": "number",
+            "description": "The standard deviation of the distribution",
+            "example": "0.662"
+          },
+          "count": {
+            "type": "number",
+            "description": "The number of estimates in the distribution",
+            "example": "22"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "The timestamp of this consensus (UTC)",
+            "example": "2013-10-24T13:03:47+02:00"
+          }
+        }
+      },
+      "MetricConsensus": {
+        "type": "object",
+        "properties": {
+          "mean": {
+            "type": "number",
+            "description": "The mean of the distribution of estimates (the \"consensus\")",
+            "example": "12.281"
+          },
+          "high": {
+            "type": "number",
+            "description": "The highest estimate in the distribution",
+            "example": "13.67"
+          },
+          "low": {
+            "type": "number",
+            "description": "The lowest estimate in the distribution",
+            "example": "11.23"
+          },
+          "standard_deviation": {
+            "type": "number",
+            "description": "The standard deviation of the distribution",
+            "example": "0.662"
+          },
+          "count": {
+            "type": "number",
+            "description": "The number of estimates in the distribution",
+            "example": "22"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "The timestamp of this consensus (UTC)",
+            "example": "2013-10-24T13:03:47+02:00"
+          }
+        }
+      },
+      "ConsensusWithRevisions": {
+        "type": "object",
+        "properties": {
+          "revisions": {
+            "type": "array",
+            "description": "An array of objects in the same format as above with a timestamped history (see updated_at)",
+            "items": {
+              "$ref": "#/components/schemas/Consensus"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Consensus"
+          }
+        ]
+      },
+      "MetricConsensusWithRevisions": {
+        "type": "object",
+        "properties": {
+          "revisions": {
+            "type": "array",
+            "description": "An array of objects in the same format as above with a timestamped history (see updated_at)",
+            "items": {
+              "$ref": "#/components/schemas/MetricConsensus"
+            }
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MetricConsensus"
+          }
+        ]
+      },
+      "ConsensusReleaseResponse": {
+        "type": "object",
+        "properties": {
+          "wallstreet": {
+            "type": "object",
+            "properties": {
+              "eps": {
+                "$ref": "#/components/schemas/ConsensusWithRevisions"
+              },
+              "revenue": {
+                "$ref": "#/components/schemas/ConsensusWithRevisions"
+              }
+            }
+          },
+          "estimize": {
+            "type": "object",
+            "properties": {
+              "eps": {
+                "$ref": "#/components/schemas/ConsensusWithRevisions"
+              },
+              "revenue": {
+                "$ref": "#/components/schemas/ConsensusWithRevisions"
+              }
+            }
+          }
+        }
+      },
+      "MetricConsensusReleaseResponse": {
+        "type": "object",
+        "properties": {
+          "estimize_weighted": {
+            "$ref": "#/components/schemas/MetricConsensusWithRevisions"
+          },
+          "estimize": {
+            "$ref": "#/components/schemas/MetricConsensusWithRevisions"
+          }
+        }
+      },
+      "ConsensusResponse": {
+        "type": "object",
+        "properties": {
+          "release_id": {
+            "type": "string",
+            "description": "The unique identifier for the release to which this consensus belongs",
+            "example": "12345"
+          },
+          "population": {
+            "type": "string",
+            "description": "One of wallstreet, estimize, or estimize_weighted",
+            "example": "wallstreet"
+          },
+          "metric": {
+            "type": "string",
+            "description": "Either eps or revenue",
+            "example": "eps"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ConsensusWithRevisions"
+          }
+        ]
+      },
+      "MetricConsensusResponse": {
+        "type": "object",
+        "properties": {
+          "release_id": {
+            "type": "string",
+            "description": "The unique identifier for the release to which this consensus belongs",
+            "example": "12345"
+          },
+          "population": {
+            "type": "string",
+            "description": "One of estimize or estimize_weighted",
+            "example": "estimize"
+          },
+          "metric": {
+            "type": "string",
+            "description": "The name of the metric",
+            "example": "ipad_unit_sales"
+          }
+        },
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/MetricConsensusWithRevisions"
+          }
+        ]
+      },
+      "EconomicIndicator": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the economic indicator, used in queries for its releases and estimates",
+            "example": "12345"
+          },
+          "name": {
+            "type": "string",
+            "description": "TThe name of the economic indicator",
+            "example": "GDP Growth Rate"
+          },
+          "country": {
+            "type": "string",
+            "description": "The name of the country for the economic indicator",
+            "example": "France"
+          },
+          "unit": {
+            "type": "string",
+            "description": "The denomination or category of values, one of \"absolute\", \"thousands\", \"millions\", \"billions\", \"percent\"",
+            "example": "percent"
+          },
+          "reports_per_year": {
+            "type": "number",
+            "description": "The number of releases every year, one of 4, 12, 52",
+            "example": "4"
+          },
+          "comparison_period": {
+            "type": "string",
+            "description": "Which release's actuals to calculate percent changes against, either of \"year_over_year\" or \"previous\"",
+            "example": "year_over_year"
+          }
+        }
+      },
+      "EconomicIndicatorRelease": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the release",
+            "example": "126310"
+          },
+          "actual": {
+            "type": "number",
+            "description": "The latest reported value for the release",
+            "example": "0.3"
+          },
+          "percent_change": {
+            "type": "number",
+            "description": "The percent change of the actual versus the comparison period actual",
+            "example": "100.0"
+          },
+          "consensus_estimate": {
+            "type": "number",
+            "description": "The average estimated value of the Estimize community",
+            "example": "0.51"
+          },
+          "actual_as_reported": {
+            "type": "number",
+            "description": "The original reported value for the release",
+            "example": "0.3"
+          },
+          "percent_change_as_reported": {
+            "type": "number",
+            "description": "The percent change of the actual_as_reported versus the comparison period actual",
+            "example": "100.0"
+          },
+          "year": {
+            "type": "number",
+            "description": "The year in which the the release occured",
+            "example": "2018"
+          },
+          "period": {
+            "type": "number",
+            "description": "The order of the release's occurence within the year, one of 1 through the economic indicator's reports_per_year fiscal quarter",
+            "example": "2"
+          },
+          "release_date": {
+            "type": "string",
+            "description": "The date of the release",
+            "example": "2017-07-28T05:30:00Z"
+          }
+        }
+      },
+      "EconomicIndicatorEstimate": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The unique identifier for the estimate",
+            "example": "353096"
+          },
+          "year": {
+            "type": "number",
+            "description": "The year in which the the release occured",
+            "example": "2018"
+          },
+          "period": {
+            "type": "number",
+            "description": "The order of the estimate's release's occurence within the year, one of 1 through the economic indicator's reports_per_year",
+            "example": "2"
+          },
+          "value": {
+            "type": "number",
+            "description": "The user's estimated value for the release",
+            "example": "0.3"
+          },
+          "percent_change": {
+            "type": "number",
+            "description": "The percent change of the value versus the comparison period actual",
+            "example": "100.0"
+          },
+          "username": {
+            "type": "string",
+            "description": "The current username of the author of the estimate, which can change",
+            "example": "deletepls"
+          },
+          "analyst_id": {
+            "type": "string",
+            "description": "The unique identifier for the author of the estimate",
+            "example": "4ede5f36c6efa6098876000585"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "The time that the estimate was created (UTC)",
+            "example": "2016-03-06T01:59:23+01:00"
+          },
+          "flagged": {
+            "type": "boolean",
+            "description": "A boolean value which indicates whether we have flagged this estimate internally as erroneous (spam, wrong accounting standard, etc)",
+            "example": "false"
+          }
+        }
+      },
+      "Signal": {
+        "type": "object",
+        "properties": {
+          "release_id": {
+            "type": "string",
+            "description": "The unique identifier for the release to which the signal corresponds",
+            "example": "12345"
+          },
+          "cusip": {
+            "type": "string",
+            "description": "The CUSIP number to identify the company and/or its underlying security",
+            "example": "037833100"
+          },
+          "ticker": {
+            "type": "string",
+            "description": "The ticker/symbol for the company",
+            "example": "AAPL"
+          },
+          "fiscal_year": {
+            "type": "number",
+            "description": "The fiscal year of the associated release",
+            "example": "2018"
+          },
+          "fiscal_quarter": {
+            "type": "number",
+            "description": "The fiscal quarter of the associated release",
+            "example": "1"
+          },
+          "release_date": {
+            "type": "string",
+            "description": "The earnings report datetime of the release release",
+            "example": "2013-10-24T13:03:47+02:00"
+          },
+          "as_of": {
+            "type": "string",
+            "description": "The timestamp of the signal release release",
+            "example": "2019-06-24T18:00:00Z"
+          },
+          "signal_type": {
+            "type": "string",
+            "description": "The signal type: pre or post earnings release",
+            "example": "post"
+          },
+          "signal": {
+            "type": "number",
+            "description": "The floating point value of the signal (-100 to +100)",
+            "example": "-97.82689785"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Equities",
+      "description": "Equity Endpoints"
+    },
+    {
+      "name": "Economic Indicators",
+      "description": "All percent change values are calculated against the latest reported actual of the comparison period release, referred to as the 'comparison period actual'. The comparison period release is either the previous release, or the release from the previous year for the same period, as specified by the economic indicator's comparison_period property. An estimate's username can change, the analyst_id should be used as the canonical identifier of an analyst."
+    },
+    {
+      "name": "Signal Endpoints",
+      "description": "The signal comes in two types: pre-release and post-release. Pre-release signals are generated before a release reports, while post-release signals are generated after a release reports.The signal is generated twice daily with two as-of timestamps: 7:00AM EST/EDT and 2:00PM EST/EDT. The generation process takes roughly 1.5 hours and is usually available in the system by 8:30AM EST/EDT and 3:30PM EST/EDT, respectively."
+    },
+    {
+      "name": "Metrics",
+      "description": "Metrics Endpoints"
+    }
+  ]
+}

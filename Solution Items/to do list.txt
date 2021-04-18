@@ -1,3 +1,12 @@
+gather historical earnings dates (estimize?)
+migrate articles to MongoDB
+new rss gatherer for mongoDB
+rss ourlier for google and yahoo
+find new tickers in old articles. sql examples below
+
+
+
+
 parse datetime according to server setting !!!
 ENCOG framework
 gather links to investor news releases for each company
