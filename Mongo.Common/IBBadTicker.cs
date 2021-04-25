@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace IBPrices
+namespace Mongo.Common
 {
     public class IBBadTicker
     {

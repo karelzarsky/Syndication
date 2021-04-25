@@ -1,0 +1,31 @@
+﻿<Window x:Class="Graph.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Graph"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="200"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0">
+            <Label Content="Collection:"/>
+            <TextBox x:Name="Collection" Text="YahooTradesOnFirstCandle1" Margin="0,0,0,10"/>
+            <Label Content="Columns:"/>
+            <TextBox x:Name="Columns" Text="10" Margin="0,0,0,10"/>
+            <Label x:Name="Rows" Content="Rows:"/>
+            <TextBox Text="10" Margin="0,0,0,10"/>
+            <Label Content="Gap percent from:"/>
+            <TextBox x:Name="Gap_from" Text="5" Margin="0,0,0,10"/>
+            <Label Content="Gap percent to:"/>
+            <TextBox x:Name="Gap_to" Text="6" Margin="0,0,0,10"/>
+            <Button x:Name="Calculate" Content="Calculate" Click="Calculate_Click"/>
+        </StackPanel>
+        <DataGrid Grid.Column="1">
+            <TextBox Text="data" />
+        </DataGrid>
+    </Grid>
+</Window>

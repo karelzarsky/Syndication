@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IBPrices
+namespace Mongo.Common
 {
     public class Candle
     {

@@ -1,12 +1,15 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace MongoSim
+namespace Mongo.Common
 {
-    class Trade
+    public class Trade
     {
+        [BsonElement("_id")]
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
         public string Ticker;
         public DateTime StartTime;
         public DateTime EndTime;

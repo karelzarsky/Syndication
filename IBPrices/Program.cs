@@ -1,4 +1,5 @@
 ﻿using IBApi;
+using Mongo.Common;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace IBPrices
             var client = IBwrapper.clientSocket;
 
             allReports = releaseCollection
-                .Find(e => e.Candles == null && e.Error == null)
+                .Find(e => e.Candles == null && e.Error == null && e.Date < DateTime.Parse("01/18/2018"))
                 .ToList();
 
             foreach (var r in allReports)
