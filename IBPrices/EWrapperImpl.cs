@@ -143,26 +143,40 @@ namespace IBPrices
 
         public void error(int id, int errorCode, string errorMsg)
         {
-            Console.WriteLine(DateTime.Now + " error id:" + id + " errorCode:" + errorCode + errorMsg);
-            EarningEvent currentEarning = Program.allReports?.Find(e => e.TickerID == id);
-            if (currentEarning != null)
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"{id}) {DateTime.Now:hh:mm:ss} errorCode:{errorCode} {errorMsg}");
+            Console.ForegroundColor = ConsoleColor.White; 
+            if (errorCode == 2104) return;
+            if (errorCode == 2106) return;
+            if (errorCode == 2158) return;
+            if (Program.allReports == null) return;
+            if (Program.allReports == null || !Program.allReports.TryRemove(id, out EarningEvent currentEarning)) return;
+            if (currentEarning == null) return;
+            if (errorCode == 162)
             {
-                currentEarning.Error = errorMsg;
-                Program.releaseCollection.ReplaceOne(Builders<EarningEvent>.Filter.Eq(x => x.Id, currentEarning.Id), currentEarning);
-                if (errorMsg.StartsWith("No security definition") || errorMsg.StartsWith("Historical Market Data Service error"))
+                if (currentEarning != null)
                 {
-                    Program.badTickerCollection.InsertOne(new IBBadTicker
-                    {
-                        Ticker = currentEarning.Symbol,
-                        Reason = errorMsg
-                    });
-                    Console.WriteLine($"Adding {currentEarning.Symbol} to bad symbol list.");
+                    currentEarning.Error = errorMsg;
+                    Program.releaseCollection.InsertOneAsync(currentEarning);
                 }
-                if (errorMsg.Contains("Duplicate ticker"))
-                {
-                    Program.pause = true;
-                }
+                return;
             }
+            
+            currentEarning.Error = errorMsg;
+            Program.releaseCollection.ReplaceOneAsync(Builders<EarningEvent>.Filter.Eq(x => x.Id, currentEarning.Id), currentEarning);
+            if (errorMsg.StartsWith("No security definition") ||
+                errorMsg.StartsWith("Historical Market Data Service error") ||
+                errorMsg.StartsWith("The contract description specified for"))
+            {
+                if (Program.badTickerCollection.CountDocuments(x => x.Ticker == currentEarning.Symbol) > 0) return;
+                Program.badTickerCollection.InsertOneAsync(new IBBadTicker
+                {
+                    Ticker = currentEarning.Symbol,
+                    Reason = errorMsg
+                });
+                Console.WriteLine($"Adding {currentEarning.Symbol} to bad symbol list.");
+            }
+            if (errorMsg.Contains("Duplicate ticker")) Program.pause = true;
         }
 
         public void execDetails(int reqId, Contract contract, Execution execution)
@@ -197,8 +211,8 @@ namespace IBPrices
 
         public void historicalData(int reqId, Bar bar)
         {
-            // '20210222  15:30:00'
-            EarningEvent currentEarning = Program.allReports.Find(e => e.TickerID == reqId);
+            if (Program.allReports == null) return;
+            Program.allReports.TryGetValue(reqId, out EarningEvent currentEarning);
             if (currentEarning.Candles == null)
                 currentEarning.Candles = new List<Candle>();
             currentEarning.Candles.Add(new Candle
@@ -216,9 +230,11 @@ namespace IBPrices
 
         public void historicalDataEnd(int reqId, string start, string end)
         {
-            EarningEvent currentEarning = Program.allReports.Find(e => e.TickerID == reqId);
-            Program.releaseCollection.ReplaceOne(Builders<EarningEvent>.Filter.Eq(x => x.Id, currentEarning.Id), currentEarning);
-            Console.WriteLine($"{DateTime.Now} {currentEarning.Symbol} {currentEarning.Date} [{currentEarning.Candles.Count}]");
+            if (Program.allReports == null || !Program.allReports.TryRemove(reqId, out EarningEvent currentEarning)) return;
+            Program.releaseCollection.InsertOneAsync(currentEarning);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"{currentEarning.TickerID}) {DateTime.Now:hh:mm:ss} {currentEarning.Symbol} {currentEarning.Date:yyyy.MM} / queue:{Program.allReports.Count} [{currentEarning.Candles.Count}]");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void historicalDataUpdate(int reqId, Bar bar)
